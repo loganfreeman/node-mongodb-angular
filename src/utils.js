@@ -78,13 +78,6 @@ module.exports = {
 		};
 
 		console.log(chimp_options);
-		/*
-		 * somehow this one doesn't work. don't know why request(chimp_options,
-		 * function(err, response, body){ var bodyObj = JSON.parse(body);
-		 * if(!err && response.statusCode == 200 &&
-		 * !bodyObj.hasOwnProperty('error')){ callback(null, body); } else{
-		 * callback(err || body); } });
-		 */
 
 		// this one works.
 		request.post(constants.mailchimp_url, {

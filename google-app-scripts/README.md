@@ -2,11 +2,22 @@
 ## Usage
 <code>node GenerateDoc.js path/to/google-app-scripts/</code>
 
+<p>
+    start a web server serving the jsdoc files.
+    The <code>GenerateDoc.js</code> will generate documentation files at docs directory. The web server will serve them at docs directory. The web server listens at port 3000.
+    <code>
+        cd server
+        npm install 
+        npm start
+
+    </code>
+
+</p>
+
 
 ## jsdoc config file
-<code>
-	
 
+```json	
 {
     "tags": {
         "allowUnknownTags": true,
@@ -32,4 +43,4 @@
     }
 }
 
-</code>
+```
