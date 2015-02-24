@@ -6,13 +6,17 @@
 
 ## Usage
 
-grunt # run test, default task is test, it is the same as grunt test
+<code>grunt</code> 
+<p>run test, default task is test, it is the same as grunt test</p>
 
-npm test # same as grunt test
+<code>npm test</code>
+<p>same as grunt test</p>
 
-grunt jsdoc # generate documentation in the docs folder, configuration file is at jsdoc-conf.json
+<code>grunt jsdoc</code> 
+<p>generate documentation in the docs folder, configuration file is at jsdoc-conf.json</p>
 
-npm start # start node express server, listening at port 8080
+<code>npm start</code> 
+<p>start node express server, listening at port 8080</p>
 
 ## Developing
 
