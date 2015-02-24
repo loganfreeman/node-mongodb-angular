@@ -36,8 +36,8 @@
         "monospaceLinks": false
     },
     "opts": {
-        "encoding": "utf8",               // same as -e utf8
-        "destination": "./docs/",          // same as -d ./out/
+        "encoding": "utf8",               
+        "destination": "./docs/",          
         "recurse": true,
         "readme": "./README.md"
     }
