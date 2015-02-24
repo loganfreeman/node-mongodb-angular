@@ -7,8 +7,11 @@
 ## Usage
 
 grunt # run test, default task is test, it is the same as grunt test
+
 npm test # same as grunt test
+
 grunt jsdoc # generate documentation in the docs folder, configuration file is at jsdoc-conf.json
+
 npm start # start node express server, listening at port 8080
 
 ## Developing
