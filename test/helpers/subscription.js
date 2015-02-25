@@ -1,4 +1,4 @@
-var utils = require('../../src/helpers/subscription.js');
+var subscriptionApi = require('../../src/helpers/subscription.js');
 var assert = require('assert');
 var dateFormat = require('dateformat');
 var constants = require('../../src/constants.js');
@@ -7,8 +7,8 @@ var util = require('util');
 describe('subscription', function() {
     describe('it should return lmc product id correctly', function() {
         it('should return product id faithfully', function() {
-            assert.equal("1", utils.getLmcProductId('25615'));
-            assert.equal("99", utils.getLmcProductId('25615x'));
+            assert.equal("1", subscriptionApi.getLmcProductId('25615'));
+            assert.equal("99", subscriptionApi.getLmcProductId('25615x'));
         })
     });
 
@@ -27,7 +27,7 @@ describe('subscription', function() {
             ;
 
             var currentdatetime = dateFormat(new Date(), "UTC:yyyy-mm-dd HH:MM:ss");
-            utils.add_subscriber('a@logmycalls.com', 'testy', 'tester', currentdatetime, 1, callback);
+            subscriptionApi.add_subscriber('a@logmycalls.com', 'testy', 'tester', currentdatetime, 1, callback);
         })
     })
 
