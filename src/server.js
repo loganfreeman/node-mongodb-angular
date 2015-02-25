@@ -44,6 +44,7 @@ app.use(favicon());
 
 app.use(logger('dev'));
 
+// load all routes in the routes directory
 require('./routes')(app);
 
 /// catch 404 and forward to error handler
