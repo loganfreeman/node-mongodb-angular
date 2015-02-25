@@ -29,10 +29,12 @@
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-jsdoc": "^0.5.8",
+    "grunt-jslint": "^1.1.12",
     "grunt-mocha": "^0.4.11",
     "grunt-mocha-test": "^0.12.7",
     "ink-docstrap": "^0.5.2",
     "jsdoc": "^3.3.0-beta1",
-    "jsdoc3-bootstrap": "^0.15.0"
+    "jsdoc3-bootstrap": "^0.15.0",
+    "jslint": "^0.8.1"
   }
 }

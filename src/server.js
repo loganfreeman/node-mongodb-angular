@@ -5,10 +5,10 @@
  */
 
 var express = require('express');
-/**
- * @alias module:server.app
- */
-var app = module.exports = express();
+
+var app = express();
+
+module.exports = app;
 
 var favicon = require('static-favicon');
 
@@ -67,6 +67,6 @@ if (app.get('env') === 'development') {
 
 /* istanbul ignore next */
 if (!module.parent) {
-  app.listen(8080);
-  console.log('Express started on port 8080');
+    app.listen(8080);
+    console.log('Express started on port 8080');
 }
