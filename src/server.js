@@ -16,6 +16,9 @@ var logger = require('morgan');
 
 var bodyParser = require('body-parser');
 
+var winston = require('winston'),
+    expressWinston = require('express-winston');
+
 app.use(bodyParser());
 
 //Register ejs as .html. If we did
@@ -42,10 +45,22 @@ app.set('view engine', 'html');
 
 app.use(favicon());
 
+// http logger needs be added BEFORE routers
 app.use(logger('dev'));
 
 // load all routes in the routes directory
 require('./routes')(app);
+
+// winston error logging, needs to be added AFTER the router and BEFORE custom errror handlers
+app.use(expressWinston.errorLogger({
+    transports: [
+        new winston.transports.Console({
+            json: true,
+            colorize: true
+        })
+    ]
+}));
+
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -61,7 +76,7 @@ if (app.get('env') === 'development') {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
-            error: err
+            error: err.statusCode
         });
     });
 }
