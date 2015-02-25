@@ -4,7 +4,7 @@
  */
 
 var request = require('request');
-var utils = require('../utils.js');
+var utils = require('../helpers/subscription.js');
 var dateFormat = require('dateformat');
 
 module.exports = function(app) {
