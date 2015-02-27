@@ -46,6 +46,10 @@ module.exports = function(grunt) {
 
             }
         },
+
+        jssemicoloned: {
+            files: ['*.js', 'src/**/*.js', 'test/**/*.js']
+        },
         // Configure a mochaTest task 
         mochaTest: {
             test: {
@@ -63,7 +67,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-jslint');
+    grunt.loadNpmTasks('grunt-jssemicoloned');
 
     grunt.registerTask('default', 'mochaTest');
+
+    grunt.registerTask('lint', ['jssemicoloned', 'jslint']);
 
 };

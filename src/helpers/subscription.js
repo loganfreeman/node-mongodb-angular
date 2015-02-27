@@ -90,7 +90,7 @@ module.exports = {
                 } else {
                     callback(err || body);
                 }
-            })
+            });
 
     },
     /**
@@ -123,4 +123,4 @@ module.exports = {
 
     }
 
-}
+};

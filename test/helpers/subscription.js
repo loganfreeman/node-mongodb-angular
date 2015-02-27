@@ -9,7 +9,7 @@ describe('subscription', function() {
         it('should return product id faithfully', function() {
             assert.equal("1", subscriptionApi.getLmcProductId('25615'));
             assert.equal("99", subscriptionApi.getLmcProductId('25615x'));
-        })
+        });
     });
 
     describe('it should add subscriber successfully', function() {
@@ -28,12 +28,12 @@ describe('subscription', function() {
 
             var currentdatetime = dateFormat(new Date(), "UTC:yyyy-mm-dd HH:MM:ss");
             subscriptionApi.add_subscriber('a@logmycalls.com', 'testy', 'tester', currentdatetime, 1, callback);
-        })
-    })
+        });
+    });
 
     describe('it should format string faithfully', function() {
         it('should format url faithfully', function() {
             assert.equal("https://logmycalls.chargify.com/customers/1234/subscriptions.json", util.format(constants.customer_subscription_url, '1234'));
-        })
-    })
-})
+        });
+    });
+});

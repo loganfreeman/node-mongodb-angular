@@ -66,6 +66,6 @@ module.exports = function(app) {
         }
         utils.getCustomerSubscription(customer_id, callback);
 
-    })
+    });
 
-}
+};
