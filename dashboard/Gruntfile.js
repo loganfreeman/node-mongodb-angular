@@ -8,6 +8,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-copy' );
     grunt.loadNpmTasks( 'grunt-contrib-clean' );
     grunt.loadNpmTasks( 'grunt-karma' );
+    grunt.loadNpmTasks( 'grunt-autoprefixer' );
 
 
     grunt.initConfig( {
@@ -26,8 +27,15 @@ module.exports = function(grunt) {
         },
         less: {
             all: {
-                src: 'style.less',
-                dest: 'build/style.css',
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'styles',
+                        src: ['*.less'],
+                        dest: 'build/styles',
+                        ext: '.css'
+                    }
+                ],
                 options: {
                     report: 'gzip'
                 }
@@ -82,7 +90,8 @@ module.exports = function(grunt) {
                     'libs/angular/angular.js',
                     'libs/angular-animate/angular-animate.js',
                     'libs/angular-mocks/angular-mocks.js',
-                    'libs/angular-ui-router/release/angular-ui-router.js'
+                    'libs/angular-ui-router/release/angular-ui-router.js',
+                    'libs/skel/dist/skel.min.js'
                 ],
                 dest: 'build/libs.js'
             }
