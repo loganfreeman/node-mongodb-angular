@@ -1,4 +1,4 @@
-angular.module( 'dashboard.pages', ['dashboard.page'] )
+angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user'] )
     .config( function($stateProvider) {
         $stateProvider
             .state( 'app.admin', {
@@ -7,7 +7,8 @@ angular.module( 'dashboard.pages', ['dashboard.page'] )
             } )
             .state( 'app.user', {
                 url: '/user',
-                templateUrl: 'pages/user.tpl.html'
+                templateUrl: 'pages/user.tpl.html',
+                controller: 'userController'
             } )
             .state( 'app.home', {
                 url: '/',

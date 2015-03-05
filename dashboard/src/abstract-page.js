@@ -1,4 +1,4 @@
-angular.module( 'dashboard.page', ['ui.router', 'templates-app'] )
+angular.module( 'dashboard.page', ['ui.router', 'templates-app', 'ui.bootstrap', 'ngAside'] )
     .config( function($stateProvider) {
         $stateProvider
             .state( 'app', {

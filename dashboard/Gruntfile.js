@@ -91,9 +91,20 @@ module.exports = function(grunt) {
                     'libs/angular-animate/angular-animate.js',
                     'libs/angular-mocks/angular-mocks.js',
                     'libs/angular-ui-router/release/angular-ui-router.js',
-                    'libs/skel/dist/skel.min.js'
+                    'libs/skel/dist/skel.min.js',
+                    'libs/jquery/dist/jquery.min.js',
+                    'libs/bootstrap/dist/js/bootstrap.min.js',
+                    'libs/jasny-bootstrap/dist/js/jasny-bootstrap.min.js',
+                    'libs/angular-aside/dist/js/angular-aside.min.js'
                 ],
                 dest: 'build/libs.js'
+            }
+        },
+        concat: {
+            css: {
+                src: ['libs/jasny-bootstrap/dist/css/jasny-bootstrap.min.css',
+                'libs/angular-aside/dist/css/angular-aside.min.css'],
+                dest: 'build/styles/css-libs.css'
             }
         },
         copy: {
@@ -134,7 +145,7 @@ module.exports = function(grunt) {
     // - concatenates all the source files in build/app.js - banner with git revision
     // - concatenates all the libraries in build/libs.js
     // - copies index.html over build/
-    grunt.registerTask( 'build', ['clean', 'html2js', 'less', 'concat_sourcemap:app', 'concat_sourcemap:libs', 'copy'] );
+    grunt.registerTask( 'build', ['clean', 'html2js', 'less', 'concat_sourcemap:app', 'concat_sourcemap:libs', 'concat:css', 'copy'] );
     grunt.registerTask( 'default', ['clean', 'concat_sourcemap:libs', 'connect', 'watch'] );
     grunt.registerTask( 'test', ['karma'] );
 };
