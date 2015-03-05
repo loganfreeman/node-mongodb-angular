@@ -1,1 +1,52 @@
 <!DOCTYPE html>
+<html ng-app="dashboard">
+  <head>
+    <title>IT Dashboard</title>
+
+    <!-- BootstrapCDN -->
+    <link href="//netdna.bootstrapcdn.com/bootswatch/3.3.1/slate/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- compiled css -->
+    <link href="style.css" rel="stylesheet">
+    <!-- libraries concatenated -->
+    <script type="text/javascript" src="libs.js"></script>
+    <!-- app concatenated -->
+    <script type="text/javascript" src="app.js"></script>
+    <!-- html templates -->
+    <script type="text/javascript" src="templates-app.js"></script>
+
+    <!-- analytics! -->
+    <script>
+     
+    </script>
+  </head>
+  <body ng-controller="BodyController">
+    <div class="container">
+      <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-collapse">
+          <!-- Navbar links -->
+          <ul class="nav navbar-nav">
+            <li ng-class="{ active: $state.is('app.home') }">
+              <a ui-sref="app.home">Home</a>
+            </li>
+            <li ng-class="{ active: $state.is('app.admin') }">
+              <a ui-sref="app.admin">Admin page</a>
+            </li>
+            <li ng-class="{ active: $state.is('app.user') }">
+              <a ui-sref="app.user">User page</a>
+            </li>
+          </ul>
+          <!-- Right side of the navbar -->
+          
+         
+        </div>
+        
+      </div>
+      <ui-view></ui-view>
+      
+      <!-- footer -->
+
+    </div>
+  </body>
+</html>
