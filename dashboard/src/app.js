@@ -17,11 +17,23 @@ angular.module( 'dashboard', [
             reset: 'full',
             containers: '95%',
             breakpoints: {
+                large: {
+                    media: '(min-width: 1025px) and (max-width: 1280px)',
+                    containers: 960
+                },
                 medium: {
-                    media: '(min-width: 769px) and (max-width: 1024px)'
+                    media: '(min-width: 769px) and (max-width: 1024px)',
+                    containers: '90%'
                 },
                 small: {
-                    media: '(max-width: 768px)'
+                    media: '(max-width: 768px)',
+                    containers: '95%!'
+                },
+                xsmall: {
+                    media: '(max-width: 640px)'
+                },
+                xxsmall: {
+                    media: '(max-width: 480px)'
                 }
             }
         } );
