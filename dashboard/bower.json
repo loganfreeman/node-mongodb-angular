@@ -1,0 +1,22 @@
+{
+  "name": "dashboard",
+  "version": "1.0.0",
+  "homepage": "https://github.com/ContactPoint/internal_scripts",
+  "authors": [
+    "schengcrouchingtiger <scheng@contactpointsolutions.com>"
+  ],
+  "description": "IT dashboard",
+  "keywords": [
+    "dashboard",
+    "angular",
+    "D3"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
