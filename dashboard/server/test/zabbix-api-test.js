@@ -56,6 +56,7 @@ describe( 'ZabbixApi', function() {
         } );
 
         it( 'should retry successfully and return an array of object containing property `hostid`', function(done) {
+            this.timeout( 7500 );
             var task = function(callback, results) {
                 client.request( 'host.get', {
                     hostids: hostid
