@@ -2,18 +2,15 @@
 <html ng-app="dashboard">
   <head>
     <title>IT Dashboard</title>
-
     <!-- BootstrapCDN -->
     <link href="//netdna.bootstrapcdn.com/bootswatch/3.3.1/slate/bootstrap.min.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-
     <!-- compiled css -->
     <link href="styles/style.css" rel="stylesheet">
     <link rel="stylesheet" href="styles/style-medium.css" media="(min-width: 769px) and (max-width: 1024px)" />
     <link rel="stylesheet" href="styles/style-small.css" media="(max-width: 768px)" />
     <!-- concatenated library css file -->
     <link href="styles/css-libs.css" rel="stylesheet">
-
     <!-- libraries concatenated -->
     <script type="text/javascript" src="libs.js"></script>
     <!-- Native AngularJS (Angular) directives for Bootstrap -->
@@ -22,16 +19,27 @@
     <script type="text/javascript" src="app.js"></script>
     <!-- html templates -->
     <script type="text/javascript" src="templates-app.js"></script>
-
     <!-- analytics! -->
     <script>
-     
+    
     </script>
   </head>
   <body ng-controller="BodyController">
     <div class="container">
       <div class="navbar navbar-default" role="navigation">
-        <div class="navbar-collapse">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">IT Dashboard</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="nav-collapse">
           <!-- Navbar links -->
           <ul class="nav navbar-nav">
             <li ng-class="{ active: $state.is('app.home') }">
@@ -46,14 +54,13 @@
           </ul>
           <!-- Right side of the navbar -->
           
-         
+          
         </div>
         
       </div>
       <ui-view></ui-view>
       
       <!-- footer -->
-
     </div>
   </body>
 </html>

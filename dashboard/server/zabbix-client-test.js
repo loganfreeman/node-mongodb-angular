@@ -22,3 +22,14 @@ zabbix.getApiVersion( function(err, resp, body) {
         logger.error( err );
     }
 } );
+
+var hostid = '10160';
+
+zbx.request( 'host.get', {
+    hostids: hostid
+}, function(err, result) {
+        if (err) {
+            logger.error( err );
+        }
+        logger.info( result );
+    } );
