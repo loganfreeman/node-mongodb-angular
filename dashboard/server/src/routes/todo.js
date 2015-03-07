@@ -17,30 +17,43 @@ module.exports = function(app) {
             res.redirect( '/todos' );
         } );
     } );
-    app.put( '/todos/edit', function(req, res) {
+    app.get( '/todos/edit/:id', function(req, res) {
         db.Todo.find( {
             where: {
-                'id': req.body.id
+                'id': req.param( 'id' )
+            },
+            limit: 1
+        } ).success( function(todo) {
+            res.render( 'todo-item', {
+                title: 'Edit ToDo Item',
+                todo: todo
+            } );
+        } );
+    } );
+    app.post( '/todos/edit/:id', function(req, res) {
+        db.Todo.find( {
+            where: {
+                'id': req.param( 'id' )
             },
             limit: 1
         } ).success( function(todo) {
             todo.updateAttributes( {
                 text: req.body.text
             } ).success( function(updated) {
-                res.json( updated );
+                res.redirect( '/todos' );
             } );
         } );
     } );
-    app.del( '/todos/delete', function(req, res) {
+    app.delete( '/todos/delete/:id', function(req, res) {
         db.Todo.find( {
             where: {
-                'id': req.body.id
+                'id': req.param( 'id' )
             },
             limit: 1
         } ).success( function(todo) {
             todo.destroy().success( function(destroyed) {
                 res.json( {
-                    id: req.body.id,
+                    id: req.param( 'id' ),
                     deleted: true
                 } );
             } );

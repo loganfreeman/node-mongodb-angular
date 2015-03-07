@@ -25,6 +25,7 @@
     "express-winston": "^0.2.12",
     "limiter": "^1.0.5",
     "lodash": "^3.4.0",
+    "method-override": "^2.3.1",
     "morgan": "^1.5.1",
     "nconf": "^0.7.1",
     "neuron": "^0.4.6",

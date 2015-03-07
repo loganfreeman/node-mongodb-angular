@@ -19,7 +19,15 @@ var bodyParser = require( 'body-parser' );
 var winston = require( 'winston' ),
     expressWinston = require( 'express-winston' );
 
-app.use( bodyParser() );
+var methodOverride = require( 'method-override' );
+
+app.use( bodyParser.urlencoded( {
+    extended: true
+} ) );
+app.use( bodyParser.json() );
+
+// override with the X-HTTP-Method-Override header in the request
+app.use( methodOverride( 'X-HTTP-Method-Override' ) );
 
 app.use( favicon( __dirname + '/public/images/favicon.ico' ) );
 
