@@ -23,6 +23,8 @@ app.use( bodyParser() );
 
 app.use( favicon( __dirname + '/public/images/favicon.ico' ) );
 
+app.use( '/', express.static( __dirname + '/public' ) );
+
 //Register ejs as .html. If we did
 //not call this, we would need to
 //name our views foo.ejs instead

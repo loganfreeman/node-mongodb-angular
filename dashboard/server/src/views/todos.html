@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><%= title %></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/styles/normalize.css">
+		<link rel="stylesheet" href="/styles/foundation.css">
+		<link rel='stylesheet' href='/styles/style.css' />
+		<script src="/js/vendor/modernizr-latest.js"></script>
+	</head>
+	<body>
+		<h1 class='title-area'><%= title %></h1>
+	</form>
+	<!-- form -->
+	<form action="/todos/add" method="post" accept-charset="utf-8">
+		<div class="row">
+			<div class="small-8 columns">
+				<div class="row">
+					<div class="small-3 columns">
+						<input type="submit" value="Add TODO Item:"/>
+					</div>
+					<div class="small-9 columns">
+						<input type="text" name="text" />
+					</div>
+				</div>
+				<div class="row">
+					<% todos.forEach( function ( todo ){ %>
+					<div class="row">
+						
+						<div class="small-3 columns">
+							<a class="ubutton postfix" href="/edit/<%= todo.id %>" title="Update this todo item"><%= todo.text %></a>
+						</div>
+						<div class="small-3 columns">
+							<a class="button postfix" href="/destroy/<%= todo.id %>" title="Delete this todo item">Delete</a>
+						</div>
+					</div>
+					<% }); %>
+				</div>
+			</div>
+		</div>
+	</form>
+	<!-- off canvas -->
+	<div class="off-canvas-wrap" data-offcanvas>
+		<div class="inner-wrap">
+			<nav class="tab-bar">
+				<section class="left-small">
+					<a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+				</section>
+				<section class="middle tab-bar-section">
+					<h1 class="title">Foundation</h1>
+				</section>
+				<section class="right-small">
+					<a class="right-off-canvas-toggle menu-icon" href="#"><span></span></a>
+				</section>
+			</nav>
+			<aside class="left-off-canvas-menu">
+				<ul class="off-canvas-list">
+					<li><label>Foundation</label></li>
+					<li><a href="#">The Psychohistorians</a></li>
+					<li><a href="#">...</a></li>
+				</ul>
+			</aside>
+			<aside class="right-off-canvas-menu">
+				<ul class="off-canvas-list">
+					<li><label>Users</label></li>
+					<li><a href="#">Hari Seldon</a></li>
+					<li><a href="#">...</a></li>
+				</ul>
+			</aside>
+			<section class="main-section">
+				<!-- content goes here -->
+			</section>
+			<a class="exit-off-canvas"></a>
+		</div>
+	</div>
+	<script src="js/vendor/jquery.min.js"></script>
+	<script src="js/vendor/foundation.min.js"></script>
+	<script>
+	$(document).foundation();
+	</script>
+</body>
+</html>
