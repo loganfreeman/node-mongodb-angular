@@ -15,6 +15,11 @@ module.exports = function(app) {
             text: req.body.text
         } ).success( function(todo) {
             res.redirect( '/todos' );
+        } ).error( function(err) {
+            res.render( 'error', {
+                error: err.name,
+                message: err.message
+            } );
         } );
     } );
     app.get( '/todos/edit/:id', function(req, res) {
