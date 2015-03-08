@@ -47,7 +47,8 @@ module.exports = function(grunt) {
                     port: 8080,
                     base: 'build/',
                     hostname: '*',
-                    debug: true
+                    debug: true,
+                    keepalive: true
                 }
             }
         },
@@ -122,6 +123,16 @@ module.exports = function(grunt) {
                         } );
                     }
                 }
+            },
+            css: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'styles',
+                        src: ['*.css'],
+                        dest: 'build/styles'
+                    }
+                ]
             }
         },
         clean: {

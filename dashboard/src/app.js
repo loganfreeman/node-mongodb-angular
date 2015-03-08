@@ -13,6 +13,9 @@ angular.module( 'dashboard', [
         $scope.$stateParams = $stateParams;
     } )
     .run( function($rootScope) {
+
+
+        // grid system
         skel.init( {
             reset: 'full',
             containers: '95%',

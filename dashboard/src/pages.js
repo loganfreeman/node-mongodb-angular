@@ -3,7 +3,8 @@ angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user'] )
         $stateProvider
             .state( 'app.admin', {
                 url: '/admin',
-                templateUrl: 'pages/admin.tpl.html'
+                templateUrl: 'pages/admin.tpl.html',
+                controller: 'adminController'
             } )
             .state( 'app.user', {
                 url: '/user',
@@ -14,4 +15,9 @@ angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user'] )
                 url: '/',
                 templateUrl: 'home/home.tpl.html'
             } );
+    } )
+    .controller( 'adminController', function($scope) {
+        $( '[data-toggle="offcanvas"]' ).click( function() {
+            $( '.row-offcanvas' ).toggleClass( 'active' );
+        } );
     } );
