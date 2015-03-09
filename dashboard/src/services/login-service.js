@@ -178,17 +178,6 @@ angular.module( 'loginService', [] )
                     this.isLogged = false;
                     $state.go( logoutState );
                 },
-                getForms: function(httpPromise) {
-                    var self = this;
-                    var get = $q.defer();
-                    httpPromise.then( function success(data) {
-                        get.resolve( data );
-                    }, function reject(data) {
-                            self.isLogged = false;
-                            self.reject( data );
-                        } );
-                    return get.promise;
-                },
                 resolvePendingState: function(httpPromise) {
                     var checkUser = $q.defer(),
                         self = this,

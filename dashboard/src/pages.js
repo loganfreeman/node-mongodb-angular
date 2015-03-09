@@ -1,4 +1,4 @@
-angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user'] )
+angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user', 'loginService'] )
     .config( function($stateProvider) {
         $stateProvider
             .state( 'app.admin', {
@@ -25,6 +25,11 @@ angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user'] )
                 url: '/error/:error',
                 templateUrl: 'error/error.tpl.html',
                 accessLevel: accessLevels.public
+            } )
+            .state( 'app.register', {
+                url: '/register',
+                templateUrl: 'register/register.tpl.html',
+                controller: 'registerController'
             } );
 
     } )
@@ -57,6 +62,10 @@ angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user'] )
         $( '[data-toggle="offcanvas"]' ).click( function() {
             $( '.row-offcanvas' ).toggleClass( 'active' );
         } );
+    } )
+    .controller( 'registerController', function(loginService, $scope) {
+        //TODO: add register logic 
+        $scope.roles = ['Admin', 'User', 'Public'];
     } )
     .controller( 'devopsController', function($scope, utils) {
         // The environment refers to the development state of the code & service. For example Production, Development, etc.
