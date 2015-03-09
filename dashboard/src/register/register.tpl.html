@@ -2,9 +2,17 @@
 	<h1>Register Page</h1>
 	<br>
 	<form>
-		<div class='form-group'>
-			<label for='role' >Roles</label>
-			<select id='role'>
+		<div class='control-group'>
+			<label for='name'>Name</label>
+			<input id='name' type='text' class='input-xlarge' placehold='Name'/>
+		</div>
+		<div class='control-group'>
+			<label for='email'>Email</label>
+			<input id='email' type='text' class='input-xlarge' placeholder='Email'/>
+		</div>
+		<div class='control-group'>
+			<label for='role' >Role</label>
+			<select id='role' class="input-xlarge">
 				<ul class="dropdown-menu" role="menu">
 					<option ng-repeat="role in roles" value="{{role}}">
 						{{role}}
@@ -12,7 +20,28 @@
 				</ul>
 			</select>
 		</div>
+		<div class='control-group'>
+			<label for='group' >Group</label>
+			<select id='group' class="input-xlarge">
+				<ul class="dropdown-menu" role="menu">
+					<option ng-repeat="group in groups" value="{{group}}">
+						{{role}}
+					</option>
+				</ul>
+			</select>
+		</div>
+		<p>Choose your username and password</p>
+		<div class='control-group'>
+			<label for='username'>UserName</label>
+			<input id='username' type='text' class='input-xlarge' placehold='UserName'/>
+		</div>
+		<div class='control-group'>
+			<label for='password'>Password</label>
+			<input id='password' type='text' class='input-xlarge' placeholder='Password'/>
+		</div>
+		<div class="form-actions">
+			<button type="button" id="account-form-btn1" class="btn btn-default">Cancel</button>
+			<button type="submit" id="account-form-btn2" class="btn btn-primary">Submit</button>
+		</div>
 	</form>
 </div>
-
-
