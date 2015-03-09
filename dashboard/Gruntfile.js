@@ -9,6 +9,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks( 'grunt-contrib-clean' );
     grunt.loadNpmTasks( 'grunt-karma' );
     grunt.loadNpmTasks( 'grunt-autoprefixer' );
+    grunt.loadNpmTasks( 'grunt-contrib-imagemin' );
 
 
     grunt.initConfig( {
@@ -23,6 +24,15 @@ module.exports = function(grunt) {
                 },
                 src: ['src/**/*.tpl.html'],
                 dest: 'build/templates-app.js'
+            }
+        },
+        imagemin: { // Task
+            dynamic: { // Another target
+                files: [{
+                    expand: true, // Enable dynamic expansion
+                    src: ['images/**/*.{png,jpg,gif}'], // Actual patterns to match
+                    dest: 'build/images' // Destination path prefix
+                }]
             }
         },
         less: {
@@ -74,13 +84,20 @@ module.exports = function(grunt) {
             },
             css: {
                 files: ['styles/*.css'],
-                tasks: ['copy:css']
-            }
+                tasks: ['concat:css']
+            },
             // Useful for watching / rerunning karma tests
             // jsTest: {
             //    files: ['test/spec/{,*/}*.js'],
             //    tasks: ['karma']
             //}
+            images: {
+                files: ['images/**/*.{png,jpg,gif}'],
+                tasks: ['copy:images'],
+                options: {
+                    spawn: false,
+                }
+            }
         },
         concat_sourcemap: {
             options: {
@@ -106,10 +123,14 @@ module.exports = function(grunt) {
             }
         },
         concat: {
-            css: {
+            libs: {
                 src: ['libs/jasny-bootstrap/dist/css/jasny-bootstrap.min.css',
                 'libs/angular-aside/dist/css/angular-aside.min.css'],
                 dest: 'build/styles/css-libs.css'
+            },
+            css: {
+                src: ['styles/*.css'],
+                dest: 'build/styles/additional.css'
             }
         },
         copy: {
@@ -128,15 +149,9 @@ module.exports = function(grunt) {
                     }
                 }
             },
-            css: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: 'styles',
-                        src: ['*.css'],
-                        dest: 'build/styles'
-                    }
-                ]
+            images: {
+                src: ['images/*.{png,jpg,gif}'],
+                dest: 'build/'
             }
         },
         clean: {
@@ -164,7 +179,7 @@ module.exports = function(grunt) {
     // - concatenates all the source files in build/app.js - banner with git revision
     // - concatenates all the libraries in build/libs.js
     // - copies index.html over build/
-    grunt.registerTask( 'build', ['clean', 'html2js', 'less', 'concat_sourcemap:app', 'concat_sourcemap:libs', 'concat:css', 'copy'] );
+    grunt.registerTask( 'build', ['clean', 'html2js', 'less', 'concat_sourcemap', 'concat', 'copy'] );
     grunt.registerTask( 'default', ['build', 'connect', 'watch'] );
     grunt.registerTask( 'test', ['karma'] );
 };

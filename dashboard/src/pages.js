@@ -4,7 +4,8 @@ angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user'] )
             .state( 'app.admin', {
                 url: '/admin',
                 templateUrl: 'pages/admin.tpl.html',
-                controller: 'adminController'
+                controller: 'adminController',
+                accessLevel: accessLevels.admin
             } )
             .state( 'app.user', {
                 url: '/user',
@@ -19,7 +20,13 @@ angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user'] )
                 url: '/devops',
                 templateUrl: 'devops/home.tpl.html',
                 controller: 'devopsController'
+            } )
+            .state( 'app.error', {
+                url: '/error/:error',
+                templateUrl: 'error/error.tpl.html',
+                accessLevel: accessLevels.public
             } );
+
     } )
     .factory( 'utils', function() {
         return {
@@ -126,7 +133,6 @@ angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user'] )
         $scope.instanceOnClick = function($index) {
             $scope.instanceIndex = $index;
             $scope.deploys = utils.shuffleArray( deploys );
-
         };
 
         $scope.environmentOnClick = function($index) {
