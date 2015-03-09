@@ -1,4 +1,10 @@
-angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user', 'loginService'] )
+angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user',
+    /** login service to intercept route change and do authorization */
+    'loginService',
+    /** angular nvd3 directives */
+    'nvd3ChartDirectives',
+    /** chartjs anglar directives */
+'angles'] )
     .config( function($stateProvider) {
         $stateProvider
             .state( 'app.admin', {
