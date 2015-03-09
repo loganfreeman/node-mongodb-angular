@@ -61,7 +61,7 @@ module.exports = function(grunt) {
                 tasks: ['html2js']
             },
             less: {
-                files: ['style.less', 'src/**/*.less'],
+                files: ['styles/*.less'],
                 tasks: ['less']
             },
             sources: {
@@ -71,6 +71,10 @@ module.exports = function(grunt) {
             index: {
                 files: 'index.html',
                 tasks: ['copy:index']
+            },
+            css: {
+                files: ['styles/*.css'],
+                tasks: ['copy:css']
             }
             // Useful for watching / rerunning karma tests
             // jsTest: {
@@ -149,6 +153,10 @@ module.exports = function(grunt) {
         }
     } );
 
+    grunt.event.on( 'watch', function(action, filepath, target) {
+        grunt.log.writeln( target + ': ' + filepath + ' has ' + action );
+    } );
+
     // Build process:
     // - clean build/
     // - creates build/templates-app.js from *.tpl.html files
@@ -157,6 +165,6 @@ module.exports = function(grunt) {
     // - concatenates all the libraries in build/libs.js
     // - copies index.html over build/
     grunt.registerTask( 'build', ['clean', 'html2js', 'less', 'concat_sourcemap:app', 'concat_sourcemap:libs', 'concat:css', 'copy'] );
-    grunt.registerTask( 'default', ['clean', 'concat_sourcemap:libs', 'connect', 'watch'] );
+    grunt.registerTask( 'default', ['build', 'connect', 'watch'] );
     grunt.registerTask( 'test', ['karma'] );
 };
