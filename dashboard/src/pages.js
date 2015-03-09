@@ -12,10 +12,6 @@ angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user', 'loginSe
                 templateUrl: 'pages/user.tpl.html',
                 controller: 'userController'
             } )
-            .state( 'app.home', {
-                url: '/',
-                templateUrl: 'home/home.tpl.html'
-            } )
             .state( 'app.devops', {
                 url: '/devops',
                 templateUrl: 'devops/home.tpl.html',

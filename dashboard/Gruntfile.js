@@ -104,7 +104,7 @@ module.exports = function(grunt) {
                 sourcesContent: true
             },
             app: {
-                src: ['src/**/*.js', 'src/*.js'],
+                src: ['src/*.js', 'src/**/*.js'],
                 dest: 'build/app.js'
             },
             libs: {
