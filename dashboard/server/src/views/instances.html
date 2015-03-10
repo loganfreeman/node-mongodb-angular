@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><%= title %></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/styles/normalize.css">
+		<link rel="stylesheet" href="/styles/foundation.css">
+		<link rel='stylesheet' href='/styles/style.css' />
+		<script src="/js/vendor/modernizr-latest.js"></script>
+	</head>
+	<body>
+		<h1 class='title-area'><%= title %></h1>
+		<table role='grid' summary="instances table showing all running instances blah blah">
+			<% instances.forEach( function ( instance ){ %>
+			<tr class="row">
+				
+				<td>
+					<%= instance.name %>
+				</td>
+				<td>
+					<%= instance.ip %>
+				</td>
+				<td>
+					<%= instance.description %>
+				</td>
+			</tr>
+			<% }); %>
+		</table>
+		
+		<script src="/js/vendor/jquery.min.js"></script>
+		<script src="/js/vendor/foundation.min.js"></script>
+		
+	</body>
+</html>
