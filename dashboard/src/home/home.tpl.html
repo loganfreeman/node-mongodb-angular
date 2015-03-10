@@ -1,71 +1,62 @@
 <!-- Content -->
 <div class="row">
-
 	<div class="6u 12u$(medium)">
 		<canvas barchart responsive=true legend=true options="options" data="chart"></canvas>
 	</div>
 	<div class="6u 12u$(medium)">
-		  <nvd3-bullet-chart
-            data="exampleData"
-            id="exampleId"
-            margin="{left:75,top:30,bottom:30,right:10}"
-            width="550"
-            height="160">
-        <svg></svg>
-    </nvd3-bullet-chart>
-
-	</div>
+		<nvd3-bullet-chart
+		data="exampleData"
+		id="exampleId"
+		margin="{left:75,top:30,bottom:30,right:10}"
+		width="550"
+		height="160">
+	<svg></svg>
+	</nvd3-bullet-chart>
+</div>
 </div>
 <div class="row">
-	<div class="12u">
-		<h3>Gallery</h3>
-		<div class="box alt">
-			<div class="row uniform 50%">
-				<!--
-					Note: We can omit row terminators in this particular instance since we know the content of
-					each cell will be exactly the same height.
-				-->
-				<div class="2u 3u(medium) 4u(small) 6u(xxsmall)"><span class="thumbnail">1</span></div>
-				<div class="2u 3u(medium) 4u(small) 6u(xxsmall)"><span class="thumbnail">2</span></div>
-				<div class="2u 3u(medium) 4u(small) 6u(xxsmall)"><span class="thumbnail">3</span></div>
-				<div class="2u 3u(medium) 4u(small) 6u(xxsmall)"><span class="thumbnail">4</span></div>
-				<div class="2u 3u(medium) 4u(small) 6u(xxsmall)"><span class="thumbnail">5</span></div>
-				<div class="2u 3u(medium) 4u(small) 6u(xxsmall)"><span class="thumbnail">6</span></div>
-				<div class="2u 3u(medium) 4u(small) 6u(xxsmall)"><span class="thumbnail">7</span></div>
-				<div class="2u 3u(medium) 4u(small) 6u(xxsmall)"><span class="thumbnail">8</span></div>
-				<div class="2u 3u(medium) 4u(small) 6u(xxsmall)"><span class="thumbnail">9</span></div>
-				<div class="2u 3u(medium) 4u(small) 6u(xxsmall)"><span class="thumbnail">10</span></div>
-				<div class="2u 3u(medium) 4u(small) 6u(xxsmall)"><span class="thumbnail">11</span></div>
-				<div class="2u 3u(medium) 4u(small) 6u(xxsmall)"><span class="thumbnail">12</span></div>
+<div class="12u">
+	<h3>Gallery</h3>
+	<div class="box alt">
+		<div class="row">
+			<div ng-controller="BarChartCtrl" class='4u 12u$(medium)'>
+				<barchart id="bar-example" data-options="chart_options"></barchart>
 			</div>
-		</div>
+			<div ng-controller="DonutChartCtrl" class='4u 12u$(medium)'>
+				<donutchart id="donut-example" data-options="chart_options"></donutchart>
+			</div>
+			<div ng-controller="LineChartCtrl" class='4u 12u$(medium)'>
+				<linechart id="line-example" data-options="chart_options"></linechart>
+			</div>
 	</div>
 </div>
-<div class="row">
-	<div class="3u 6u(medium) 12u$(xsmall)">
-		<h3>Feature 1</h3>
-		<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-	</div>
-	<div class="3u 6u$(medium) 12u$(xsmall)">
-		<h3>Feature 2</h3>
-		<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-	</div>
-	<div class="3u 6u(medium) 12u$(xsmall)">
-		<h3>Feature 3</h3>
-		<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-	</div>
-	<div class="3u$ 6u$(medium) 12u$(xsmall)">
-		<h3>Feature 4</h3>
-		<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-	</div>
+</div>
 </div>
 <div class="row">
-	<div class="8u 12u$(small)">
-		<h3>Content</h3>
-		<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat commodo eu sed ante lacinia. Sapien a lorem in integer ornare praesent commodo adipiscing arcu in massa commodo lorem accumsan at odio massa ac ac. Semper adipiscing varius montes viverra nibh in adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat commodo eu sed ante lacinia. Sapien a lorem in integer ornare praesent commodo adipiscing arcu in massa commodo lorem accumsan at odio massa ac ac. Semper adipiscing varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
-	</div>
-	<div class="4u 12u$(small)">
-		<h3>Sidebar</h3>
-		<p>In arcu accumsan arcu adipiscing accumsan orci ac. Felis id enim aliquet. Accumsan ac integer lobortis commodo ornare aliquet accumsan erat tempus amet porttitor. Ante commodo blandit adipiscing integer semper orci eget. Faucibus commodo adipiscing mi eu nullam accumsan morbi arcu ornare odio mi adipiscing.</p>
-	</div>
+<div class="3u 6u(medium) 12u$(xsmall)">
+<h3>Feature 1</h3>
+<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
+</div>
+<div class="3u 6u$(medium) 12u$(xsmall)">
+<h3>Feature 2</h3>
+<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
+</div>
+<div class="3u 6u(medium) 12u$(xsmall)">
+<h3>Feature 3</h3>
+<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
+</div>
+<div class="3u$ 6u$(medium) 12u$(xsmall)">
+<h3>Feature 4</h3>
+<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing aliquet. Volutpat eu sed ante lacinia sapien lorem accumsan varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
+</div>
+</div>
+<div class="row">
+<div class="8u 12u$(small)">
+<h3>Content</h3>
+<p>Nunc lacinia ante nunc ac lobortis. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat commodo eu sed ante lacinia. Sapien a lorem in integer ornare praesent commodo adipiscing arcu in massa commodo lorem accumsan at odio massa ac ac. Semper adipiscing varius montes viverra nibh in adipiscing gravida odio porttitor sem non mi integer non faucibus ornare mi ut ante amet placerat aliquet. Volutpat commodo eu sed ante lacinia. Sapien a lorem in integer ornare praesent commodo adipiscing arcu in massa commodo lorem accumsan at odio massa ac ac. Semper adipiscing varius montes viverra nibh in adipiscing blandit tempus accumsan.</p>
+</div>
+<div class="4u 12u$(small)">
+<h3>Sidebar</h3>
+<p>In arcu accumsan arcu adipiscing accumsan orci ac. Felis id enim aliquet. Accumsan ac integer lobortis commodo ornare aliquet accumsan erat tempus amet porttitor. Ante commodo blandit adipiscing integer semper orci eget. Faucibus commodo adipiscing mi eu nullam accumsan morbi arcu ornare odio mi adipiscing.</p>
+</div>
 </div>

@@ -122,7 +122,9 @@ module.exports = function(grunt) {
                     'libs/nvd3/build/nv.d3.js',
                     'libs/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
                     'libs/chartjs/chart.js',
-                    'libs/angles/angles.js'
+                    'libs/angles/angles.js',
+                    'libs/raphael/raphael.js',
+                    'vendor/morris.js'
                 ],
                 dest: 'build/libs.js'
             }
@@ -131,7 +133,8 @@ module.exports = function(grunt) {
             libs: {
                 src: ['libs/jasny-bootstrap/dist/css/jasny-bootstrap.min.css',
                     'libs/angular-aside/dist/css/angular-aside.min.css',
-                'libs/nvd3/build/nv.d3.css'],
+                    'libs/nvd3/build/nv.d3.css',
+                'vendor/morris.css'],
                 dest: 'build/styles/css-libs.css'
             },
             css: {

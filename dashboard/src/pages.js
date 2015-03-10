@@ -4,7 +4,9 @@ angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user',
     /** angular nvd3 directives */
     'nvd3ChartDirectives',
     /** chartjs anglar directives */
-'angles'] )
+    'angles',
+    /** morris angular wrapper */
+'ChartAngular'] )
     .config( function($stateProvider) {
         $stateProvider
             .state( 'app.admin', {

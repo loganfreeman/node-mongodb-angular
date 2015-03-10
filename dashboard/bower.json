@@ -34,6 +34,7 @@
     "angles": "*",
     "nvd3": "~1.7.1",
     "angularjs-nvd3-directives": "~0.0.7",
-    "d3": "~3.5.5"
+    "d3": "~3.5.5",
+    "raphael": "~2.1.4"
   }
 }
