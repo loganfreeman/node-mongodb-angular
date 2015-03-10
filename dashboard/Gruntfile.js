@@ -124,7 +124,8 @@ module.exports = function(grunt) {
                     'libs/chartjs/chart.js',
                     'libs/angles/angles.js',
                     'libs/raphael/raphael.js',
-                    'vendor/morris.js'
+                    'vendor/morris.js',
+                    'libs/metisMenu/dist/metisMenu.js'
                 ],
                 dest: 'build/libs.js'
             }
@@ -134,7 +135,8 @@ module.exports = function(grunt) {
                 src: ['libs/jasny-bootstrap/dist/css/jasny-bootstrap.min.css',
                     'libs/angular-aside/dist/css/angular-aside.min.css',
                     'libs/nvd3/build/nv.d3.css',
-                'vendor/morris.css'],
+                    'vendor/morris.css',
+                'libs/metisMenu/dist/metisMenu.css'],
                 dest: 'build/styles/css-libs.css'
             },
             css: {

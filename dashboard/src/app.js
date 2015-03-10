@@ -7,6 +7,7 @@ angular.module( 'dashboard', [
         $urlRouterProvider.otherwise( '/' );
     } )
     .controller( 'BodyController', function($scope, $state, $stateParams, $http, $timeout, loginService) {
+
         // controller for the root scope
 
         // Expose $state and $stateParams to the <body> tag

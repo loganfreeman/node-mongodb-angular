@@ -6,7 +6,8 @@ angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user',
     /** chartjs anglar directives */
     'angles',
     /** morris angular wrapper */
-'ChartAngular'] )
+    'ChartAngular',
+'metisMenu'] )
     .config( function($stateProvider) {
         $stateProvider
             .state( 'app.admin', {
@@ -34,6 +35,10 @@ angular.module( 'dashboard.pages', ['dashboard.page', 'dashboard.user',
                 url: '/register',
                 templateUrl: 'register/register.tpl.html',
                 controller: 'registerController'
+            } )
+            .state( 'app.sidemenu', {
+                url: '/sidemenu',
+                templateUrl: 'pages/side-menu.tpl.html'
             } );
 
     } )
