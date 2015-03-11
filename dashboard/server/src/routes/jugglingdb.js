@@ -1,4 +1,4 @@
-var User = require( '../jugglingdb/user.js' ).User;
+var User = require( '../jugglingdb/init.js' )['users'];
 
 
 module.exports = function(app) {
