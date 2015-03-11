@@ -3,13 +3,22 @@ module.exports = function (app) {
 
 
     app.post('/login', function (req, res) {
+        var user = {
+            firtname: 'michael',
+            lastname: 'collins',
+            name: 'michael.collins@contactpointsolutions.com',
+            email: 'michael.collins@contactpointsolutions.com',
+            id: 1
+        };
+        req.session.user = user;
 
+        res.redirect('/dashboard');
     });
 
 
-    app.get('/logout', function(req, res){
+    app.get('/logout', function (req, res) {
         req.session = null;
-        res.redirect('/');
+        res.redirect('/dashboard');
     });
 
     app.get('/users', function (req, res) {

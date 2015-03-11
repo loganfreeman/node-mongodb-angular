@@ -24,6 +24,7 @@
     "cron": "^1.0.8",
     "ejs": "^2.3.1",
     "express": "^4.12.2",
+    "express-session": "^1.10.3",
     "express-winston": "^0.2.12",
     "jugglingdb": "^0.3.0",
     "jugglingdb-postgres": "^0.1.0",
