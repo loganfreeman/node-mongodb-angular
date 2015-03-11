@@ -10,8 +10,7 @@ angular.module( 'dashboard.pages' )
     } )
     .controller( 'homeController', function($scope) {
         //TODO: create charts here that are on home screen
-        //metisMenu init
-        $( '#side-menu' ).metisMenu();
+
 
         $scope.exampleData = {
             'title': 'Revenue',
