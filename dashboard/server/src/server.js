@@ -33,6 +33,8 @@ app.use( favicon( __dirname + '/public/images/favicon.ico' ) );
 
 app.use( '/', express.static( __dirname + '/public' ) );
 
+app.use( '/dashboard', express.static( __dirname + '../../../build' ) );
+
 //Register ejs as .html. If we did
 //not call this, we would need to
 //name our views foo.ejs instead
