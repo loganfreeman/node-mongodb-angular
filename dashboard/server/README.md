@@ -18,7 +18,7 @@ Provide code examples and explanations of how to get the project.
 
 # Restful API:
 
-```
+
 # POST **http://localhost:8080/login**
 
 > Request body: username password as form parameter
@@ -130,7 +130,7 @@ Provide code examples and explanations of how to get the project.
 
 > return the newly created environment
 
-```
+
 
 ## Tests
 
