@@ -30,11 +30,8 @@ module.exports = function (app) {
         });
     });
 
-    app.post('/users/add', function (req, res) {
-        app.models.users.create({
-            firstName: req.body.firstname,
-            lastName: req.body.lastname
-        }, function (err, model) {
+    app.put('/user', function (req, res) {
+        app.models.users.create(req.body, function (err, model) {
             if (err) return res.json({
                 err: err
             }, 500);
@@ -42,7 +39,7 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/users/edit/:id', function (req, res) {
+    app.get('/user/:id', function (req, res) {
         app.models.users.findOne({
             id: req.params.id
         }, function (err, model) {
@@ -53,7 +50,7 @@ module.exports = function (app) {
         });
     });
 
-    app.delete('/users/delete/:id', function (req, res) {
+    app.delete('/user/:id', function (req, res) {
         app.models.users.destroy({
             id: req.params.id
         }, function (err) {
@@ -66,16 +63,15 @@ module.exports = function (app) {
         });
     });
 
-    app.post('/users/edit/:id', function (req, res) {
+    app.post('/user/:id', function (req, res) {
         // Don't pass ID to update
-        delete req.body.id;
+        // delete req.body.id;
+
+        console.log("Updating user id " +req.params.id);
 
         app.models.users.update({
             id: req.params.id
-        }, {
-            firstName: req.body.firstname,
-            lastName: req.body.lastname
-        }, function (err, model) {
+        }, req.body, function (err, model) {
             if (err) return res.json({
                 err: err
             }, 500);

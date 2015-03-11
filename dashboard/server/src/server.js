@@ -68,6 +68,8 @@ app.use(logger('dev'));
 // load all routes in the routes directory
 require('./routes')(app);
 
+
+
 // winston error logging, needs to be added AFTER the router and BEFORE custom errror handlers
 app.use(expressWinston.errorLogger({
     transports: [
