@@ -1,4 +1,4 @@
-var User = require( '../bookshelf/user.js' ).User;
+var User = require( '../bookshelf/init.js').bookshelf['users'];
 module.exports = function(app) {
     app.get( '/bookshelf/users', function(req, res) {
         new User().fetchAll()

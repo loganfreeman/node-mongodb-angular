@@ -11,6 +11,8 @@ var knex = require( 'knex' )( {
 
 var bookshelf = require( 'bookshelf' )( knex );
 
+require('./schema')(bookshelf);
+
 module.exports = {
     knex: knex,
     bookshelf: bookshelf
