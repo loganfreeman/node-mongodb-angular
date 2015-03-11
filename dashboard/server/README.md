@@ -20,7 +20,7 @@ Restful API:
 
 
 
-POST http://localhost:8080/login
+POST (http://localhost:8080/login)
 
 Request body: username password as form parameter
 
