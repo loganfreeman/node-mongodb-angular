@@ -1,4 +1,6 @@
 var Waterline = require('waterline');
+
+
 // Instantiate a new instance of the ORM
 var orm = new Waterline();
 
@@ -50,45 +52,7 @@ module.exports = function (app) {
 
     };
 
-    var User = Waterline.Collection.extend({
-
-        identity: 'users',
-        tableName: 'users',
-        connection: 'myLocalPostgres',
-        migrate: 'safe',
-
-        attributes: {
-
-            firstName: {
-                type: 'string',
-                required: true
-            },
-
-            lastName: {
-                type: 'string',
-                required: true
-            },
-
-            name: {
-                type: 'string',
-                required: true
-            },
-            password: {
-                type: 'string',
-                required: true
-            },
-
-            email: {
-                type: 'string',
-                required: true
-            }
-
-        }
-    });
-
-    // Load the Models into the ORM
-    orm.loadCollection(User);
-
+    require('./schema')(orm);
     // Start Waterline passing adapters in
     orm.initialize(config, function (err, models) {
         if (err) {

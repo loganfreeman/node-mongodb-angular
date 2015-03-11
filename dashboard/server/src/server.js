@@ -102,7 +102,7 @@ if (app.get('env') === 'development') {
 
 /* istanbul ignore next */
 if (!module.parent) {
-    require('./config/waterline-init.js')(app);
+    require('./waterline/waterline-init.js')(app);
     app.listen(8081);
     console.log('Express started on port 8081');
 }
