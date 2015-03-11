@@ -25,7 +25,7 @@ Request body: username password as form parameter
 return logged in user in JSON
 
 
-GET http://localhost:8080/out
+GET http://localhost:8080/logout
 
 PUT http://locahost:8080/user
 Request body: user json
