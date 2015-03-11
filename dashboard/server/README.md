@@ -16,10 +16,8 @@ Provide code examples and explanations of how to get the project.
 
 ## API Reference
 
-# Restful API:
 
-
-# POST **http://localhost:8080/login**
+### POST **http://localhost:8080/login**
 
 > Request body: username password as form parameter
 
