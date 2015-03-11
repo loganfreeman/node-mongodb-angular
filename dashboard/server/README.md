@@ -23,6 +23,9 @@ npm install & npm start
 ```
 
 #### GET **http://localhost:8080/logout**
+```
+delete the session user, redirect the user to the home page
+```
 
 #### PUT **http://locahost:8080/user**
 ```
