@@ -18,11 +18,11 @@ Provide code examples and explanations of how to get the project.
 
 
 #### POST **http://localhost:8080/login**
-
+```
 > Request body: username password as form parameter
 
 > return logged in user in JSON
-
+```
 
 #### GET **http://localhost:8080/logout**
 
