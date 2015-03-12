@@ -4,3 +4,4 @@ bower_components
 node_modules
 npm_debug.log
 prebuilt
+dist
