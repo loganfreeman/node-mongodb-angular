@@ -2,7 +2,7 @@
 
     <ul>
 
-       <li nt-repeat="environment in environments" ng-click="environmentOnClick($index)">
+       <li ng-repeat="environment in environments" ng-click="environmentOnClick($index)">
            {{environment.name}}
        </li>
     </ul>
