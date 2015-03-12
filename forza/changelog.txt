@@ -1,0 +1,26 @@
+Changelog
+
+1.2
+----------------
+Horizontal navigation added
+Notifications updated
+Fixed bug with Daterangepicker
+Login/signup pages revised
+Grunt flow improved
+General code improvements
+IE fixes
+
+1.1
+----------------
+CSS optimization bugs removed
+Grunt flow updated
+Lazy loading added
+Progress loader added on page transitions
+Gallery updated
+Documentation updated
+Minor bugfixes
+General optimizations
+
+1.0.0
+----------------
+Initial release
