@@ -1,4 +1,4 @@
-﻿Create Table users (
+﻿Create Table IF NOT EXISTS users (
 	name varchar(40) not null,
 	firstName varchar(40) not null,
 	lastName varchar(40) not null,

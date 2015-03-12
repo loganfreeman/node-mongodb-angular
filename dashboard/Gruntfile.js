@@ -1,19 +1,19 @@
-module.exports = function(grunt) {
-    grunt.loadNpmTasks( 'grunt-html2js' );
-    grunt.loadNpmTasks( 'grunt-contrib-less' );
-    grunt.loadNpmTasks( 'grunt-contrib-connect' );
-    grunt.loadNpmTasks( 'grunt-contrib-watch' );
-    grunt.loadNpmTasks( 'grunt-contrib-concat' );
-    grunt.loadNpmTasks( 'grunt-concat-sourcemap' );
-    grunt.loadNpmTasks( 'grunt-contrib-copy' );
-    grunt.loadNpmTasks( 'grunt-contrib-clean' );
-    grunt.loadNpmTasks( 'grunt-karma' );
-    grunt.loadNpmTasks( 'grunt-autoprefixer' );
-    grunt.loadNpmTasks( 'grunt-contrib-imagemin' );
+module.exports = function (grunt) {
+    grunt.loadNpmTasks('grunt-html2js');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-concat-sourcemap');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-autoprefixer');
+    grunt.loadNpmTasks('grunt-contrib-imagemin');
 
 
-    grunt.initConfig( {
-        pkg: grunt.file.readJSON( 'package.json' ),
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
         html2js: {
             /**
              * These are the templates from `src/app`.
@@ -136,7 +136,7 @@ module.exports = function(grunt) {
                     'libs/angular-aside/dist/css/angular-aside.min.css',
                     'libs/nvd3/build/nv.d3.css',
                     'js/vendor/morris.css',
-                'libs/metisMenu/dist/metisMenu.css'],
+                    'libs/metisMenu/dist/metisMenu.css'],
                 dest: 'build/styles/css-libs.css'
             },
             css: {
@@ -145,24 +145,68 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-            index: {
-                src: 'index.html',
-                dest: 'build/',
-                options: {
-                    processContent: function(content, srcpath) {
-                        // Compiling index.html file!
-                        var packageVersion = require( './package.json' ).version;
-                        return grunt.template.process( content, {
-                            data: {
-                                version: packageVersion
-                            }
-                        } );
-                    }
-                }
+            fonts: {
+                cwd: 'libs/font-awesome/fonts/',
+                expand: true,
+                src: ['*'],
+                dest: 'build/fonts/'
+            },
+            glyphicons: {
+                cwd: 'libs/bootstrap/fonts/',
+                expand: true,
+                src: ['*'],
+                dest: 'build/fonts/'
+            },
+            html: {
+                src: ['index.html','dashboard.html'],
+                dest: 'build/'
+
             },
             images: {
                 src: ['images/*.{png,jpg,gif}'],
                 dest: 'build/'
+            },
+            css: {
+                expand: true,
+                cwd: 'libs/',
+                src: ['bootstrap/dist/css/bootstrap.min.css',
+                    'jasny-bootstrap/dist/css/jasny-bootstrap.min.css',
+                    'angular-aside/dist/css/angular-aside.min.css',
+                    'nvd3/build/nv.d3.css',
+                    'morrisjs/morris.css',
+                    'metisMenu/dist/metisMenu.css'],
+                flatten: true,
+                dest: 'build/vendor/css/'
+            },
+            customcss: {
+                src: ['styles/*.css'],
+                expand: true,
+                flatten: true,
+                dest: 'build/styles/'
+            },
+            js: {
+                expand: true,
+                cwd: 'libs/',
+                src: ['angular/angular.js',
+                    'angular-animate/angular-animate.js',
+                    'angular-mocks/angular-mocks.js',
+                    'angular-ui-router/release/angular-ui-router.js',
+                    'skel/dist/skel.min.js',
+                    'jquery/dist/jquery.min.js',
+                    'jquery/dist/jquery.min.map',
+                    'bootstrap/dist/js/bootstrap.min.js',
+                    'jasny-bootstrap/dist/js/jasny-bootstrap.min.js',
+                    'angular-aside/dist/js/angular-aside.min.js',
+                    'd3/d3.js',
+                    'nvd3/build/nv.d3.js',
+                    'angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
+                    'chartjs/chart.js',
+                    'angles/angles.js',
+                    'raphael/raphael.js',
+                    'vendor/morris.js',
+                    'metisMenu/dist/metisMenu.js'],
+                flatten: true,
+                dest: 'build/vendor/js/'
             }
         },
         clean: {
@@ -177,11 +221,11 @@ module.exports = function(grunt) {
                 singleRun: true
             }
         }
-    } );
+    });
 
-    grunt.event.on( 'watch', function(action, filepath, target) {
-        grunt.log.writeln( target + ': ' + filepath + ' has ' + action );
-    } );
+    grunt.event.on('watch', function (action, filepath, target) {
+        grunt.log.writeln(target + ': ' + filepath + ' has ' + action);
+    });
 
     // Build process:
     // - clean build/
@@ -190,7 +234,7 @@ module.exports = function(grunt) {
     // - concatenates all the source files in build/app.js - banner with git revision
     // - concatenates all the libraries in build/libs.js
     // - copies index.html over build/
-    grunt.registerTask( 'build', ['clean', 'html2js', 'less', 'concat_sourcemap', 'concat', 'copy'] );
-    grunt.registerTask( 'default', ['build', 'connect', 'watch'] );
-    grunt.registerTask( 'test', ['karma'] );
+    grunt.registerTask('build', ['clean', 'html2js', 'less', 'concat_sourcemap', 'concat', 'copy']);
+    grunt.registerTask('default', ['build', 'connect', 'watch']);
+    grunt.registerTask('test', ['karma']);
 };
