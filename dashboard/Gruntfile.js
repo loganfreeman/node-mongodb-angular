@@ -1,19 +1,19 @@
-module.exports = function (grunt) {
-    grunt.loadNpmTasks('grunt-html2js');
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-concat-sourcemap');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-autoprefixer');
-    grunt.loadNpmTasks('grunt-contrib-imagemin');
+module.exports = function(grunt) {
+    grunt.loadNpmTasks( 'grunt-html2js' );
+    grunt.loadNpmTasks( 'grunt-contrib-less' );
+    grunt.loadNpmTasks( 'grunt-contrib-connect' );
+    grunt.loadNpmTasks( 'grunt-contrib-watch' );
+    grunt.loadNpmTasks( 'grunt-contrib-concat' );
+    grunt.loadNpmTasks( 'grunt-concat-sourcemap' );
+    grunt.loadNpmTasks( 'grunt-contrib-copy' );
+    grunt.loadNpmTasks( 'grunt-contrib-clean' );
+    grunt.loadNpmTasks( 'grunt-karma' );
+    grunt.loadNpmTasks( 'grunt-autoprefixer' );
+    grunt.loadNpmTasks( 'grunt-contrib-imagemin' );
 
 
-    grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
+    grunt.initConfig( {
+        pkg: grunt.file.readJSON( 'package.json' ),
         html2js: {
             /**
              * These are the templates from `src/app`.
@@ -51,21 +51,27 @@ module.exports = function (grunt) {
                 }
             }
         },
+        // The actual grunt server settings
+        // The actual grunt server settings
         connect: {
-            serve: {
+            options: {
+                port: 9000,
+                // Change this to '0.0.0.0' to access the server from outside.
+                hostname: 'localhost',
+                livereload: 35729
+            },
+            // courtesy of Phubase Tiewthanom
+            livereload: {
                 options: {
-                    port: 8080,
-                    base: 'build/',
-                    hostname: '*',
-                    debug: true,
-                    keepalive: true
+                    middleware: function(connect) {
+                        return [
+                            connect.static( 'build' )
+                        ];
+                    }
                 }
             }
         },
         watch: {
-            options: {
-                atBegin: true
-            },
             templates: {
                 files: ['src/**/*.tpl.html'],
                 tasks: ['html2js']
@@ -79,8 +85,8 @@ module.exports = function (grunt) {
                 tasks: ['concat_sourcemap:app']
             },
             index: {
-                files: 'index.html',
-                tasks: ['copy:index']
+                files: ['*.html'],
+                tasks: ['copy:html']
             },
             css: {
                 files: ['styles/*.css'],
@@ -97,6 +103,12 @@ module.exports = function (grunt) {
                 options: {
                     spawn: false,
                 }
+            },
+            livereload: {
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                },
+                files: ['*.html']
             }
         },
         concat_sourcemap: {
@@ -136,7 +148,7 @@ module.exports = function (grunt) {
                     'libs/angular-aside/dist/css/angular-aside.min.css',
                     'libs/nvd3/build/nv.d3.css',
                     'js/vendor/morris.css',
-                    'libs/metisMenu/dist/metisMenu.css'],
+                'libs/metisMenu/dist/metisMenu.css'],
                 dest: 'build/styles/css-libs.css'
             },
             css: {
@@ -158,7 +170,7 @@ module.exports = function (grunt) {
                 dest: 'build/fonts/'
             },
             html: {
-                src: ['index.html','dashboard.html'],
+                src: ['index.html', 'dashboard.html'],
                 dest: 'build/'
 
             },
@@ -174,7 +186,7 @@ module.exports = function (grunt) {
                     'angular-aside/dist/css/angular-aside.min.css',
                     'nvd3/build/nv.d3.css',
                     'morrisjs/morris.css',
-                    'metisMenu/dist/metisMenu.css'],
+                'metisMenu/dist/metisMenu.css'],
                 flatten: true,
                 dest: 'build/vendor/css/'
             },
@@ -204,7 +216,7 @@ module.exports = function (grunt) {
                     'angles/angles.js',
                     'raphael/raphael.js',
                     'vendor/morris.js',
-                    'metisMenu/dist/metisMenu.js'],
+                'metisMenu/dist/metisMenu.js'],
                 flatten: true,
                 dest: 'build/vendor/js/'
             }
@@ -221,11 +233,11 @@ module.exports = function (grunt) {
                 singleRun: true
             }
         }
-    });
+    } );
 
-    grunt.event.on('watch', function (action, filepath, target) {
-        grunt.log.writeln(target + ': ' + filepath + ' has ' + action);
-    });
+    grunt.event.on( 'watch', function(action, filepath, target) {
+        grunt.log.writeln( target + ': ' + filepath + ' has ' + action );
+    } );
 
     // Build process:
     // - clean build/
@@ -234,7 +246,7 @@ module.exports = function (grunt) {
     // - concatenates all the source files in build/app.js - banner with git revision
     // - concatenates all the libraries in build/libs.js
     // - copies index.html over build/
-    grunt.registerTask('build', ['clean', 'html2js', 'less', 'concat_sourcemap', 'concat', 'copy']);
-    grunt.registerTask('default', ['build', 'connect', 'watch']);
-    grunt.registerTask('test', ['karma']);
+    grunt.registerTask( 'build', ['clean', 'html2js', 'less', 'concat_sourcemap', 'concat', 'copy'] );
+    grunt.registerTask( 'default', ['build', 'connect:livereload', 'watch'] );
+    grunt.registerTask( 'test', ['karma'] );
 };

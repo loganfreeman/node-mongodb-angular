@@ -1,0 +1,11 @@
+<div ng-controller='DevopsController'>
+
+    <ul>
+
+       <li nt-repeat="environment in environments" ng-click="environmentOnClick($index)">
+           {{environment.name}}
+       </li>
+    </ul>
+
+
+</div>

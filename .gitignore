@@ -3,3 +3,5 @@ results.txt
 docs
 out
 .settings
+
+npm-debug.log

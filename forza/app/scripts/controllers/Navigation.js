@@ -14,6 +14,11 @@ angular
             iconClasses:"fa fa-th-large",
             children: [
                 {
+                    label: 'Devops Dashboard',
+                    iconClasses: 'fa fa-th-large',
+                    url: '#/devops'
+                },
+                {
                     label:"Tasks",
                     iconClasses:"fa fa-tasks",
                     url:"#/tasks"
