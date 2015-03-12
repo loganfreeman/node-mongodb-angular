@@ -40,9 +40,9 @@ app.use( favicon( __dirname + '/public/images/favicon.ico' ) );
 
 app.use( '/', express.static( __dirname + '/public' ) );
 
-app.use( '/dashboard', express.static( __dirname + '../../../build' ) );
+app.use( '/dashboard', express.static( __dirname + '../../../dashboard/build' ) );
 
-app.use( '/forza', express.static( __dirname + '../../../../forza/dist' ) );
+app.use( '/forza', express.static( __dirname + '../../../forza/dist' ) );
 
 
 //Register ejs as .html. If we did
