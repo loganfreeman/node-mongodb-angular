@@ -1,11 +1,20 @@
-<div ng-controller='DevopsController'>
+<div class="container-fluid">
 
-    <ul>
+    <div class="row">
+        <div class="col-md-12">
 
-       <li ng-repeat="environment in environments" ng-click="environmentOnClick($index)">
-           {{environment.name}}
-       </li>
-    </ul>
+            <div ng-controller='DevopsController'>
 
+                <tabset panel-tabs="true" panel-class="panel-midnightblue">
+
+                    <tab ng-repeat="environment in environments" heading="{{environment.name}}"></tab>
+                </tabset>
+
+
+            </div>
+
+
+        </div>
+    </div>
 
 </div>
