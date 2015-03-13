@@ -43,7 +43,28 @@ angular.module('devops', [])
         }, {
             name: 'Stack 3',
             description: chance.paragraph(),
-            active: true
+            active: true,
+            groups: [{
+                    title: 'Instance ' + chance.name(),
+                    content: chance.paragraph()
+                },
+                {
+                    title: 'Instance ' + chance.name(),
+                    content: chance.paragraph(),
+                    isOpen: true
+                },
+                {
+                    title: 'Instance ' + chance.name(),
+                    content: chance.paragraph()
+                },
+                {
+                    title: 'Instance ' + chance.name(),
+                    content: chance.paragraph()
+                },
+                {
+                    title: 'Instance ' + chance.name(),
+                    content: chance.paragraph()
+                }]
         }];
         $scope.environments = [{
             name: 'Production',

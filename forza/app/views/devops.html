@@ -14,7 +14,14 @@
 
                             <tab ng-repeat="stack in environment.stacks" active="stack.active" disabled="stack.disabled">
                                 <tab-heading><i class="glyphicon tab-heading-icon" ng-class="applyIconClass(stack)"></i>{{stack.name}}</tab-heading>
-                                {{stack.description}}
+                                <p>{{stack.description}}</p>
+                                <accordion close-others="oneAtATime" class="panel-danger">
+
+                                    <accordion-group heading="{{group.title}}" ng-repeat="group in stack.groups" is-open="group.isOpen">
+                                        {{group.content}}
+                                    </accordion-group>
+
+                                </accordion>
                             </tab>
                         </tabset>
 
