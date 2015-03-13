@@ -11,7 +11,8 @@ angular.module('devops', [])
         }, {
             name: 'Development'
         }, {
-            name: 'Stage'
+            name: 'Stage',
+            active: true
         }];
 
         $scope.environmentOnClick = function ($index) {
