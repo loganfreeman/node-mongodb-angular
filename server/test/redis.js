@@ -1,6 +1,8 @@
 var expect = require( 'chai' ).expect,
     should = require( 'chai' ).should();
 
+var redisHook = require( '../src/config/redis.js' );
+
 describe( 'redis', function() {
     describe( '#pwd', function() {
         it( 'should not return error', function() {
@@ -19,6 +21,17 @@ describe( 'redis', function() {
                 }
             } );
         } );
+
+
+        it( 'should return no error from redis hook', function(done) {
+            var cb = function() {
+                done();
+            };
+
+            redisHook( cb );
+        } );
+
+
 
         it( 'should return pong', function() {
             var sys = require( 'sys' );

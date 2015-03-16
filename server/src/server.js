@@ -4,6 +4,8 @@
  * @module
  */
 
+var config = require( './config/config.js' );
+
 var express = require( 'express' );
 
 var app = express();
@@ -106,9 +108,15 @@ if (app.get( 'env' ) === 'development') {
     } );
 }
 
+
+function initWaterline() {
+    require( './waterline/waterline-init.js' )( app );
+    var port = config.getPort();
+    app.listen( port );
+    console.log( 'Express started on port ' + port );
+}
+
 /* istanbul ignore next */
 if (!module.parent) {
-    require( './waterline/waterline-init.js' )( app );
-    app.listen( 8081 );
-    console.log( 'Express started on port 8081' );
+    initWaterline();
 }
