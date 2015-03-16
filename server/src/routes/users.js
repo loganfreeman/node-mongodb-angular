@@ -26,6 +26,21 @@ module.exports = function(app) {
     } );
 
 
+    app.get( '/user/group/:userid', function(req, res) {
+        var userid = req.params.userid;
+        console.log( userid );
+        app.models.user_group.find( {
+            user_id: userid
+        }, function(err, models) {
+                if (err) {
+                    res.status( 500 ).send( err );
+                } else {
+                    res.json( models );
+                }
+            } );
+    } );
+
+
     app.get( '/logout', function(req, res) {
         req.session = null;
         res.redirect( '/dashboard/' );

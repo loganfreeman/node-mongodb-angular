@@ -1,11 +1,12 @@
-var Waterline = require('waterline');
+var Waterline = require( 'waterline' );
 
-module.exports = function (orm) {
-    var Group = Waterline.Collection.extend({
+module.exports = function(orm) {
+    var Group = Waterline.Collection.extend( {
 
         identity: 'groups',
         tableName: 'groups',
         connection: 'myLocalPostgres',
+        migrate: 'safe',
 
         attributes: {
 
@@ -20,8 +21,8 @@ module.exports = function (orm) {
             }
 
         }
-    });
+    } );
 
     // Load the Models into the ORM
-    orm.loadCollection(Group);
-}
+    orm.loadCollection( Group );
+};
