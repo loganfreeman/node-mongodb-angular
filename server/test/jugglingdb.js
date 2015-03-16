@@ -6,10 +6,24 @@ var expect = require( 'chai' ).expect,
 
 
 describe( 'jugglingdb', function() {
+
     describe( '#init', function() {
         it( 'should initilize db', function() {
 
             db.should.have.property( 'users' );
+        } );
+
+    } );
+
+
+    describe( '#users', function() {
+        db['users'].all( function(err, results) {
+            if (err) {
+                done( err );
+            } else {
+                console.log( results );
+                done();
+            }
         } );
     } );
 } );
