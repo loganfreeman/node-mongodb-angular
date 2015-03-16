@@ -6,6 +6,9 @@ module.exports = {
     },
     debug: true,
     sessionStore: 'redis',
+    redis: {
+
+    },
     server: {
         port: 8081,
         host: 'localhost'

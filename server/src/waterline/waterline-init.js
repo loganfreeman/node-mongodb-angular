@@ -1,15 +1,15 @@
-var Waterline = require('waterline');
+var Waterline = require( 'waterline' );
 
 
 // Instantiate a new instance of the ORM
 var orm = new Waterline();
 
-module.exports = function (app) {
+module.exports = function(app, callback) {
     // TODO: initilize waterline
     // Require any waterline compatible adapters here
-    var diskAdapter = require('sails-disk'),
-        mysqlAdapter = require('sails-mysql'),
-        myLocalPostgres = require('sails-postgresql');
+    var diskAdapter = require( 'sails-disk' ),
+        mysqlAdapter = require( 'sails-mysql' ),
+        myLocalPostgres = require( 'sails-postgresql' );
     // Build A Config Object
     var config = {
 
@@ -52,17 +52,22 @@ module.exports = function (app) {
 
     };
 
-    require('./schema')(orm);
+    require( './schema' )( orm );
     // Start Waterline passing adapters in
-    orm.initialize(config, function (err, models) {
+    orm.initialize( config, function(err, models) {
         if (err) {
-            console.log(err);
+            console.log( err );
             throw err;
         }
+
+        // console.log( models.collections );
 
         app.models = models.collections;
         app.connections = models.connections;
 
-        console.log('waterline initilized');
-    });
+        console.log( 'waterline initilized' );
+        if (callback && typeof (callback) === 'function') {
+            callback( models.collections );
+        }
+    } );
 };

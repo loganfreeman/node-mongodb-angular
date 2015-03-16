@@ -25,10 +25,26 @@ var winston = require( 'winston' ),
 
 var methodOverride = require( 'method-override' );
 
-// cookie session
-app.use( session( {
-    secret: 'sessionsecret'
-} ) );
+
+
+switch (config.sessionStore) {
+    case 'redis':
+        var RedisStore = require( 'connect-redis' )( session );
+
+        app.use( session( {
+            store: new RedisStore( config.redis ),
+            secret: 'sessionsecret'
+        } ) );
+        console.log( 'Using redis session store' );
+        break;
+    default:
+        // cookie session
+        app.use( session( {
+            secret: 'sessionsecret'
+        } ) );
+        console.log( 'Using cookie session store' );
+        break;
+}
 
 app.use( bodyParser.urlencoded( {
     extended: true
