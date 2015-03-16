@@ -1,8 +1,10 @@
 var db = require( '../jugglingdb/init.js' );
 
+var Promise = require( 'bluebird' );
+
 module.exports = {
     getUserById: function(id) {
-        db['users'].find( id, function(err, model) {} );
+        return db['users'].find( id );
     },
 
     getUserByEmail: function(email) {},

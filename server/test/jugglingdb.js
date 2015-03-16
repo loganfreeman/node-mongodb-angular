@@ -16,12 +16,24 @@ describe( 'jugglingdb', function() {
     } );
 
 
-    describe( '#users', function() {
+    describe( '#users', function(done) {
         db['users'].all( function(err, results) {
             if (err) {
                 done( err );
             } else {
                 console.log( results );
+                done();
+            }
+        } );
+    } );
+
+
+    describe( '#getUserById', function(done) {
+        db['users'].find( 2, function(err, user) {
+            if (err) {
+                done( err );
+            } else {
+                console.log( 'getUserById:' + JSON.stringify( user ) );
                 done();
             }
         } );
