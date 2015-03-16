@@ -28,7 +28,6 @@ module.exports = function(app) {
 
     app.get( '/user/group/:userid', function(req, res) {
         var userid = req.params.userid;
-        console.log( userid );
         app.models.user_group.find( {
             user_id: userid
         }, function(err, models) {
