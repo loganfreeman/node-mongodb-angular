@@ -1,5 +1,9 @@
+var db = require( '../jugglingdb/init.js' );
+
 module.exports = {
-    getUserById: function(id) {},
+    getUserById: function(id) {
+        db['users'].find( id, function(err, model) {} );
+    },
 
     getUserByEmail: function(email) {},
 
