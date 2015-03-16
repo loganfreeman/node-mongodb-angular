@@ -4,7 +4,17 @@ var Promise = require( 'bluebird' );
 
 module.exports = {
     getUserById: function(id) {
-        return db['users'].find( id );
+
+
+        return new Promise( function(resolve, reject) {
+                db['users'].find( id, function(err, user) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( user );
+                    }
+                } );
+            } );
     },
 
     getUserByEmail: function(email) {},
