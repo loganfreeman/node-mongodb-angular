@@ -1,17 +1,20 @@
+
+var connection = require( '../config/database.js' ).getAuthen();
+
 var knex = require( 'knex' )( {
     client: 'pg',
     connection: {
         host: 'localhost',
-        user: 'michael',
-        password: 'root',
-        database: 'todo'
+        user: connection.username,
+        password: connection.password,
+        database: connection.database
     }
 } );
 
 
 var bookshelf = require( 'bookshelf' )( knex );
 
-require('./schema')(bookshelf);
+require( './schema' )( bookshelf );
 
 module.exports = {
     knex: knex,
