@@ -95,5 +95,18 @@ module.exports = {
             } );
     },
 
+
+    destroy: function(user) {
+        return new Promise( function(resolve, reject) {
+                user.destroy( function(err, model) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( model );
+                    }
+                } );
+            } );
+    },
+
     update: function(user) {}
 };

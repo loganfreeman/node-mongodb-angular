@@ -106,5 +106,31 @@ describe( 'userController', function() {
                     } );
         } );
 
+
+        it( 'should destroy model', function(done) {
+            var user = {
+                firstName: 'test',
+                lastName: 'test',
+                name: 'test.test',
+                email: 'test@contactpointsolutions.com',
+                password: 'pass22'
+            };
+            controller.create( user )
+                .then( function(user) {
+                    user.email.should.be.eq( 'test@contactpointsolutions.com' );
+                    controller.destroy( user ).
+                        then( function(model) {
+                            user.email.should.be.eq( 'test@contactpointsolutions.com' );
+                            done();
+                        }, function(err) {
+                                done( err );
+                            } );
+                }, function(err) {
+
+
+                        done( err );
+                    } );
+        } );
+
     } );
 } );
