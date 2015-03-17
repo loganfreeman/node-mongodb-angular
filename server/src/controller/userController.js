@@ -2,6 +2,10 @@ var db = require( '../jugglingdb/init.js' );
 
 var Promise = require( 'bluebird' );
 
+var bcrypt = require( 'bcrypt' );
+
+var _ = require( 'lodash' );
+
 module.exports = {
     getUserById: function(id) {
 
@@ -55,17 +59,20 @@ module.exports = {
         return new Promise( function(resolve, reject) {
                 var params = {};
                 params.where = {
-                    name: username,
-                    password: password
+                    name: username
                 };
                 db['users'].all( params, function(err, users) {
                     if (err) {
                         reject( err );
                     } else {
-                        if (users.length == 1) {
-                            resolve( users[0] );
+                        var matches = _.filter( users, function(user) {
+                            return bcrypt.compareSync( password, user.password );
+                        } );
+
+                        if (matches.length == 1) {
+                            resolve( matches[0] );
                         } else {
-                            reject( 'Found too many users with the email: ' + email );
+                            reject( 'Couldn\'t find the matching user in database' );
                         }
                     }
                 } );

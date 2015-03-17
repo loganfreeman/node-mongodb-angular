@@ -45,10 +45,10 @@ describe( 'userController', function() {
         } );
 
         it( 'should login', function(done) {
-            controller.login( 'scheng', 'test' ).
+            controller.login( 'scheng', '@33yyy' ).
                 then( function(user) {
                     user.name.should.be.eq( 'scheng' );
-                    user.password.should.be.eq( 'test' );
+                    user.password.should.be.eq( '$2a$10$eczSQhaHISNuoKsH080P4.SJe0VoY1ucybcSiW/Ny.2FPD2zHfYyO' );
                     done();
                 }, function(err) {
                         done( err );
