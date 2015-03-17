@@ -122,5 +122,18 @@ module.exports = {
                     }
                 } );
             } );
+    },
+
+    update: function(user, attrs) {
+        return new Promise( function(resolve, reject) {
+
+                user.updateAttributes( attrs, function(err, model) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( model );
+                    }
+                } );
+            } );
     }
 };

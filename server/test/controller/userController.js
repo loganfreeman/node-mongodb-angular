@@ -155,5 +155,29 @@ describe( 'userController', function() {
 
         } );
 
+
+        it( 'should update attributes', function(done) {
+            var user = new db['users'];
+            user.id = 4;
+            var attrs = {
+                email: 'jelly-bean@example.com',
+                name: 'jelly bean',
+                firstName: 'jelly',
+                lastName: 'beam',
+                password: '$2a$10$PHEh7P0EtzeVmlFFO50YruUGqMXhQv.VqptuGp/YsB06y3bQtMNl2'
+            };
+            controller.update(user, attrs)
+                .then( function(user) {
+                    user.should.be.instanceof( db['users'] );
+                    user.email.should.be.eq( 'jelly-bean@example.com' );
+                    user.name.should.be.eq( 'jelly bean' );
+                    user.password.should.be.eq( '$2a$10$PHEh7P0EtzeVmlFFO50YruUGqMXhQv.VqptuGp/YsB06y3bQtMNl2' );
+                    done();
+                }, function(err) {
+                        done( err );
+                    } );
+
+        } );
+
     } );
 } );
