@@ -54,5 +54,57 @@ describe( 'userController', function() {
                         done( err );
                     } );
         } );
+
+
+        it( 'should login for another user', function(done) {
+            controller.login( 'ccastillo', 'hell$66' ).
+                then( function(user) {
+                    user.name.should.be.eq( 'ccastillo' );
+                    user.email.should.be.eq( 'ccastillo@contactpointsolutions.com' );
+                    done();
+                }, function(err) {
+                        done( err );
+                    } );
+        } );
+
+        it( 'should throw a duplicate key exception', function(done) {
+            var user = {
+                firstName: 'jelly',
+                lastName: 'bean',
+                name: 'jelly.bean',
+                email: 'jelly.bean@contactpointsolutions.com',
+                password: 'pass22'
+            };
+            controller.create( user )
+                .then( function(user) {
+                    done( 'should not create user with duplicate email' );
+                }, function(err) {
+                        /*
+
+{ [error: duplicate key value violates unique constraint "users_lower_idx"]
+  name: 'error',
+  length: 228,
+  severity: 'ERROR',
+  code: '23505',
+  detail: 'Key (lower(email))=(jelly.bean@contactpointsolutions.com) already exists.',
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  file: 'nbtinsert.c',
+  line: '406',
+  routine: '_bt_check_unique' }
+
+                        */
+                        err.should.be.instanceof( Object );
+                        console.log( err );
+                        err.should.have.property( 'code' );
+                        err.code.should.be.eq( '23505' );
+                        err.detail.should.match( /Key .* already exists/ );
+                        done();
+                    } );
+        } );
+
     } );
 } );

@@ -80,7 +80,20 @@ module.exports = {
     },
 
 
-    create: function(user) {},
+    create: function(user) {
+        var salt = bcrypt.genSaltSync( 10 );
+        var hash = bcrypt.hashSync( user.password, salt );
+        user.password = hash;
+        return new Promise( function(resolve, reject) {
+                db['users'].create( user, function(err, model) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( model );
+                    }
+                } );
+            } );
+    },
 
     update: function(user) {}
 };
