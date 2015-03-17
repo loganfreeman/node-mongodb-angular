@@ -34,4 +34,41 @@ describe( 'groups', function() {
                     done( err );
                 } );
     } );
+
+    it( 'should return groups by groups id array', function(done) {
+        controller.getGroupList( [1, 2] )
+            .then( function(groups) {
+                groups.should.be.instanceof( Array );
+                var test = _.every( groups, function(group) {
+                    return group instanceof db['groups'];
+                } );
+                test.should.be.eq( true );
+                done();
+            }, function(err) {
+                    done( err );
+                } );
+    } );
+
+
+    it( 'should return groups by groups id array', function(done) {
+        controller.getGroupList( [2] )
+            .then( function(groups) {
+                groups.should.be.instanceof( Array );
+
+                groups.length.should.be.eq( 1 );
+
+                groups[0].name.should.be.eq( 'stage' );
+                var test = _.every( groups, function(group) {
+                    return group instanceof db['groups'];
+                } );
+                test.should.be.eq( true );
+
+
+                done();
+            }, function(err) {
+                    done( err );
+                } );
+    } );
+
+
 } );

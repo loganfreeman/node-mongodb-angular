@@ -39,5 +39,20 @@ module.exports = {
     },
 
 
+    getGroupList: function(ids) {
+        return new Promise( function(resolve, reject) {
+                db['groups'].all( function(err, models) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( _.filter( models, function(model) {
+                            return _.includes( ids, model.id );
+                        } ) );
+                    }
+                } );
+            } );
+    },
+
+
     create: function(group) {}
 };
