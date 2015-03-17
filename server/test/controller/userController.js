@@ -135,5 +135,25 @@ describe( 'userController', function() {
                     } );
         } );
 
+        it( 'should update model', function(done) {
+            var user = new db['users'];
+            user.id = 2;
+            user.firstName = 'Jackie';
+            user.lastName = 'Chen';
+            user.name = 'scheng';
+            user.email = 'scheng@contactpointsolutions.com';
+            user.password = '$2a$10$eczSQhaHISNuoKsH080P4.SJe0VoY1ucybcSiW/Ny.2FPD2zHfYyO';
+            controller.save(user)
+                .then( function(user) {
+                    user.should.be.instanceof( db['users'] );
+                    user.firstName.should.be.eq( 'Jackie' );
+                    user.lastName.should.be.eq( 'Chen' );
+                    done();
+                }, function(err) {
+                        done( err );
+                    } );
+
+        } );
+
     } );
 } );

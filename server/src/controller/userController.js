@@ -108,5 +108,19 @@ module.exports = {
             } );
     },
 
-    update: function(user) {}
+    save: function(user) {
+        return new Promise( function(resolve, reject) {
+                var options = {
+                    validate: true,
+                    throws: true
+                };
+                user.save( options, function(err, model) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( model );
+                    }
+                } );
+            } );
+    }
 };
