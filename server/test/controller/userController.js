@@ -1,5 +1,7 @@
 var controller = require( '../../src/controller/userController.js' );
 
+var db = require( '../../src/jugglingdb/init.js' );
+
 var expect = require( 'chai' ).expect,
     should = require( 'chai' ).should();
 
@@ -118,6 +120,7 @@ describe( 'userController', function() {
             controller.create( user )
                 .then( function(user) {
                     user.email.should.be.eq( 'test@contactpointsolutions.com' );
+                    user.should.be.instanceof( db['users'] );
                     controller.destroy( user ).
                         then( function(model) {
                             user.email.should.be.eq( 'test@contactpointsolutions.com' );
