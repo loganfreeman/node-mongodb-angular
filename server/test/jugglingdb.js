@@ -16,26 +16,47 @@ describe( 'jugglingdb', function() {
     } );
 
 
-    describe( '#users', function(done) {
-        db['users'].all( function(err, results) {
-            if (err) {
-                done( err );
-            } else {
-                console.log( results );
-                done();
-            }
+    describe( '#users', function() {
+        it( 'should get users in db', function(done) {
+            db['users'].all( function(err, results) {
+                if (err) {
+                    done( err );
+                } else {
+                    console.log( results );
+                    done();
+                }
+            } );
         } );
     } );
 
 
-    describe( '#getUserById', function(done) {
-        db['users'].find( 2, function(err, user) {
-            if (err) {
-                done( err );
-            } else {
-                console.log( 'getUserById:' + JSON.stringify( user ) );
-                done();
-            }
+    describe( '#getUserById', function() {
+        it( 'should get user by id in db', function(done) {
+            db['users'].find( 2, function(err, user) {
+                if (err) {
+                    done( err );
+                } else {
+                    console.log( 'getUserById:' + JSON.stringify( user ) );
+                    done();
+                }
+            } );
+        } );
+    } );
+
+    describe( '#getUserByEmail', function() {
+        it( 'should get user by email in db', function(done) {
+            db['users'].all( {
+                where: {
+                    email: 'scheng@contactpointsolutions.com'
+                }
+            }, function(err, user) {
+                    if (err) {
+                        done( err );
+                    } else {
+                        console.log( 'getUserByEmail:' + JSON.stringify( user ) );
+                        done();
+                    }
+                } );
         } );
     } );
 } );

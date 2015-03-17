@@ -17,13 +17,60 @@ module.exports = {
             } );
     },
 
-    getUserByEmail: function(email) {},
+    getUserByEmail: function(email) {
+        return new Promise( function(resolve, reject) {
+                var params = {};
+                params.where = {
+                    email: email
+                };
+                db['users'].all( params, function(err, users) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        if (users.length == 1) {
+                            resolve( users[0] );
+                        } else {
+                            reject( 'Found too many users with the email: ' + email );
+                        }
+                    }
+                } );
+            } );
+    },
 
 
-    getUsers: function() {},
+    getUsers: function() {
+        return new Promise( function(resolve, reject) {
+                db['users'].all( function(err, users) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( users );
+                    }
+                } );
+            } );
+    },
 
 
-    login: function(username, password) {},
+    login: function(username, password) {
+        return new Promise( function(resolve, reject) {
+                var params = {};
+                params.where = {
+                    name: username,
+                    password: password
+                };
+                db['users'].all( params, function(err, users) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        if (users.length == 1) {
+                            resolve( users[0] );
+                        } else {
+                            reject( 'Found too many users with the email: ' + email );
+                        }
+                    }
+                } );
+            } );
+    },
 
 
     create: function(user) {},

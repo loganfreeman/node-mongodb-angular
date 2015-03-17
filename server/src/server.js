@@ -125,8 +125,8 @@ if (app.get( 'env' ) === 'development') {
 }
 
 
-function initWaterline() {
-    require( './waterline/waterline-init.js' )( app );
+function start() {
+    // require( './waterline/waterline-init.js' )( app );
     var port = config.getPort();
     app.listen( port );
     console.log( 'Express started on port ' + port );
@@ -134,5 +134,5 @@ function initWaterline() {
 
 /* istanbul ignore next */
 if (!module.parent) {
-    initWaterline();
+    start();
 }
