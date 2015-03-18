@@ -34,7 +34,7 @@ module.exports = {
                         if (users.length == 1) {
                             resolve( users[0] );
                         } else {
-                            reject( 'Found too many users with the email: ' + email );
+                            reject( Error( 'Found too many users with the email: ' + email ) );
                         }
                     }
                 } );
@@ -72,7 +72,7 @@ module.exports = {
                         if (matches.length == 1) {
                             resolve( matches[0] );
                         } else {
-                            reject( 'Couldn\'t find the matching user in database' );
+                            reject( Error( 'Couldn\'t find the matching user in database' ) );
                         }
                     }
                 } );
