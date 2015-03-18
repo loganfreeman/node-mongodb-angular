@@ -79,15 +79,28 @@ module.exports = {
 
 
     getUsers: function() {
+        var self = this;
         return new Promise( function(resolve, reject) {
                 db['users'].all( function(err, users) {
                     if (err) {
                         reject( err );
                     } else {
-                        resolve( users );
+                        Promise.resolve( users )
+                            .map( function(user) {
+                                return self.attachGroup( user );
+                            } )
+                            .then( function(promises) {
+                                Promise.all( promises )
+                                    .then( function(users) {
+                                        resolve( users );
+                                    } );
+                            } );
                     }
                 } );
             } );
+
+
+
     },
 
 

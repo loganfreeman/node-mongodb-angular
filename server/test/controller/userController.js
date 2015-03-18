@@ -44,10 +44,16 @@ describe( 'userController', function() {
             controller.getUsers().
                 then( function(users) {
                     users.should.be.instanceof( Array );
-                    users[0].should.have.property( 'email' );
-                    users[0].should.have.property( 'firstName' );
-                    users[0].should.have.property( 'lastName' );
-                    users[0].should.have.property( 'name' );
+
+                    _.each( users, function(user) {
+                        user.should.be.instanceof( db['users'] );
+                        user.should.have.property( 'email' );
+                        user.should.have.property( 'firstName' );
+                        user.should.have.property( 'lastName' );
+                        user.should.have.property( 'name' );
+                        user.should.have.property( 'groups' );
+                        user.groups.should.be.instanceof( Array );
+                    } );
                     done();
                 }, function(err) {
                         done( err );
