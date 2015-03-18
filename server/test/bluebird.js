@@ -94,7 +94,9 @@ describe( 'bluebird', function() {
                 .then( function(user) {
                     user.should.have.property( 'groups' );
                     user.groups.should.be.instanceof( Array );
-                    //console.log( 'in bluebird attachgroup: ' + JSON.stringify( user ) );
+                    _.each( user.groups, function(group) {
+                        group.should.be.instanceof( db['groups'] );
+                    } );
                     done();
                 } ).catch( function(e) {
                 done( e );
