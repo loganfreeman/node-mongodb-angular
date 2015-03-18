@@ -28,6 +28,26 @@ module.exports = {
         return promise;
     },
 
+
+    attachGroup: function(user) {
+
+        var promise = new Promise( function(resolve, reject) {
+            groupController.getGroupsByUserId( user.id )
+                .map( function(userGroup) {
+                    return userGroup.group_id;
+                } ).then( function(groupIdList) {
+                return groupController.getGroupList( groupIdList );
+            } ).then( function(groups) {
+                user.groups = groups;
+                resolve( user );
+            } ).catch( function(e) {
+                reject( e );
+            } );
+        } );
+
+        return promise;
+    },
+
     getUserByEmail: function(email) {
         return new Promise( function(resolve, reject) {
                 var params = {};

@@ -83,6 +83,25 @@ describe( 'bluebird', function() {
                 done( e );
             } );
         } );
+
+        it( 'should return attach group to user', function(done) {
+
+            var user = new db['users'];
+            user.id = 2;
+
+
+            userController.attachGroup(user)
+                .then( function(user) {
+                    user.should.have.property( 'groups' );
+                    user.groups.should.be.instanceof( Array );
+                    //console.log( 'in bluebird attachgroup: ' + JSON.stringify( user ) );
+                    done();
+                } ).catch( function(e) {
+                done( e );
+            } );
+
+
+        } );
     } );
 
 
