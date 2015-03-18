@@ -13,7 +13,7 @@ module.exports = {
     getUserById: function(id) {
 
 
-        var promise = new Promise( function(resolve, reject) {
+        var userPromise = new Promise( function(resolve, reject) {
             db['users'].find( id, function(err, user) {
                 if (err) {
                     reject( err );
@@ -23,9 +23,18 @@ module.exports = {
             } );
         } );
 
+        var self = this;
+
+        return new Promise( function(resolve, reject) {
+                userPromise.then( function(user) {
+                    self.attachGroup( user )
+                        .then( function(user) {
+                            resolve( user );
+                        } );
+                } );
+            } );
 
 
-        return promise;
     },
 
 

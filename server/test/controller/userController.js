@@ -2,6 +2,9 @@ var controller = require( '../../src/controller/userController.js' );
 
 var db = require( '../../src/jugglingdb/init.js' );
 
+
+var _ = require( 'lodash' );
+
 var expect = require( 'chai' ).expect,
     should = require( 'chai' ).should();
 
@@ -14,6 +17,11 @@ describe( 'userController', function() {
             controller.getUserById( 2 ).
                 then( function(user) {
                     console.log( 'userController#getUserById: ' + JSON.stringify( user ) );
+                    user.should.have.property( 'groups' );
+                    user.groups.should.be.instanceof( Array );
+                    _.each( user.groups, function(group) {
+                        group.should.be.instanceof( db['groups'] );
+                    } );
                     done();
                 }, function(err) {
                         done( err );
