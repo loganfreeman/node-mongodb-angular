@@ -13,5 +13,7 @@ WITH (
   OIDS=FALSE
 );
 
+CREATE UNIQUE INDEX ON groups ((name));
+
 ALTER TABLE groups
   OWNER TO michael;

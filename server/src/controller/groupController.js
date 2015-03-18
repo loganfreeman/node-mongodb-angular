@@ -66,5 +66,19 @@ module.exports = {
     },
 
 
-    create: function(group) {}
+    create: function(group) {
+        return new Promise( function(resolve, reject) {
+                var options = {
+                    validate: true,
+                    throws: true
+                };
+                group.save( options, function(err, model) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( model );
+                    }
+                } );
+            } );
+    }
 };
