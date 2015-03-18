@@ -6,6 +6,13 @@ Devops Restful api
 ## Motivation
 
 
+## Documentation
+
+```shell
+npm install & grunt jsdoc
+```
+
+
 ## Installation
 
 ```shell
