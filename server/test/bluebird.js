@@ -1,7 +1,7 @@
 var Promise = require( 'bluebird' );
 
 
-var request = require( 'request' );
+var request = Promise.promisify( require( 'request' ) );
 
 var db = require( '../src/jugglingdb/init.js' );
 
@@ -11,10 +11,49 @@ var errors = require( '../src/exception' );
 
 var userController = require( '../src/controller/userController.js' );
 
+
+var join = Promise.join;
+var fs = Promise.promisifyAll( require( 'fs' ) );
+
+var _ = require( 'lodash' );
+
 var expect = require( 'chai' ).expect,
     should = require( 'chai' ).should();
 
 describe( 'bluebird', function() {
+
+
+    describe( 'map', function() {
+        it( 'should resolve as array', function(done) {
+            fs.readdirAsync( '.' ).map( function(fileName) {
+                var stat = fs.statAsync( fileName );
+                var contents = fs.readFileAsync( fileName ).catch( function ignore() {} );
+                return join( stat, contents, function(stat, contents) {
+                    return {
+                        stat: stat,
+                        fileName: fileName,
+                        contents: contents
+                    };
+                } );
+                // The return value of .map is a promise that is fulfilled with an array of the mapped values
+                // That means we only get here after all the files have been statted and their contents read
+                // into memory. If you need to do more operations per file, they should be chained in the map
+                // callback for concurrency.
+            } ).call( 'sort', function(a, b) {
+                return a.fileName.localeCompare( b.fileName );
+            } ).then( function(results) {
+                results.should.be.instanceof( Array );
+                _.each( results, function(result) {
+                    result.should.have.property( 'stat' );
+                    result.should.have.property( 'fileName' );
+                    result.should.have.property( 'contents' );
+                } );
+                done();
+            } ).catch( function(e) {
+                done( e );
+            } );
+        } );
+    } );
 
 
     describe( 'userController', function() {
