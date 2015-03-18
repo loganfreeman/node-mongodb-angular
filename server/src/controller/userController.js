@@ -19,9 +19,9 @@ var groupController = require( './groupController.js' );
 module.exports = {
 
     /**
-     * [getUserById description]
-     * @param  {[type]}
-     * @return {[type]}
+     * getUserById description
+     * @param  {integer}
+     * @return {promise}
      */
     getUserById: function(id) {
         var self = this;
@@ -69,9 +69,9 @@ module.exports = {
     },
 
     /**
-     * [getUserByEmail description]
-     * @param  {[type]}
-     * @return {[type]}
+     * getUserByEmail description
+     * @param  {string}
+     * @return {promise}
      */
     getUserByEmail: function(email) {
         var self = this;
@@ -99,8 +99,8 @@ module.exports = {
     },
 
     /**
-     * [getUsers description]
-     * @return {[type]}
+     * getUsers description
+     * @return {promise}
      */
     getUsers: function() {
         var self = this;
@@ -128,10 +128,10 @@ module.exports = {
     },
 
     /**
-     * [login description]
-     * @param  {[type]}
-     * @param  {[type]}
-     * @return {[type]}
+     * login description
+     * @param  {string}
+     * @param  {string}
+     * @return {promise}
      */
     login: function(username, password) {
         return new Promise( function(resolve, reject) {
@@ -158,9 +158,9 @@ module.exports = {
     },
 
     /**
-     * [create description]
-     * @param  {[type]}
-     * @return {[type]}
+     * create description
+     * @param  {json}
+     * @return {promise}
      */
     create: function(user) {
         var salt = bcrypt.genSaltSync( 10 );
@@ -178,9 +178,9 @@ module.exports = {
     },
 
     /**
-     * [destroy description]
-     * @param  {[type]}
-     * @return {[type]}
+     * destroy description
+     * @param  {user}
+     * @return {promise}
      */
     destroy: function(user) {
         return new Promise( function(resolve, reject) {
@@ -195,9 +195,9 @@ module.exports = {
     },
 
     /**
-     * [save description]
-     * @param  {[type]}
-     * @return {[type]}
+     * save description
+     * @param  {user}
+     * @return {promise}
      */
     save: function(user) {
         return new Promise( function(resolve, reject) {
@@ -216,10 +216,10 @@ module.exports = {
     },
 
     /**
-     * [update description]
-     * @param  {[type]}
-     * @param  {[type]}
-     * @return {[type]}
+     * update description
+     * @param  {user}
+     * @param  {attrs}
+     * @return {promise}
      */
     update: function(user, attrs) {
         return new Promise( function(resolve, reject) {
