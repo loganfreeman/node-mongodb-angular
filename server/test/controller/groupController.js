@@ -11,6 +11,17 @@ var expect = require( 'chai' ).expect,
 describe( 'groups', function() {
 
 
+    it( 'should add user to group', function(done) {
+        controller.addUserToGroup( 2, 2 )
+            .then( function(model) {
+                model.should.be.instanceof( db['user_group'] );
+                done();
+            }, function(err) {
+                    done( err );
+                } );
+    } );
+
+
     it( 'should save group', function(done) {
         var group = new db['groups'];
         group.name = 'test';

@@ -7,6 +7,22 @@ var _ = require( 'lodash' );
 
 module.exports = {
 
+
+    addUserToGroup: function(userid, groupid) {
+        var userGroup = new db['user_group'];
+        userGroup.user_id = userid;
+        userGroup.group_id = groupid;
+        return new Promise( function(resolve, reject) {
+                db['user_group'].create( userGroup, function(err, model) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( model );
+                    }
+                } );
+            } );
+    },
+
     getGroup: function(id) {
         return new Promise( function(resolve, reject) {
                 db['groups'].find( id, function(err, model) {
