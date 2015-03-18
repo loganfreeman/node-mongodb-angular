@@ -1,3 +1,10 @@
+/**
+ *
+ * @author scheng 
+ *
+ * @module userController
+ */
+
 var db = require( '../jugglingdb/init.js' );
 
 var Promise = require( 'bluebird' );
@@ -10,6 +17,12 @@ var _ = require( 'lodash' );
 var groupController = require( './groupController.js' );
 
 module.exports = {
+
+    /**
+     * [getUserById description]
+     * @param  {[type]}
+     * @return {[type]}
+     */
     getUserById: function(id) {
         var self = this;
 
@@ -31,7 +44,11 @@ module.exports = {
 
     },
 
-
+    /**
+     * attach groups to a user, return a promise that fulfill a user
+     * @param  {user}
+     * @return {promise}
+     */
     attachGroup: function(user) {
 
         var promise = new Promise( function(resolve, reject) {
@@ -51,6 +68,11 @@ module.exports = {
         return promise;
     },
 
+    /**
+     * [getUserByEmail description]
+     * @param  {[type]}
+     * @return {[type]}
+     */
     getUserByEmail: function(email) {
         var self = this;
         return new Promise( function(resolve, reject) {
@@ -76,7 +98,10 @@ module.exports = {
             } );
     },
 
-
+    /**
+     * [getUsers description]
+     * @return {[type]}
+     */
     getUsers: function() {
         var self = this;
         return new Promise( function(resolve, reject) {
@@ -102,7 +127,12 @@ module.exports = {
 
     },
 
-
+    /**
+     * [login description]
+     * @param  {[type]}
+     * @param  {[type]}
+     * @return {[type]}
+     */
     login: function(username, password) {
         return new Promise( function(resolve, reject) {
                 var params = {};
@@ -127,7 +157,11 @@ module.exports = {
             } );
     },
 
-
+    /**
+     * [create description]
+     * @param  {[type]}
+     * @return {[type]}
+     */
     create: function(user) {
         var salt = bcrypt.genSaltSync( 10 );
         var hash = bcrypt.hashSync( user.password, salt );
@@ -143,7 +177,11 @@ module.exports = {
             } );
     },
 
-
+    /**
+     * [destroy description]
+     * @param  {[type]}
+     * @return {[type]}
+     */
     destroy: function(user) {
         return new Promise( function(resolve, reject) {
                 user.destroy( function(err, model) {
@@ -156,6 +194,11 @@ module.exports = {
             } );
     },
 
+    /**
+     * [save description]
+     * @param  {[type]}
+     * @return {[type]}
+     */
     save: function(user) {
         return new Promise( function(resolve, reject) {
                 var options = {
@@ -172,6 +215,12 @@ module.exports = {
             } );
     },
 
+    /**
+     * [update description]
+     * @param  {[type]}
+     * @param  {[type]}
+     * @return {[type]}
+     */
     update: function(user, attrs) {
         return new Promise( function(resolve, reject) {
 
