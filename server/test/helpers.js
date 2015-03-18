@@ -17,8 +17,18 @@ module.exports = {
             item.should.be.instanceof( type );
         } );
     },
-
+    /**
+     * 
+     * check if the err.detail is Key (name)=(value) already exists. 
+     * @param  {Error}
+     * @return {boolean}
+     */
     keyExists: function(err) {
         return err.detail.match( /Key .* already exists/ );
+    },
+
+    verifyId: function(model, type) {
+        model.should.have.property( 'id' );
+        model.should.be.instanceof( type );
     }
 };

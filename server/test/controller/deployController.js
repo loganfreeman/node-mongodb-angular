@@ -31,4 +31,24 @@ describe( 'deployController', function() {
                     done( err );
                 } );
     } );
+
+
+    it( 'should create new deploy', function(done) {
+        var data = {
+            deploy_date: new Date,
+            user_id: 2,
+            instance_id: 1,
+            comments: 'this is inserted by test'
+        };
+        controller.create(data)
+            .then( function(model) {
+                helpers.verifyId( model, db['deploy'] );
+            } )
+            .then( function() {
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+    } );
 } );
