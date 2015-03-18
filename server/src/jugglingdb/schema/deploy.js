@@ -4,11 +4,14 @@ module.exports = function(schema) {
         user_id: {
             type: Number
         },
-        description: {
+        comments: {
             type: String
         },
-        ip: {
-            type: String
+        deploy_date: {
+            type: Date
+        },
+        instance_id: {
+            type: Number
         }
     } );
 
