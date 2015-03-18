@@ -1,3 +1,10 @@
+/**
+ *
+ *
+ * @author scheng
+ */
+
+
 var controller = require( '../../src/controller/userController.js' );
 
 var db = require( '../../src/jugglingdb/init.js' );

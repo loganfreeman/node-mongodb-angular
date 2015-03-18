@@ -16,6 +16,15 @@ module.exports = function(grunt) {
                 },
                 src: ['test/**/*.js', '!zabbix-api-test.js']
             }
+        },
+
+        jsdoc: {
+            dist: {
+                src: ['src/*.js', 'test/*.js'],
+                options: {
+                    destination: 'doc'
+                }
+            }
         }
     } );
 
