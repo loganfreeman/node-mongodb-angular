@@ -11,5 +11,9 @@ WITH (
   OIDS=FALSE
 );
 
+
+CREATE UNIQUE INDEX ON environment ((name));
+
+
 ALTER TABLE environment
   OWNER TO michael;

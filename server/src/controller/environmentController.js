@@ -18,6 +18,19 @@ module.exports = {
                     }
                 } );
             } );
+    },
+
+
+    create: function(instance) {
+        return new Promise( function(resolve, reject) {
+                schema['environment'].create( instance, function(err, model) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( model );
+                    }
+                } );
+            } );
     }
 
 };

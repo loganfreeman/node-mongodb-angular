@@ -16,5 +16,9 @@ module.exports = {
         _.each( arr, function(item) {
             item.should.be.instanceof( type );
         } );
+    },
+
+    keyExists: function(err) {
+        return err.detail.match( /Key .* already exists/ );
     }
 };

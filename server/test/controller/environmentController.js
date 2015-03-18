@@ -27,10 +27,30 @@ describe( 'environmentController', function() {
         controller.getEnvironments()
             .then( function(models) {
 
-                helpers.verifyArray( models, db['environments'] );
+
+                helpers.verifyArray( models, db['environment'] );
                 done();
             }, function(err) {
                     done( err );
+                } );
+    } );
+
+    it( 'should create new environment', function(done) {
+        var data = {
+            name: 'stage',
+            description: 'stage environment'
+        };
+        controller.create( data )
+            .then( function(model) {
+                model.should.be.instanceof( db['environment'] );
+                model.should.have.property( 'id' );
+                done();
+            }, function(err) {
+                    if (helpers.keyExists( err )) {
+                        done();
+                    } else {
+                        done( err );
+                    }
                 } );
     } );
 } );
