@@ -32,7 +32,10 @@ describe( 'userController', function() {
         it( 'should get user by email', function(done) {
             controller.getUserByEmail( 'scheng@contactpointsolutions.com' ).
                 then( function(user) {
-                    console.log( 'userController#getUserByEmail: ' + JSON.stringify( user ) );
+                    //console.log( 'userController#getUserByEmail: ' + JSON.stringify( user ) );
+                    user.should.be.instanceof( db['users'] );
+                    user.should.have.property( 'groups' );
+                    user.should.have.property( 'email' );
                     done();
                 }, function(err) {
                         done( err );
