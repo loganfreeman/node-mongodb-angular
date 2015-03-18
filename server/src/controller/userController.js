@@ -55,9 +55,13 @@ module.exports = {
             groupController.getGroupsByUserId( user.id )
                 .map( function(userGroup) {
                     return userGroup.group_id;
-                } ).then( function(groupIdList) {
-                return groupController.getGroupList( groupIdList );
-            } ).then( function(groups) {
+                } )
+                .then( function(groupIdList) {
+                    return _.uniq( groupIdList );
+                } )
+                .then( function(groupIdList) {
+                    return groupController.getGroupList( groupIdList );
+                } ).then( function(groups) {
                 user.groups = groups;
                 resolve( user );
             } ).catch( function(e) {

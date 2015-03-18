@@ -26,6 +26,7 @@ describe( 'userController', function() {
                     console.log( 'userController#getUserById: ' + JSON.stringify( user ) );
                     user.should.have.property( 'groups' );
                     user.groups.should.be.instanceof( Array );
+                    user.groups.length.should.be.eq( 2 );
                     _.each( user.groups, function(group) {
                         group.should.be.instanceof( db['groups'] );
                     } );
