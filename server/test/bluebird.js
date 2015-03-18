@@ -12,6 +12,9 @@ var errors = require( '../src/exception' );
 var userController = require( '../src/controller/userController.js' );
 
 
+var groupController = require( '../src/controller/groupController.js' );
+
+
 var join = Promise.join;
 var fs = Promise.promisifyAll( require( 'fs' ) );
 
@@ -47,6 +50,33 @@ describe( 'bluebird', function() {
                     result.should.have.property( 'stat' );
                     result.should.have.property( 'fileName' );
                     result.should.have.property( 'contents' );
+                } );
+                done();
+            } ).catch( function(e) {
+                done( e );
+            } );
+        } );
+
+        it( 'should return user with group list', function(done) {
+
+            var user = new db['users'];
+            user.id = 2;
+
+            var promise = Promise.resolve( user );
+
+
+            promise.then( function(user) {
+                return groupController.getGroupsByUserId( user.id );
+            } )
+                .map( function(userGroup) {
+                    return userGroup.group_id;
+                } ).then( function(groupIdList) {
+                return groupController.getGroupList( groupIdList );
+            } ).then( function(groups) {
+                user.groups = groups;
+                groups.should.be.instanceof( Array );
+                _.each( groups, function(group) {
+                    group.should.be.instanceof( db['groups'] );
                 } );
                 done();
             } ).catch( function(e) {

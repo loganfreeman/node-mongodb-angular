@@ -24,7 +24,6 @@ module.exports = {
         } );
 
 
-        promise.then( function(user) {} );
 
         return promise;
     },
