@@ -1,4 +1,4 @@
-var errors = require( '../src/exception' );
+var errors = require( '../src/exception/' );
 
 var expect = require( 'chai' ).expect,
     should = require( 'chai' ).should();

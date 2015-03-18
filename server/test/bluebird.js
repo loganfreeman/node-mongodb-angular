@@ -6,6 +6,9 @@ var request = require( 'request' );
 var db = require( '../src/jugglingdb/init.js' );
 
 
+var errors = require( '../src/exception' );
+
+
 var userController = require( '../src/controller/userController.js' );
 
 var expect = require( 'chai' ).expect,
@@ -45,6 +48,22 @@ describe( 'bluebird', function() {
             }, function(err) {
                     done( err );
                 } );
+    } );
+
+    it( 'should catch custom error', function() {
+
+        var error = new errors.ClientError( 'name required' );
+
+        var promise = new Promise( function(resolve, reject) {
+            throw error;
+        } );
+
+        promise.catch( errors.ClientError, function(e) {
+            e.should.be.instanceof( errors.ClientError );
+        } );
+
+
+
     } );
 
 

@@ -6,6 +6,18 @@ var _ = require( 'lodash' );
 
 
 module.exports = {
+
+    getGroup: function(id) {
+        return new Promise( function(resolve, reject) {
+                db['groups'].find( id, function(err, model) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( model );
+                    }
+                } );
+            } );
+    },
     getGroups: function() {
 
 

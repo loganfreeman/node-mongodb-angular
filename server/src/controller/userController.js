@@ -6,19 +6,27 @@ var bcrypt = require( 'bcrypt' );
 
 var _ = require( 'lodash' );
 
+
+var groupController = require( './groupController.js' );
+
 module.exports = {
     getUserById: function(id) {
 
 
-        return new Promise( function(resolve, reject) {
-                db['users'].find( id, function(err, user) {
-                    if (err) {
-                        reject( err );
-                    } else {
-                        resolve( user );
-                    }
-                } );
+        var promise = new Promise( function(resolve, reject) {
+            db['users'].find( id, function(err, user) {
+                if (err) {
+                    reject( err );
+                } else {
+                    resolve( user );
+                }
             } );
+        } );
+
+
+        promise.then( function(user) {} );
+
+        return promise;
     },
 
     getUserByEmail: function(email) {

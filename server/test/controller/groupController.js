@@ -9,6 +9,16 @@ var expect = require( 'chai' ).expect,
 
 
 describe( 'groups', function() {
+
+    it( 'should return group by id', function(done) {
+        controller.getGroup( 2 )
+            .then( function(group) {
+                group.should.be.instanceof( db['groups'] );
+                done();
+            }, function(err) {
+                    done( err );
+                } );
+    } );
     it( 'should return groups', function(done) {
         controller.getGroups()
             .then( function(groups) {
