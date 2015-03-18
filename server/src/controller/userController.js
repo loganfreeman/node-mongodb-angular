@@ -11,26 +11,20 @@ var groupController = require( './groupController.js' );
 
 module.exports = {
     getUserById: function(id) {
-
-
-        var userPromise = new Promise( function(resolve, reject) {
-            db['users'].find( id, function(err, user) {
-                if (err) {
-                    reject( err );
-                } else {
-                    resolve( user );
-                }
-            } );
-        } );
-
         var self = this;
 
+
         return new Promise( function(resolve, reject) {
-                userPromise.then( function(user) {
-                    self.attachGroup( user )
-                        .then( function(user) {
-                            resolve( user );
-                        } );
+                db['users'].find( id, function(err, user) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        // resolve( user );
+                        self.attachGroup( user )
+                            .then( function(user) {
+                                resolve( user );
+                            } );
+                    }
                 } );
             } );
 
@@ -58,6 +52,7 @@ module.exports = {
     },
 
     getUserByEmail: function(email) {
+        var self = this;
         return new Promise( function(resolve, reject) {
                 var params = {};
                 params.where = {
@@ -68,7 +63,11 @@ module.exports = {
                         reject( err );
                     } else {
                         if (users.length == 1) {
-                            resolve( users[0] );
+                            // resolve( users[0] );
+                            self.attachGroup( users[0] )
+                                .then( function(user) {
+                                    resolve( user );
+                                } );
                         } else {
                             reject( Error( 'Found too many users with the email: ' + email ) );
                         }
