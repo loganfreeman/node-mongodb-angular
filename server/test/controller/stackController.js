@@ -2,11 +2,13 @@
  *
  *
  *
+ *
  * @author scheng
+ * 
  */
 
 
-var controller = require( '../../src/controller/instanceController.js' );
+var controller = require( '../../src/controller/stackController.js' );
 
 var db = require( '../../src/jugglingdb/init.js' );
 
@@ -21,12 +23,12 @@ var helpers = require( '../helpers.js' );
 
 
 
-describe( 'instanceController', function() {
-    it( 'should return instances', function(done) {
-        controller.getInstances()
+describe( 'stackController', function() {
+    it( 'should return stacks', function(done) {
+        controller.getStacks()
             .then( function(models) {
 
-                helpers.verifyArray( models, db['instance'] );
+                helpers.verifyArray( models, db['stack'] );
                 done();
             }, function(err) {
                     done( err );
