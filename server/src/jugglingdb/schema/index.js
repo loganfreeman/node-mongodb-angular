@@ -20,6 +20,8 @@ module.exports = function(schema) {
 
 
     // define relations
-
+    schema['instance'].belongsTo( schema['stack'], {
+        foreignKey: 'stack_id'
+    } );
 
 };

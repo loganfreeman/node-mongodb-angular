@@ -16,7 +16,6 @@ module.exports = function(schema) {
     } );
 
 
-
     schema['instance'] = Instance;
 };
 

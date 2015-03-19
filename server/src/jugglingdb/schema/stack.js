@@ -21,10 +21,6 @@ module.exports = function(schema) {
 
 
 
-
-
-
-
     schema['stack'] = Stack;
 };
 
