@@ -34,4 +34,18 @@ describe( 'stackController', function() {
                     done( err );
                 } );
     } );
+
+
+    it( 'should return stacks by env', function(done) {
+        controller.getStacksByEnv( 1 )
+            .then( function(models) {
+                helpers.verifyArray( models, db['stack'] );
+                done();
+            } )
+            .catch( function(err) {
+                done( err );
+            } );
+    } );
+
+
 } );

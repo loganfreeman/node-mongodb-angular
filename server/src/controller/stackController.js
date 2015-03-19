@@ -29,6 +29,23 @@ module.exports = {
                     }
                 } );
             } );
+    },
+
+
+    getStacksByEnv: function(envId) {
+        var params = {};
+        params.where = {
+            environment_id: envId
+        };
+        return new Promise( function(resolve, reject) {
+                schema['stack'].all( params, function(err, models) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( models );
+                    }
+                } );
+            } );
     }
 
 };

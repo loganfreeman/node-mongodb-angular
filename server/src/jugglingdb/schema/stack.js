@@ -6,6 +6,9 @@ module.exports = function(schema) {
         },
         description: {
             type: String
+        },
+        environment_id: {
+            type: Number
         }
     } );
 
