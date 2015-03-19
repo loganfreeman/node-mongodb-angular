@@ -37,6 +37,7 @@ describe( 'instanceController', function() {
         controller.getInstancesByStack( 1 )
             .then( function(models) {
                 helpers.verifyArray( models, db['instance'] );
+                models.length.should.be.gt( 0 );
                 done();
             } )
             .catch( function(err) {
