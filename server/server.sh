@@ -1,7 +1,7 @@
 . /lib/lsb/init-functions
 
 NAME="devops server"
-NODE_BIN_DIR="/usr/local/nvm/versions/v0.12.0/bin"
+NODE_BIN_DIR="/usr/local/node/bin"
 NODE_PATH="/usr/local/node/lib/node_modules"
 NODE_USER=node
 APPLICATION_DIRECTORY="/home/node/internal_scripts/server/src"
