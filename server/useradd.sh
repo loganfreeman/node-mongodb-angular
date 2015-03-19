@@ -31,3 +31,6 @@ git pull
 exit
 chmod 777 /home/node/internal_scripts/server/server.sh
 ./server.sh
+
+
+sudo -u postgres psql ops_dashboard -f database/import.sql

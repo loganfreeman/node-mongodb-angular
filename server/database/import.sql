@@ -22,7 +22,7 @@ WITH (
 CREATE UNIQUE INDEX ON environment ((name));
 
 ALTER TABLE environment
-  OWNER TO michael;
+  OWNER TO ops_dashboard;
 
   /*
 
@@ -45,7 +45,7 @@ ALTER TABLE environment
   );
 
   ALTER TABLE stack
-    OWNER TO michael;
+    OWNER TO ops_dashboard;
 
     /*
 
@@ -65,7 +65,7 @@ ALTER TABLE environment
     );
 
     ALTER TABLE instance
-      OWNER TO michael;
+      OWNER TO ops_dashboard;
 
 
 
@@ -89,7 +89,7 @@ WITH (
 );
 
 ALTER TABLE deploy
-  OWNER TO michael;
+  OWNER TO ops_dashboard;
 
 
 
@@ -111,7 +111,7 @@ WITH (
 );
 
 ALTER TABLE stack_association
-  OWNER TO michael;
+  OWNER TO ops_dashboard;
 
 
 
@@ -136,7 +136,7 @@ WITH (
 );
 
 ALTER TABLE instance_association
-  OWNER TO michael;
+  OWNER TO ops_dashboard;
 
 
 
@@ -161,7 +161,7 @@ WITH (
 CREATE UNIQUE INDEX ON groups ((name));
 
 ALTER TABLE groups
-  OWNER TO michael;
+  OWNER TO ops_dashboard;
 
 
 /*
@@ -190,4 +190,4 @@ CREATE UNIQUE INDEX ON users ((lower(email)));
 
 
 ALTER TABLE users
-  OWNER TO michael;
+  OWNER TO ops_dashboard;
