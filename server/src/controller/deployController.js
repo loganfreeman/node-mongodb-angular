@@ -21,6 +21,15 @@ module.exports = {
     },
 
     /**
+     * get deploys for an instance
+     * @param  {Number}
+     * @return {JSONArray}
+     */
+    getDeployByInstance: function(instance) {
+        return new Promise( function(resolve, reject) {} );
+    },
+
+    /**
      * create a new deploy
      * @param  {json}
      * @return {Promise}
