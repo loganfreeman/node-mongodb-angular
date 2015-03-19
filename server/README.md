@@ -16,7 +16,11 @@ npm install & grunt jsdoc
 ## Installation
 
 ```shell
-npm install & npm start
+cd /home/node/internal_scripts/forza
+npm install 
+bower install
+grunt build
+npm start
 ```
 
 ## API Reference
