@@ -19,6 +19,8 @@ WITH (
   OIDS=FALSE
 );
 
+CREATE UNIQUE INDEX ON environment ((name));
+
 ALTER TABLE environment
   OWNER TO michael;
 
@@ -153,6 +155,9 @@ Create Table if not exists groups (
 WITH (
   OIDS=FALSE
 );
+
+
+CREATE UNIQUE INDEX ON groups ((name));
 
 ALTER TABLE groups
   OWNER TO michael;

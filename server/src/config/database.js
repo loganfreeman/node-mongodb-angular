@@ -2,7 +2,7 @@
 var authentication = {
     production: {
         database: 'devops_dashboard',
-        username: 'devops_dashboard',
+        username: 'ops_dashboard',
         password: 'Najmacjeid'
     },
     development: {
