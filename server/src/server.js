@@ -27,7 +27,7 @@ var methodOverride = require( 'method-override' );
 
 
 
-switch (config.sessionStore) {
+switch (config.sessionStore()) {
     case 'redis':
         var RedisStore = require( 'connect-redis' )( session );
 

@@ -5,7 +5,13 @@ module.exports = {
         api_url: 'http://zabbix.cpscloud.com/zabbix/api_jsonrpc.php'
     },
     debug: true,
-    sessionStore: 'redis',
+    sessionStore: function() {
+        if (process.env.SESSIONSTORE) {
+            return rocess.env.SESSIONSTORE;
+        } else {
+            return 'cookie';
+        }
+    },
     redis: {
 
     },

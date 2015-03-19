@@ -81,10 +81,19 @@ LOGFILE=/var/log/devops-application.log
  
 # Add node to the path for situations in which the environment is passed.
 PATH=$NODE_BIN_DIR:$PATH
+#Node env
+NODE_ENV=production
+SESSIONSTORE=cookie
+PORT=8080
+
 # Export all environment variables that must be visible for the Node.js
 # application process forked by Forever. It will not see any of the other
 # variables defined in this script.
 export NODE_PATH=$NODE_PATH
+#Export node env
+export NODE_ENV
+export SESSIONSTORE
+export PORT
  
 start() {
     echo "Starting $NAME"
