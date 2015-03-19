@@ -7,7 +7,7 @@ module.exports = {
     debug: true,
     sessionStore: function() {
         if (process.env.SESSIONSTORE) {
-            return rocess.env.SESSIONSTORE;
+            return process.env.SESSIONSTORE;
         } else {
             return 'cookie';
         }
