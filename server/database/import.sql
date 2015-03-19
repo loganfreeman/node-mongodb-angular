@@ -6,6 +6,8 @@ create environment table, change owner
 */
 
 
+drop table environment cascade;
+
 create table if not exists environment (
 
 	name varchar(40) not null,
@@ -29,6 +31,9 @@ ALTER TABLE environment
   create stack table, change owner
 
   */
+ 
+
+ drop table stack cascade;
 
   create table if not exists stack (
   	name varchar(40) not null,
@@ -51,6 +56,8 @@ ALTER TABLE environment
 
     create instance table, change owner
     */
+   
+   drop table instance cascade;
 
     Create Table if not exists instance (
     	name varchar(40) not null,
@@ -76,6 +83,8 @@ create stack_association table, change owner
 
 */
 
+drop table stack_association cascade;
+
 
 create table if not exists stack_association (
 	id serial not null,
@@ -98,6 +107,8 @@ create instance_association table, change owner
 
 */
 
+
+drop table instance_association cascade;
 
 
 create table if not exists instance_association (
@@ -122,6 +133,8 @@ ALTER TABLE instance_association
 create group table, change owner
 */
 
+drop table groups cascade;
+
 
 Create Table if not exists groups (
 	name varchar(40) not null,
@@ -145,6 +158,8 @@ ALTER TABLE groups
 
 create user table, change owner
 */
+
+drop table users cascade;
 
 
 Create Table IF NOT EXISTS users (
@@ -177,6 +192,8 @@ ALTER TABLE users
 create deploy table, change owner
 
 */
+
+drop table deploy cascade;
 
 
 Create Table if not exists deploy (
