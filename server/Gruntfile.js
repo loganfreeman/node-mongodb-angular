@@ -25,6 +25,12 @@ module.exports = function(grunt) {
                     destination: 'doc'
                 }
             }
+        },
+
+        nodemon: {
+            dev: {
+                script: 'src/server.js'
+            }
         }
     } );
 
