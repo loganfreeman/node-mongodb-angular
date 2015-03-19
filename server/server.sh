@@ -10,7 +10,7 @@ PIDFILE=/var/run/forever/devops-application.pid
 LOGFILE=/var/log/devops-application.log
  
 # Add node to the path for situations in which the environment is passed.
-PATH=$NODE_BIN_DIR:$
+PATH=$NODE_BIN_DIR:$PATH
 NODE_ENV=production
 SESSIONSTORE=cookie
 PORT=8080
