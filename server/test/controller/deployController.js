@@ -21,6 +21,17 @@ var helpers = require( '../helpers.js' );
 
 
 describe( 'deployController', function() {
+
+    it( 'should get deploys by instance ID', function(done) {
+        controller.getDeployByInstance( 1 )
+            .then( function(models) {
+                helpers.verifyArray( models, db['deploy'] );
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+    } );
     it( 'should return deploys', function(done) {
         controller.getDeploys()
             .then( function(models) {

@@ -26,7 +26,19 @@ module.exports = {
      * @return {JSONArray}
      */
     getDeployByInstance: function(instance) {
-        return new Promise( function(resolve, reject) {} );
+        var params = {};
+        params.where = {
+            instance_id: instance
+        };
+        return new Promise( function(resolve, reject) {
+                schema['deploy'].all( params, function(err, models) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( models );
+                    }
+                } );
+            } );
     },
 
     /**
