@@ -1,3 +1,9 @@
+/**
+ *
+ * @author scheng
+ * @module stack
+ */
+
 module.exports = function(schema) {
     // define models
     var Stack = schema.define( 'stack', {
@@ -11,6 +17,11 @@ module.exports = function(schema) {
             type: Number
         }
     } );
+
+
+
+
+
 
 
 

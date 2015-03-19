@@ -9,6 +9,9 @@ module.exports = function(schema) {
         },
         ip: {
             type: String
+        },
+        stack_id: {
+            type: Number
         }
     } );
 
