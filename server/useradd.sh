@@ -33,4 +33,5 @@ chmod 777 /home/node/internal_scripts/server/server.sh
 ./server.sh
 
 
-sudo -u postgres psql ops_dashboard -f database/import.sql
+sudo su postgres 
+psql devops_dashboard -f database/import.sql
