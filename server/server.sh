@@ -43,7 +43,6 @@ EOF
 # The pidfile contains the child process pid, not the forever process pid.
 # We're only using it as a marker for whether or not the process is
 # running.
-daemon --user=$NODE_USER \
-    forever --pidFile $PIDFILE --sourceDir $APPLICATION_DIRECTORY \
-    -a -l $LOGFILE --minUptime 5000 --spinSleepTime 2000 \
-    start $APPLICATION_START
+forever --pidFile $PIDFILE --sourceDir $APPLICATION_DIRECTORY \
+-a -l $LOGFILE --minUptime 5000 --spinSleepTime 2000 \
+start $APPLICATION_START
