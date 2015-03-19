@@ -24,6 +24,10 @@ export PORT
 
 
 echo "Starting $NAME"
+
+cat << EOF
+forever --pidFile $PIDFILE --sourceDir $APPLICATION_DIRECTORY -a -l $LOGFILE --minUptime 5000 --spinSleepTime 2000 start $APPLICATION_START
+EOF
 # We're calling forever directly without using start-stop-daemon for the
 # sake of simplicity when it comes to environment, and because this way
 # the script will work whether it is executed directly or via the service
