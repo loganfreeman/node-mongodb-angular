@@ -32,4 +32,15 @@ describe( 'instanceController', function() {
                     done( err );
                 } );
     } );
+
+    it( 'should return instances by stack Id', function(done) {
+        controller.getInstancesByStack( 1 )
+            .then( function(models) {
+                helpers.verifyArray( models, db['instance'] );
+                done();
+            } )
+            .catch( function(err) {
+                done( err );
+            } );
+    } );
 } );

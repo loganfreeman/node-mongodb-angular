@@ -31,4 +31,6 @@ module.exports = {
         model.should.have.property( 'id' );
         model.should.be.instanceof( type );
     }
+
+
 };

@@ -57,7 +57,8 @@ ALTER TABLE environment
     	ip cidr not null,
     	description text,
     	id serial not null,
-    	CONSTRAINT instance_pkey PRIMARY KEY (id)
+    	CONSTRAINT instance_pkey PRIMARY KEY (id),
+      stack_id integer not null references stack(id)
 
     )
     WITH (
