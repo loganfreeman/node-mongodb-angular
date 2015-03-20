@@ -1,7 +1,7 @@
 
 var authentication = {
     production: {
-        database: 'devops_dashboard',
+        database: 'ops_dashboard',
         username: 'ops_dashboard',
         password: 'Najmacjeid'
     },
@@ -9,8 +9,16 @@ var authentication = {
         database: 'todo',
         username: 'michael',
         password: 'root'
+    },
+    devops: {
+        database: 'ops_dashboard',
+        username: 'ops_dashboard',
+        password: 'Najmacjeid'
     }
 };
+
+
+var _ = require( 'lodash' );
 
 
 module.exports = {
@@ -19,12 +27,17 @@ module.exports = {
 
     getAuthen: function() {
 
-        switch (process.env.NODE_ENV) {
-            case 'production':
-                return authentication.production;
-            default:
-                return authentication.development;
+        for (key in authentication) {
+            if (key === process.env.NODE_ENV) {
+                return authentication[key];
+            }
         }
+
+        return authentication.development;
+
+
+
+
     }
 
 };
