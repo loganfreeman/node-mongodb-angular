@@ -26,6 +26,11 @@ describe( 'deployController', function() {
         controller.getDeployByInstance( 1 )
             .then( function(models) {
                 helpers.verifyArray( models, db['deploy'] );
+                _.each( models, function(model) {
+                    model.instance( function(err, instance) {
+                        instance.should.be.instanceof( db['instance'] );
+                    } );
+                } );
                 done();
             } )
             .catch( function(e) {
