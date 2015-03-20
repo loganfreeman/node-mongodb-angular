@@ -6,7 +6,7 @@ var expect = require( 'chai' ).expect,
 describe( 'config', function() {
     describe( '#database', function() {
         it( 'should return configuration based on node env settings', function() {
-            config.getAuthen().database.should.be.eq( 'todo' );
+            config.getAuthen().should.have.property( 'database' );
         } );
     } );
 } );
