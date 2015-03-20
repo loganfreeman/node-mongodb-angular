@@ -12,21 +12,21 @@ psql -U {user-name} -d {desintation_db} -f {dumpfilename.sql}
 
 ## Backup all postgres databases
 
-# Login as postgres user:
+#### Login as postgres user:
 ```shell
 su postgres
 ```
 
-# List the databases:
+#### List the databases:
 ```shell
 psql -l
 ```
 
-# Backup all databases:
+#### Backup all databases:
 ```shell
 pg_dumpall > all.sql
 
-# Verify the backup:
+#### Verify the backup:
 ```shell
 grep "^[\]connect" all.sql
 ```
