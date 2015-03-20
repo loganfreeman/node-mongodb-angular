@@ -30,4 +30,14 @@ module.exports = function(schema) {
         foreignKey: 'stack_id'
     } );
 
+
+    schema['stack'].belongsTo( schema['environment'], {
+        foreignKey: 'environment_id',
+        as: 'environment'
+    } );
+
+    schema['environment'].hasMany( schema['stack'], {
+        as: 'stacks',
+        foreignKey: 'environment_id'
+    } );
 };

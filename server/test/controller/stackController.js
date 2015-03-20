@@ -30,6 +30,12 @@ describe( 'stackController', function() {
 
                 helpers.verifyArray( models, db['stack'] );
                 models.length.should.be.gt( 0 );
+                // stack belongs to environment
+                _.each( models, function(model) {
+                    model.environment( function(err, env) {
+                        env.should.be.instanceof( db['environment'] );
+                    } );
+                } );
                 done();
             }, function(err) {
                     done( err );
