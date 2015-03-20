@@ -33,7 +33,7 @@ module.exports = {
             }
         }
 
-        return authentication.development;
+        return authentication.devops;
 
 
 
