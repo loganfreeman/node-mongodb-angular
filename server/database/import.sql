@@ -6,7 +6,7 @@ create environment table, change owner
 */
 
 
-drop table environment cascade;
+drop table IF EXISTS environment cascade;
 
 create table if not exists environment (
 
@@ -33,7 +33,7 @@ ALTER TABLE environment
   */
  
 
- drop table stack cascade;
+ drop table IF EXISTS stack cascade;
 
   create table if not exists stack (
   	name varchar(40) not null,
@@ -57,7 +57,7 @@ ALTER TABLE environment
     create instance table, change owner
     */
    
-   drop table instance cascade;
+   drop table IF EXISTS instance cascade;
 
     Create Table if not exists instance (
     	name varchar(40) not null,
@@ -83,7 +83,7 @@ create stack_association table, change owner
 
 */
 
-drop table stack_association cascade;
+drop table IF EXISTS stack_association cascade;
 
 
 create table if not exists stack_association (
@@ -108,7 +108,7 @@ create instance_association table, change owner
 */
 
 
-drop table instance_association cascade;
+drop table IF EXISTS instance_association cascade;
 
 
 create table if not exists instance_association (
@@ -133,7 +133,7 @@ ALTER TABLE instance_association
 create group table, change owner
 */
 
-drop table groups cascade;
+drop table IF EXISTS groups cascade;
 
 
 Create Table if not exists groups (
@@ -159,7 +159,7 @@ ALTER TABLE groups
 create user table, change owner
 */
 
-drop table users cascade;
+drop table IF EXISTS users cascade;
 
 
 Create Table IF NOT EXISTS users (
@@ -193,7 +193,7 @@ create deploy table, change owner
 
 */
 
-drop table deploy cascade;
+drop table IF EXISTS deploy cascade;
 
 
 Create Table if not exists deploy (
@@ -210,3 +210,29 @@ WITH (
 
 ALTER TABLE deploy
   OWNER TO ops_dashboard;
+
+/**
+ *
+ * user and group are many to many relationship
+ * 
+ */
+
+drop table IF EXISTS user_group cascade;
+
+
+create table if not exists user_group (
+  id serial not null,
+  CONSTRAINT user_group_key PRIMARY KEY (id),
+  user_id integer not null references users(id),
+  group_id integer not null references groups(id)
+
+)
+
+WITH (
+  OIDS=FALSE
+);
+
+ALTER TABLE user_group
+  OWNER TO ops_dashboard;
+
+
