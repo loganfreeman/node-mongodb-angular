@@ -25,33 +25,6 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 SET search_path = public, pg_catalog;
 
---
--- Name: create_if_not_exists(text, text, text); Type: FUNCTION; Schema: public; Owner: ops_dashboard
---
-
-CREATE FUNCTION create_if_not_exists(table_name text, schema_name text, create_stmt text) RETURNS text
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-
-IF EXISTS (
-    SELECT *
-    FROM   pg_catalog.pg_tables 
-    WHERE    tablename  = table_name
-    AND schemaname = schema_name
-    ) THEN
-   RETURN 'TABLE ' || '''' || table_name || '''' || ' ALREADY EXISTS';
-ELSE
-   EXECUTE create_stmt;
-   RETURN 'CREATED';
-END IF;
-
-END;
-$$;
-
-
-ALTER FUNCTION public.create_if_not_exists(table_name text, schema_name text, create_stmt text) OWNER TO ops_dashboard;
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
