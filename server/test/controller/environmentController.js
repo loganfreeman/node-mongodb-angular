@@ -29,6 +29,12 @@ describe( 'environmentController', function() {
 
 
                 helpers.verifyArray( models, db['environment'] );
+                // environment should have many stacks
+                _.each( models, function(model) {
+                    model.stacks( function(err, stacks) {
+                        helpers.verifyArray( stacks, db['stack'] );
+                    } );
+                } );
                 done();
             }, function(err) {
                     done( err );
