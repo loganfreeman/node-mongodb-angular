@@ -28,8 +28,13 @@ describe( 'instanceController', function() {
 
                 helpers.verifyArray( models, db['instance'] );
                 _.each( models, function(model) {
+                    // instance belongs to stack
                     model.stack( function(err, stack) {
                         stack.should.be.instanceof( db['stack'] );
+                    } );
+                    // instance has many deploy
+                    model.deploys( function(err, deploys) {
+                        helpers.verifyArray( deploys, db['deploy'] );
                     } );
                 } );
                 done();
