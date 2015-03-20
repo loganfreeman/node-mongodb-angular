@@ -18,8 +18,19 @@ module.exports = function(schema) {
             require( './' + file )( schema );
         } );
 
+    // deploys belongs to instance
+    schema['deploy'].belongsTo( schema['instance'], {
+        foreignKey: 'instance_id',
+        as: 'instance'
+    } );
 
-    // define relations
+    schema['instance'].hasMany( schema['deploy'], {
+        as: 'deploys',
+        foreignKey: 'instance_id'
+    } );
+
+
+    // instance belongs to stack
     schema['instance'].belongsTo( schema['stack'], {
         foreignKey: 'stack_id',
         as: 'stack'
@@ -30,7 +41,7 @@ module.exports = function(schema) {
         foreignKey: 'stack_id'
     } );
 
-
+    // stack belongs to environment
     schema['stack'].belongsTo( schema['environment'], {
         foreignKey: 'environment_id',
         as: 'environment'
