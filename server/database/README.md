@@ -29,7 +29,7 @@ pg_dumpall > all.sql
 
 #### Verify the backup:
 ```shell
-grep "[\\]connect" all.sql
+grep "^[\]connect" all.sql
 ```
 
 ## Backup a specific table
