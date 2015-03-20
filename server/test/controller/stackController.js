@@ -41,6 +41,11 @@ describe( 'stackController', function() {
         controller.getStacksByEnv( 1 )
             .then( function(models) {
                 helpers.verifyArray( models, db['stack'] );
+                _.each( models, function(model) {
+                    model.instances( function(err, isntances) {
+                        helpers.verifyArray( instances, db['instance'] );
+                    } );
+                } );
                 done();
             } )
             .catch( function(err) {
