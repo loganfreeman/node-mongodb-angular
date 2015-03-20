@@ -42,7 +42,7 @@ describe( 'stackController', function() {
             .then( function(models) {
                 helpers.verifyArray( models, db['stack'] );
                 _.each( models, function(model) {
-                    model.instances( function(err, isntances) {
+                    model.instances( function(err, instances) {
                         helpers.verifyArray( instances, db['instance'] );
                     } );
                 } );
