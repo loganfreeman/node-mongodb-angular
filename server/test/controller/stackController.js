@@ -29,6 +29,7 @@ describe( 'stackController', function() {
             .then( function(models) {
 
                 helpers.verifyArray( models, db['stack'] );
+                models.length.should.be.gt( 0 );
                 done();
             }, function(err) {
                     done( err );

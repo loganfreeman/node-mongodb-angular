@@ -21,6 +21,12 @@ module.exports = function(schema) {
 
     // define relations
     schema['instance'].belongsTo( schema['stack'], {
+        foreignKey: 'stack_id',
+        as: 'instances'
+    } );
+
+    schema['stack'].hasMany( schema['instance'], {
+        as: 'instances',
         foreignKey: 'stack_id'
     } );
 
