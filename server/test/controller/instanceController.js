@@ -27,6 +27,11 @@ describe( 'instanceController', function() {
             .then( function(models) {
 
                 helpers.verifyArray( models, db['instance'] );
+                _.each( models, function(model) {
+                    model.stack( function(err, stack) {
+                        stack.should.be.instanceof( db['stack'] );
+                    } );
+                } );
                 done();
             }, function(err) {
                     done( err );
