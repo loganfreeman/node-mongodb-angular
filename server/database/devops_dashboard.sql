@@ -57,7 +57,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: deploy; Type: TABLE; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: deploy; Type: TABLE; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE TABLE deploy (
@@ -69,10 +69,10 @@ CREATE TABLE deploy (
 );
 
 
-ALTER TABLE deploy OWNER TO ops_dashboard;
+ALTER TABLE deploy OWNER TO michael;
 
 --
--- Name: deploy_id_seq; Type: SEQUENCE; Schema: public; Owner: ops_dashboard
+-- Name: deploy_id_seq; Type: SEQUENCE; Schema: public; Owner: michael
 --
 
 CREATE SEQUENCE deploy_id_seq
@@ -83,17 +83,17 @@ CREATE SEQUENCE deploy_id_seq
     CACHE 1;
 
 
-ALTER TABLE deploy_id_seq OWNER TO ops_dashboard;
+ALTER TABLE deploy_id_seq OWNER TO michael;
 
 --
--- Name: deploy_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ops_dashboard
+-- Name: deploy_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: michael
 --
 
 ALTER SEQUENCE deploy_id_seq OWNED BY deploy.id;
 
 
 --
--- Name: environment; Type: TABLE; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: environment; Type: TABLE; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE TABLE environment (
@@ -103,10 +103,10 @@ CREATE TABLE environment (
 );
 
 
-ALTER TABLE environment OWNER TO ops_dashboard;
+ALTER TABLE environment OWNER TO michael;
 
 --
--- Name: environment_id_seq; Type: SEQUENCE; Schema: public; Owner: ops_dashboard
+-- Name: environment_id_seq; Type: SEQUENCE; Schema: public; Owner: michael
 --
 
 CREATE SEQUENCE environment_id_seq
@@ -117,17 +117,17 @@ CREATE SEQUENCE environment_id_seq
     CACHE 1;
 
 
-ALTER TABLE environment_id_seq OWNER TO ops_dashboard;
+ALTER TABLE environment_id_seq OWNER TO michael;
 
 --
--- Name: environment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ops_dashboard
+-- Name: environment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: michael
 --
 
 ALTER SEQUENCE environment_id_seq OWNED BY environment.id;
 
 
 --
--- Name: groups; Type: TABLE; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: groups; Type: TABLE; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE TABLE groups (
@@ -139,10 +139,10 @@ CREATE TABLE groups (
 );
 
 
-ALTER TABLE groups OWNER TO ops_dashboard;
+ALTER TABLE groups OWNER TO michael;
 
 --
--- Name: groups_id_seq; Type: SEQUENCE; Schema: public; Owner: ops_dashboard
+-- Name: groups_id_seq; Type: SEQUENCE; Schema: public; Owner: michael
 --
 
 CREATE SEQUENCE groups_id_seq
@@ -153,17 +153,17 @@ CREATE SEQUENCE groups_id_seq
     CACHE 1;
 
 
-ALTER TABLE groups_id_seq OWNER TO ops_dashboard;
+ALTER TABLE groups_id_seq OWNER TO michael;
 
 --
--- Name: groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ops_dashboard
+-- Name: groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: michael
 --
 
 ALTER SEQUENCE groups_id_seq OWNED BY groups.id;
 
 
 --
--- Name: instance; Type: TABLE; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: instance; Type: TABLE; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE TABLE instance (
@@ -175,10 +175,10 @@ CREATE TABLE instance (
 );
 
 
-ALTER TABLE instance OWNER TO ops_dashboard;
+ALTER TABLE instance OWNER TO michael;
 
 --
--- Name: instance_association; Type: TABLE; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: instance_association; Type: TABLE; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE TABLE instance_association (
@@ -188,10 +188,10 @@ CREATE TABLE instance_association (
 );
 
 
-ALTER TABLE instance_association OWNER TO ops_dashboard;
+ALTER TABLE instance_association OWNER TO michael;
 
 --
--- Name: instance_association_id_seq; Type: SEQUENCE; Schema: public; Owner: ops_dashboard
+-- Name: instance_association_id_seq; Type: SEQUENCE; Schema: public; Owner: michael
 --
 
 CREATE SEQUENCE instance_association_id_seq
@@ -202,17 +202,17 @@ CREATE SEQUENCE instance_association_id_seq
     CACHE 1;
 
 
-ALTER TABLE instance_association_id_seq OWNER TO ops_dashboard;
+ALTER TABLE instance_association_id_seq OWNER TO michael;
 
 --
--- Name: instance_association_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ops_dashboard
+-- Name: instance_association_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: michael
 --
 
 ALTER SEQUENCE instance_association_id_seq OWNED BY instance_association.id;
 
 
 --
--- Name: instance_id_seq; Type: SEQUENCE; Schema: public; Owner: ops_dashboard
+-- Name: instance_id_seq; Type: SEQUENCE; Schema: public; Owner: michael
 --
 
 CREATE SEQUENCE instance_id_seq
@@ -223,17 +223,17 @@ CREATE SEQUENCE instance_id_seq
     CACHE 1;
 
 
-ALTER TABLE instance_id_seq OWNER TO ops_dashboard;
+ALTER TABLE instance_id_seq OWNER TO michael;
 
 --
--- Name: instance_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ops_dashboard
+-- Name: instance_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: michael
 --
 
 ALTER SEQUENCE instance_id_seq OWNED BY instance.id;
 
 
 --
--- Name: my_table; Type: TABLE; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: my_table; Type: TABLE; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE TABLE my_table (
@@ -242,10 +242,10 @@ CREATE TABLE my_table (
 );
 
 
-ALTER TABLE my_table OWNER TO ops_dashboard;
+ALTER TABLE my_table OWNER TO michael;
 
 --
--- Name: notes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: notes; Type: TABLE; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE TABLE notes (
@@ -254,10 +254,10 @@ CREATE TABLE notes (
 );
 
 
-ALTER TABLE notes OWNER TO postgres;
+ALTER TABLE notes OWNER TO michael;
 
 --
--- Name: notes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: notes_id_seq; Type: SEQUENCE; Schema: public; Owner: michael
 --
 
 CREATE SEQUENCE notes_id_seq
@@ -268,17 +268,17 @@ CREATE SEQUENCE notes_id_seq
     CACHE 1;
 
 
-ALTER TABLE notes_id_seq OWNER TO postgres;
+ALTER TABLE notes_id_seq OWNER TO michael;
 
 --
--- Name: notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: michael
 --
 
 ALTER SEQUENCE notes_id_seq OWNED BY notes.id;
 
 
 --
--- Name: stack; Type: TABLE; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: stack; Type: TABLE; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE TABLE stack (
@@ -289,10 +289,10 @@ CREATE TABLE stack (
 );
 
 
-ALTER TABLE stack OWNER TO ops_dashboard;
+ALTER TABLE stack OWNER TO michael;
 
 --
--- Name: stack_association; Type: TABLE; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: stack_association; Type: TABLE; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE TABLE stack_association (
@@ -302,10 +302,10 @@ CREATE TABLE stack_association (
 );
 
 
-ALTER TABLE stack_association OWNER TO ops_dashboard;
+ALTER TABLE stack_association OWNER TO michael;
 
 --
--- Name: stack_association_id_seq; Type: SEQUENCE; Schema: public; Owner: ops_dashboard
+-- Name: stack_association_id_seq; Type: SEQUENCE; Schema: public; Owner: michael
 --
 
 CREATE SEQUENCE stack_association_id_seq
@@ -316,17 +316,17 @@ CREATE SEQUENCE stack_association_id_seq
     CACHE 1;
 
 
-ALTER TABLE stack_association_id_seq OWNER TO ops_dashboard;
+ALTER TABLE stack_association_id_seq OWNER TO michael;
 
 --
--- Name: stack_association_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ops_dashboard
+-- Name: stack_association_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: michael
 --
 
 ALTER SEQUENCE stack_association_id_seq OWNED BY stack_association.id;
 
 
 --
--- Name: stack_id_seq; Type: SEQUENCE; Schema: public; Owner: ops_dashboard
+-- Name: stack_id_seq; Type: SEQUENCE; Schema: public; Owner: michael
 --
 
 CREATE SEQUENCE stack_id_seq
@@ -337,17 +337,17 @@ CREATE SEQUENCE stack_id_seq
     CACHE 1;
 
 
-ALTER TABLE stack_id_seq OWNER TO ops_dashboard;
+ALTER TABLE stack_id_seq OWNER TO michael;
 
 --
--- Name: stack_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ops_dashboard
+-- Name: stack_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: michael
 --
 
 ALTER SEQUENCE stack_id_seq OWNED BY stack.id;
 
 
 --
--- Name: user_group; Type: TABLE; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: user_group; Type: TABLE; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE TABLE user_group (
@@ -359,10 +359,10 @@ CREATE TABLE user_group (
 );
 
 
-ALTER TABLE user_group OWNER TO ops_dashboard;
+ALTER TABLE user_group OWNER TO michael;
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE TABLE users (
@@ -377,10 +377,10 @@ CREATE TABLE users (
 );
 
 
-ALTER TABLE users OWNER TO ops_dashboard;
+ALTER TABLE users OWNER TO michael;
 
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: ops_dashboard
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: michael
 --
 
 CREATE SEQUENCE users_id_seq
@@ -391,80 +391,80 @@ CREATE SEQUENCE users_id_seq
     CACHE 1;
 
 
-ALTER TABLE users_id_seq OWNER TO ops_dashboard;
+ALTER TABLE users_id_seq OWNER TO michael;
 
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: ops_dashboard
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: michael
 --
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: ops_dashboard
+-- Name: id; Type: DEFAULT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY deploy ALTER COLUMN id SET DEFAULT nextval('deploy_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: ops_dashboard
+-- Name: id; Type: DEFAULT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY environment ALTER COLUMN id SET DEFAULT nextval('environment_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: ops_dashboard
+-- Name: id; Type: DEFAULT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY groups ALTER COLUMN id SET DEFAULT nextval('groups_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: ops_dashboard
+-- Name: id; Type: DEFAULT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY instance ALTER COLUMN id SET DEFAULT nextval('instance_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: ops_dashboard
+-- Name: id; Type: DEFAULT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY instance_association ALTER COLUMN id SET DEFAULT nextval('instance_association_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: id; Type: DEFAULT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY notes ALTER COLUMN id SET DEFAULT nextval('notes_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: ops_dashboard
+-- Name: id; Type: DEFAULT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY stack ALTER COLUMN id SET DEFAULT nextval('stack_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: ops_dashboard
+-- Name: id; Type: DEFAULT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY stack_association ALTER COLUMN id SET DEFAULT nextval('stack_association_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: ops_dashboard
+-- Name: id; Type: DEFAULT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
--- Data for Name: deploy; Type: TABLE DATA; Schema: public; Owner: ops_dashboard
+-- Data for Name: deploy; Type: TABLE DATA; Schema: public; Owner: michael
 --
 
 COPY deploy (deploy_date, user_id, comments, instance_id, id) FROM stdin;
@@ -530,18 +530,32 @@ COPY deploy (deploy_date, user_id, comments, instance_id, id) FROM stdin;
 2015-03-20 12:12:09.524-06	2	this is inserted by test	1	61
 2015-03-20 14:10:10.773-06	2	this is inserted by test	1	62
 2015-03-20 14:10:16.509-06	2	this is inserted by test	1	63
+2015-03-20 14:42:53.38-06	2	this is inserted by test	1	64
+2015-03-20 15:21:08.976-06	2	this is inserted by test	1	65
+2015-03-20 15:21:24.216-06	2	this is inserted by test	1	66
+2015-03-20 15:21:33.557-06	2	this is inserted by test	1	67
+2015-03-20 15:21:41.665-06	2	this is inserted by test	1	68
+2015-03-20 15:25:32.74-06	2	this is inserted by test	1	69
+2015-03-20 15:25:38.359-06	2	this is inserted by test	1	70
+2015-03-20 15:42:28.791-06	2	this is inserted by test	1	71
+2015-03-20 15:43:05.785-06	2	this is inserted by test	1	72
+2015-03-20 15:43:11.683-06	2	this is inserted by test	1	73
+2015-03-20 15:43:16.308-06	2	this is inserted by test	1	74
+2015-03-20 15:43:20.815-06	2	this is inserted by test	1	75
+2015-03-20 15:44:19.689-06	2	this is inserted by test	1	76
+2015-03-20 15:44:30.038-06	2	this is inserted by test	1	77
 \.
 
 
 --
--- Name: deploy_id_seq; Type: SEQUENCE SET; Schema: public; Owner: ops_dashboard
+-- Name: deploy_id_seq; Type: SEQUENCE SET; Schema: public; Owner: michael
 --
 
-SELECT pg_catalog.setval('deploy_id_seq', 63, true);
+SELECT pg_catalog.setval('deploy_id_seq', 77, true);
 
 
 --
--- Data for Name: environment; Type: TABLE DATA; Schema: public; Owner: ops_dashboard
+-- Data for Name: environment; Type: TABLE DATA; Schema: public; Owner: michael
 --
 
 COPY environment (name, description, id) FROM stdin;
@@ -550,14 +564,14 @@ stage	stage environment	1
 
 
 --
--- Name: environment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: ops_dashboard
+-- Name: environment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: michael
 --
 
-SELECT pg_catalog.setval('environment_id_seq', 72, true);
+SELECT pg_catalog.setval('environment_id_seq', 86, true);
 
 
 --
--- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: ops_dashboard
+-- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: michael
 --
 
 COPY groups (name, description, id, "createdAt", "updatedAt") FROM stdin;
@@ -568,23 +582,23 @@ test	generated by test	3	\N	\N
 
 
 --
--- Name: groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: ops_dashboard
+-- Name: groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: michael
 --
 
-SELECT pg_catalog.setval('groups_id_seq', 95, true);
+SELECT pg_catalog.setval('groups_id_seq', 109, true);
 
 
 --
--- Data for Name: instance; Type: TABLE DATA; Schema: public; Owner: ops_dashboard
+-- Data for Name: instance; Type: TABLE DATA; Schema: public; Owner: michael
 --
 
 COPY instance (name, ip, description, id, stack_id) FROM stdin;
-ops_dashboard	192.168.100.128/25	This is ops_dashboard's test machine	1	1
+michael	192.168.100.128/25	This is michael's test machine	1	1
 \.
 
 
 --
--- Data for Name: instance_association; Type: TABLE DATA; Schema: public; Owner: ops_dashboard
+-- Data for Name: instance_association; Type: TABLE DATA; Schema: public; Owner: michael
 --
 
 COPY instance_association (id, instance_id, stack_id) FROM stdin;
@@ -592,21 +606,21 @@ COPY instance_association (id, instance_id, stack_id) FROM stdin;
 
 
 --
--- Name: instance_association_id_seq; Type: SEQUENCE SET; Schema: public; Owner: ops_dashboard
+-- Name: instance_association_id_seq; Type: SEQUENCE SET; Schema: public; Owner: michael
 --
 
 SELECT pg_catalog.setval('instance_association_id_seq', 1, false);
 
 
 --
--- Name: instance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: ops_dashboard
+-- Name: instance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: michael
 --
 
 SELECT pg_catalog.setval('instance_id_seq', 1, true);
 
 
 --
--- Data for Name: my_table; Type: TABLE DATA; Schema: public; Owner: ops_dashboard
+-- Data for Name: my_table; Type: TABLE DATA; Schema: public; Owner: michael
 --
 
 COPY my_table (name, description) FROM stdin;
@@ -614,7 +628,7 @@ COPY my_table (name, description) FROM stdin;
 
 
 --
--- Data for Name: notes; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: notes; Type: TABLE DATA; Schema: public; Owner: michael
 --
 
 COPY notes (id, text) FROM stdin;
@@ -628,14 +642,14 @@ COPY notes (id, text) FROM stdin;
 
 
 --
--- Name: notes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: notes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: michael
 --
 
 SELECT pg_catalog.setval('notes_id_seq', 18, true);
 
 
 --
--- Data for Name: stack; Type: TABLE DATA; Schema: public; Owner: ops_dashboard
+-- Data for Name: stack; Type: TABLE DATA; Schema: public; Owner: michael
 --
 
 COPY stack (name, description, id, environment_id) FROM stdin;
@@ -644,7 +658,7 @@ node stack	node stack	1	1
 
 
 --
--- Data for Name: stack_association; Type: TABLE DATA; Schema: public; Owner: ops_dashboard
+-- Data for Name: stack_association; Type: TABLE DATA; Schema: public; Owner: michael
 --
 
 COPY stack_association (id, envrionment_id, stack_id) FROM stdin;
@@ -652,21 +666,21 @@ COPY stack_association (id, envrionment_id, stack_id) FROM stdin;
 
 
 --
--- Name: stack_association_id_seq; Type: SEQUENCE SET; Schema: public; Owner: ops_dashboard
+-- Name: stack_association_id_seq; Type: SEQUENCE SET; Schema: public; Owner: michael
 --
 
 SELECT pg_catalog.setval('stack_association_id_seq', 1, false);
 
 
 --
--- Name: stack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: ops_dashboard
+-- Name: stack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: michael
 --
 
 SELECT pg_catalog.setval('stack_id_seq', 1, false);
 
 
 --
--- Data for Name: user_group; Type: TABLE DATA; Schema: public; Owner: ops_dashboard
+-- Data for Name: user_group; Type: TABLE DATA; Schema: public; Owner: michael
 --
 
 COPY user_group (user_id, group_id, id, "createdAt", "updatedAt") FROM stdin;
@@ -758,11 +772,25 @@ COPY user_group (user_id, group_id, id, "createdAt", "updatedAt") FROM stdin;
 2	2	\N	\N	\N
 2	2	\N	\N	\N
 2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
+2	2	\N	\N	\N
 \.
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: ops_dashboard
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: michael
 --
 
 COPY users ("firstName", "lastName", name, password, email, id, "createdAt", "updatedAt") FROM stdin;
@@ -774,14 +802,14 @@ jelly	beam	jelly bean	$2a$10$PHEh7P0EtzeVmlFFO50YruUGqMXhQv.VqptuGp/YsB06y3bQtMN
 
 
 --
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: ops_dashboard
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: michael
 --
 
-SELECT pg_catalog.setval('users_id_seq', 388, true);
+SELECT pg_catalog.setval('users_id_seq', 416, true);
 
 
 --
--- Name: deploy_pkey; Type: CONSTRAINT; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: deploy_pkey; Type: CONSTRAINT; Schema: public; Owner: michael; Tablespace: 
 --
 
 ALTER TABLE ONLY deploy
@@ -789,7 +817,7 @@ ALTER TABLE ONLY deploy
 
 
 --
--- Name: envrionment_pkey; Type: CONSTRAINT; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: envrionment_pkey; Type: CONSTRAINT; Schema: public; Owner: michael; Tablespace: 
 --
 
 ALTER TABLE ONLY environment
@@ -797,7 +825,7 @@ ALTER TABLE ONLY environment
 
 
 --
--- Name: groups_pkey; Type: CONSTRAINT; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: groups_pkey; Type: CONSTRAINT; Schema: public; Owner: michael; Tablespace: 
 --
 
 ALTER TABLE ONLY groups
@@ -805,7 +833,7 @@ ALTER TABLE ONLY groups
 
 
 --
--- Name: instance_association_pkey; Type: CONSTRAINT; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: instance_association_pkey; Type: CONSTRAINT; Schema: public; Owner: michael; Tablespace: 
 --
 
 ALTER TABLE ONLY instance_association
@@ -813,7 +841,7 @@ ALTER TABLE ONLY instance_association
 
 
 --
--- Name: instance_pkey; Type: CONSTRAINT; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: instance_pkey; Type: CONSTRAINT; Schema: public; Owner: michael; Tablespace: 
 --
 
 ALTER TABLE ONLY instance
@@ -821,7 +849,7 @@ ALTER TABLE ONLY instance
 
 
 --
--- Name: notes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: notes_pkey; Type: CONSTRAINT; Schema: public; Owner: michael; Tablespace: 
 --
 
 ALTER TABLE ONLY notes
@@ -829,7 +857,7 @@ ALTER TABLE ONLY notes
 
 
 --
--- Name: notes_text_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: notes_text_key; Type: CONSTRAINT; Schema: public; Owner: michael; Tablespace: 
 --
 
 ALTER TABLE ONLY notes
@@ -837,7 +865,7 @@ ALTER TABLE ONLY notes
 
 
 --
--- Name: stack_association_pkey; Type: CONSTRAINT; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: stack_association_pkey; Type: CONSTRAINT; Schema: public; Owner: michael; Tablespace: 
 --
 
 ALTER TABLE ONLY stack_association
@@ -845,7 +873,7 @@ ALTER TABLE ONLY stack_association
 
 
 --
--- Name: stack_pkey; Type: CONSTRAINT; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: stack_pkey; Type: CONSTRAINT; Schema: public; Owner: michael; Tablespace: 
 --
 
 ALTER TABLE ONLY stack
@@ -853,7 +881,7 @@ ALTER TABLE ONLY stack
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: michael; Tablespace: 
 --
 
 ALTER TABLE ONLY users
@@ -861,28 +889,28 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: environment_name_idx; Type: INDEX; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: environment_name_idx; Type: INDEX; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE UNIQUE INDEX environment_name_idx ON environment USING btree (name);
 
 
 --
--- Name: groups_name_idx; Type: INDEX; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: groups_name_idx; Type: INDEX; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE UNIQUE INDEX groups_name_idx ON groups USING btree (name);
 
 
 --
--- Name: users_lower_idx; Type: INDEX; Schema: public; Owner: ops_dashboard; Tablespace: 
+-- Name: users_lower_idx; Type: INDEX; Schema: public; Owner: michael; Tablespace: 
 --
 
 CREATE UNIQUE INDEX users_lower_idx ON users USING btree (lower(email));
 
 
 --
--- Name: deploy_instance_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ops_dashboard
+-- Name: deploy_instance_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY deploy
@@ -890,7 +918,7 @@ ALTER TABLE ONLY deploy
 
 
 --
--- Name: deploy_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ops_dashboard
+-- Name: deploy_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY deploy
@@ -898,7 +926,7 @@ ALTER TABLE ONLY deploy
 
 
 --
--- Name: instance_association_instance_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ops_dashboard
+-- Name: instance_association_instance_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY instance_association
@@ -906,7 +934,7 @@ ALTER TABLE ONLY instance_association
 
 
 --
--- Name: instance_association_stack_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ops_dashboard
+-- Name: instance_association_stack_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY instance_association
@@ -914,7 +942,7 @@ ALTER TABLE ONLY instance_association
 
 
 --
--- Name: instance_stack_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ops_dashboard
+-- Name: instance_stack_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY instance
@@ -922,7 +950,7 @@ ALTER TABLE ONLY instance
 
 
 --
--- Name: stack_association_envrionment_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ops_dashboard
+-- Name: stack_association_envrionment_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY stack_association
@@ -930,7 +958,7 @@ ALTER TABLE ONLY stack_association
 
 
 --
--- Name: stack_association_stack_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ops_dashboard
+-- Name: stack_association_stack_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY stack_association
@@ -938,7 +966,7 @@ ALTER TABLE ONLY stack_association
 
 
 --
--- Name: stack_environment_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: ops_dashboard
+-- Name: stack_environment_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: michael
 --
 
 ALTER TABLE ONLY stack
@@ -956,23 +984,21 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
--- Name: notes; Type: ACL; Schema: public; Owner: postgres
+-- Name: notes; Type: ACL; Schema: public; Owner: michael
 --
 
 REVOKE ALL ON TABLE notes FROM PUBLIC;
-REVOKE ALL ON TABLE notes FROM postgres;
-GRANT ALL ON TABLE notes TO postgres;
-GRANT ALL ON TABLE notes TO ops_dashboard;
+REVOKE ALL ON TABLE notes FROM michael;
+GRANT ALL ON TABLE notes TO michael;
 
 
 --
--- Name: notes_id_seq; Type: ACL; Schema: public; Owner: postgres
+-- Name: notes_id_seq; Type: ACL; Schema: public; Owner: michael
 --
 
 REVOKE ALL ON SEQUENCE notes_id_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE notes_id_seq FROM postgres;
-GRANT ALL ON SEQUENCE notes_id_seq TO postgres;
-GRANT ALL ON SEQUENCE notes_id_seq TO ops_dashboard;
+REVOKE ALL ON SEQUENCE notes_id_seq FROM michael;
+GRANT ALL ON SEQUENCE notes_id_seq TO michael;
 
 
 --
