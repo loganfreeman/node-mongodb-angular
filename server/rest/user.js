@@ -22,7 +22,6 @@ describe( 'user route', function() {
     it( 'should return 200', function(done) {
         http.get( helpers.getUrl( '/' ), function(res) {
             assert.equal( 200, res.statusCode );
-            console.log( res.body );
             done();
         } );
     } );

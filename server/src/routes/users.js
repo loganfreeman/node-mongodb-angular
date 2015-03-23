@@ -2,28 +2,13 @@ var uuid = require( 'node-uuid' );
 
 var userController = require( '../controller/userController.js' );
 
+var groupController = require( '../controller/groupController.js' );
+
 module.exports = function(app) {
     // Build Express Routes (CRUD routes for /users)
 
 
     app.post( '/login', function(req, res) {
-
-        /*        app.models.users.findOne( {
-                    name: req.body.username,
-                    password: req.body.password
-                }, function(err, model) {
-                        if (err) {
-                            res.status( 500 ).send( err );
-                        } else {
-                            if (model) {
-                                model.token = uuid.v1();
-                                req.session.user = model;
-                                res.json( model );
-                            } else {
-                                res.status( 500 ).send( 'User Not Found' );
-                            }
-                        }
-                    } );*/
 
         userController.login( req.body.username, req.body.password )
             .then( function(user) {
@@ -31,22 +16,20 @@ module.exports = function(app) {
                 res.json( user );
             } )
             .catch( function(e) {
-                res.status( 500 ).send( e.message );
+                res.status( 500 ).send( e );
             } );
 
     } );
 
 
-    app.get( '/user/group/:userid', function(req, res) {
+    app.get( '/user/:userid/groups', function(req, res) {
         var userid = req.params.userid;
-        app.models.user_group.find( {
-            user_id: userid
-        }, function(err, models) {
-                if (err) {
-                    res.status( 500 ).send( err );
-                } else {
-                    res.json( models );
-                }
+        groupController.getGroupsByUserId( userid )
+            .then( function(groups) {
+                res.json( groups );
+            } )
+            .catch( function(err) {
+                res.status( 500 ).send( e );
             } );
     } );
 
@@ -57,12 +40,13 @@ module.exports = function(app) {
     } );
 
     app.get( '/users', function(req, res) {
-        app.models.users.find().exec( function(err, models) {
-            if (err) return res.json( {
-                    err: err
-                }, 500 );
-            res.json( models );
-        } );
+        userController.getUsers()
+            .then( function(users) {
+                res.json( users );
+            } )
+            .catch( function(err) {
+                res.status( 500 ).send( err );
+            } );
     } );
 
     app.put( '/user', function(req, res) {
@@ -75,13 +59,13 @@ module.exports = function(app) {
     } );
 
     app.get( '/user/:id', function(req, res) {
-        app.models.users.findOne( {
-            id: req.params.id
-        }, function(err, model) {
-                if (err) return res.json( {
-                        err: err
-                    }, 500 );
-                res.json( model );
+        var userid = req.params.id;
+        userController.getUserById( userid )
+            .then( function(user) {
+                res.json( user );
+            } )
+            .catch( function(err) {
+                res.status( 500 ).send( err );
             } );
     } );
 
