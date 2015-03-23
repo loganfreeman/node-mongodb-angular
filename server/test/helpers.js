@@ -58,7 +58,7 @@ module.exports = {
             query = params;
         }
         return url.format( {
-            host: host,
+            hostname: host,
             protocol: protocol,
             port: port,
             pathname: path,

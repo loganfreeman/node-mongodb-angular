@@ -192,7 +192,7 @@ describe( 'bluebird', function() {
 
     describe( 'helpers', function() {
         it( 'should construct url with params', function() {
-            var expected = 'http://localhost/login?name=scheng&username=scheng&email=scheng%40logmycalls.com';
+            var expected = 'http://localhost:8081/login?name=scheng&username=scheng&email=scheng%40logmycalls.com';
             var params = {
                 name: 'scheng',
                 username: 'scheng',
@@ -205,7 +205,7 @@ describe( 'bluebird', function() {
         } );
 
         it( 'should construct url without params', function() {
-            var expected = 'http://localhost/login';
+            var expected = 'http://localhost:8081/login';
 
             var path = 'login';
             var formatted = helpers.getUrl( path );
