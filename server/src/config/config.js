@@ -17,7 +17,8 @@ module.exports = {
     },
     server: {
         port: 8081,
-        host: 'localhost'
+        host: 'localhost',
+        log: '/var/log/nginx/devops.log'
     },
     getPort: function() {
         if (process.env.PORT) {
