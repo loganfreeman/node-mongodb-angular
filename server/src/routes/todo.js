@@ -1,5 +1,7 @@
 var db = require( '../models' );
 
+var Promise = require( 'bluebird' );
+
 var readFile = Promise.promisify( require( 'fs' ).readFile );
 
 var config = require( '../config/config.js' );
