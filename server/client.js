@@ -4,6 +4,13 @@ var request = Promise.promisify( require( 'request' ) );
 
 var queryString = require( 'querystring' );
 
+var db = require( './src/jugglingdb/init.js' );
+
+
+var _ = require( 'lodash' );
+
+var expect = require( 'chai' ).expect,
+    should = require( 'chai' ).should();
 
 var postData = {
     username: 'scheng',
@@ -24,6 +31,8 @@ var options = {
 request( options )
     .spread( function(res, body) {
         console.log( body );
+        var user = JSON.parse( body );
+        expect( user.email ).to.be.eq( 'scheng@contactpointsolutions.com' );
     } )
     .catch( function(err) {
         console.log( err );
