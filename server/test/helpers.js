@@ -9,6 +9,19 @@ var expect = require( 'chai' ).expect,
     should = require( 'chai' ).should();
 
 
+var config = require( '../src/config/config.js' );
+
+var _ = require( 'lodash' );
+
+var port = config.getPort();
+
+var protocol = config.getProtocol();
+
+var host = config.getHost();
+
+var url = require( 'url' );
+
+
 
 module.exports = {
     verifyArray: function(arr, type) {
@@ -30,6 +43,27 @@ module.exports = {
     verifyId: function(model, type) {
         model.should.have.property( 'id' );
         model.should.be.instanceof( type );
+    },
+
+
+    /**
+     * construct a Url
+     * @param  {String} path   Url path
+     * @param  {Object} params query parameters 
+     * @return {String}        Url
+     */
+    getUrl: function(path, params) {
+        var query = {};
+        if (typeof params === 'object') {
+            query = params;
+        }
+        return url.format( {
+            host: host,
+            protocol: protocol,
+            port: port,
+            pathname: path,
+            query: query
+        } );
     }
 
 

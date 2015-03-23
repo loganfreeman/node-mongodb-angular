@@ -14,9 +14,19 @@ var userController = require( '../src/controller/userController.js' );
 
 var groupController = require( '../src/controller/groupController.js' );
 
+var config = require( '../src/config/config.js' );
+
+var port = config.getPort();
+
+var protocol = config.getProtocol();
+
+var url = require( 'url' );
+
 
 var join = Promise.join;
 var fs = Promise.promisifyAll( require( 'fs' ) );
+
+var helpers = require( './helpers.js' );
 
 var _ = require( 'lodash' );
 
@@ -154,6 +164,54 @@ describe( 'bluebird', function() {
 
 
 
+    } );
+
+
+    it( 'should construct url', function() {
+        var params = {
+            name: 'scheng',
+            username: 'scheng',
+            email: 'scheng@logmycalls.com'
+        };
+
+        var urlStr = url.format( {
+            host: 'localhost',
+            protocol: protocol,
+            port: port,
+            pathname: 'login',
+            query: params
+        } );
+
+        console.log( ('' + urlStr).magenta );
+
+        var expected = 'http://localhost/login?name=scheng&username=scheng&email=scheng%40logmycalls.com';
+
+        urlStr.should.be.eq( expected );
+
+    } );
+
+    describe( 'helpers', function() {
+        it( 'should construct url with params', function() {
+            var expected = 'http://localhost/login?name=scheng&username=scheng&email=scheng%40logmycalls.com';
+            var params = {
+                name: 'scheng',
+                username: 'scheng',
+                email: 'scheng@logmycalls.com'
+            };
+            var path = 'login';
+            var formatted = helpers.getUrl( path, params );
+
+            formatted.should.be.eq( expected );
+        } );
+
+        it( 'should construct url without params', function() {
+            var expected = 'http://localhost/login';
+
+            var path = 'login';
+            var formatted = helpers.getUrl( path );
+
+            formatted.should.be.eq( expected );
+        } );
     } );
 
 

@@ -13,6 +13,7 @@ var bcrypt = require( 'bcrypt' );
 
 var _ = require( 'lodash' );
 
+var uuid = require( 'node-uuid' );
 
 var groupController = require( './groupController.js' );
 
@@ -132,7 +133,7 @@ module.exports = {
     },
 
     /**
-     * login description
+     * login thr username & password, if login successfully, return user, otherwise reject Error
      * @param  {string}
      * @param  {string}
      * @return {promise}
@@ -152,7 +153,10 @@ module.exports = {
                         } );
 
                         if (matches.length == 1) {
-                            resolve( matches[0] );
+                            var user = matches[0];
+                            // generate a non-persistant token, and attached it to the user
+                            user.token = uuid.v1();
+                            resolve( user );
                         } else {
                             reject( Error( 'Couldn\'t find the matching user in database' ) );
                         }

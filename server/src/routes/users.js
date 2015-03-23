@@ -1,26 +1,37 @@
 var uuid = require( 'node-uuid' );
 
+var userController = require( '../controller/userController.js' );
+
 module.exports = function(app) {
     // Build Express Routes (CRUD routes for /users)
 
 
     app.post( '/login', function(req, res) {
 
-        app.models.users.findOne( {
-            name: req.body.username,
-            password: req.body.password
-        }, function(err, model) {
-                if (err) {
-                    res.status( 500 ).send( err );
-                } else {
-                    if (model) {
-                        model.token = uuid.v1();
-                        req.session.user = model;
-                        res.json( model );
-                    } else {
-                        res.status( 500 ).send( 'User Not Found' );
-                    }
-                }
+        /*        app.models.users.findOne( {
+                    name: req.body.username,
+                    password: req.body.password
+                }, function(err, model) {
+                        if (err) {
+                            res.status( 500 ).send( err );
+                        } else {
+                            if (model) {
+                                model.token = uuid.v1();
+                                req.session.user = model;
+                                res.json( model );
+                            } else {
+                                res.status( 500 ).send( 'User Not Found' );
+                            }
+                        }
+                    } );*/
+
+        userController.login( req.body.username, req.body.password )
+            .then( function(user) {
+                req.session.user = user;
+                res.json( user );
+            } )
+            .catch( function(e) {
+                res.status( 500 ).send( e.message );
             } );
 
     } );

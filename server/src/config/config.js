@@ -24,5 +24,19 @@ module.exports = {
             return process.env.PORT;
         }
         return 8081;
+    },
+
+    getProtocol: function() {
+        if (process.env.HTTP_PROTOCOL) {
+            return 'https';
+        }
+        return 'http';
+    },
+
+    getHost: function() {
+        if (process.env.HTTP_HOST) {
+            return process.env.HTTP_HOST;
+        }
+        return 'localhost';
     }
 };

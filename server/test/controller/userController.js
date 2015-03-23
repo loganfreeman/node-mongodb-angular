@@ -88,6 +88,7 @@ describe( 'userController', function() {
                 then( function(user) {
                     user.name.should.be.eq( 'ccastillo' );
                     user.email.should.be.eq( 'ccastillo@contactpointsolutions.com' );
+                    user.should.have.property( 'token' );
                     done();
                 }, function(err) {
                         done( err );
