@@ -20,7 +20,14 @@ cd /home/node/internal_scripts/forza
 npm install 
 bower install
 grunt build
-npm start
+
+sudo su -
+cd /home/node/internal_scripts/server
+chmod o+x server.sh
+./server.sh
+# verify server started
+ps aux | grep node | grep -v grep
+forever list
 ```
 
 ## API Reference
