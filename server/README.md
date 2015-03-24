@@ -122,6 +122,26 @@ delete the session user, redirect the user to the home page
             } )
 ```
 
+
+#### POST '/groups/:groupid/:userid'
+```
+add a user to a group
+```
+
+```javascript
+        var options = {
+            url: 'http://localhost:8081/groups/3/53',
+            method: 'PUT'
+        };
+
+        request( options )
+            .spread( function(res, body) {
+                var group = JSON.parse( body );
+                group.name.should.be.eq( 'internal' );
+                done();
+            } )
+```
+
 #### GET **http://localhost:8080/user?group=:id**
 ```
  return list of users for a specific group
@@ -129,7 +149,7 @@ delete the session user, redirect the user to the home page
 
 
 
-#### GET **http://locahost:8080/group**
+#### GET **http://locahost:8080/groups**
 ```
  Return list of groups in JSON ( the group visibility is governed by session user )
 ```
