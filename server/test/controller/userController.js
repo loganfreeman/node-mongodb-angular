@@ -76,6 +76,7 @@ describe( 'userController', function() {
                 then( function(user) {
                     user.name.should.be.eq( 'scheng' );
                     user.password.should.be.eq( '$2a$10$eczSQhaHISNuoKsH080P4.SJe0VoY1ucybcSiW/Ny.2FPD2zHfYyO' );
+                    user.should.have.property( 'groups' );
                     done();
                 }, function(err) {
                         done( err );

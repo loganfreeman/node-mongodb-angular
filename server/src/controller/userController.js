@@ -139,6 +139,8 @@ module.exports = {
      * @return {promise}
      */
     login: function(username, password) {
+
+        var self = this;
         return new Promise( function(resolve, reject) {
                 var params = {};
                 params.where = {
@@ -156,7 +158,11 @@ module.exports = {
                             var user = matches[0];
                             // generate a non-persistant token, and attached it to the user
                             user.token = uuid.v1();
-                            resolve( user );
+                            // retrieve groups for the user
+                            self.attachGroup( user )
+                                .then( function(user) {
+                                    resolve( user );
+                                } );
                         } else {
                             reject( Error( 'Couldn\'t find the matching user in database' ) );
                         }
