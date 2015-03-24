@@ -26,6 +26,46 @@ describe( 'user route', function() {
         } );
     } );
 
+
+    it( 'it should create user', function(done) {
+        var user = {
+            firstName: 'jelly',
+            lastName: 'bean',
+            name: 'jelly.bean',
+            email: 'snow.white@mysteryforest.com',
+            password: 'pass22'
+        };
+
+
+        var options = {
+            url: 'http://localhost:8081/user',
+            method: 'PUT',
+            json: user
+        };
+
+        request( options )
+            .spread( function(res, body) {
+                console.log( body );
+                return body;
+            } )
+            .then( function(user) {
+
+                user.should.have.property( 'id' );
+                var options = {
+                    url: 'http://localhost:8081/user/' + user.id,
+                    method: 'DELETE'
+                };
+
+                request( options )
+                    .spread( function(res, body) {
+                        done();
+                    } );
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+    } );
+
     it( 'it should login', function(done) {
         var postData = {
             username: 'scheng',

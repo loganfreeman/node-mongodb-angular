@@ -50,12 +50,14 @@ module.exports = function(app) {
     } );
 
     app.put( '/user', function(req, res) {
-        app.models.users.create( req.body, function(err, model) {
-            if (err) return res.json( {
-                    err: err
-                }, 500 );
-            res.json( model );
-        } );
+
+        userController.create( req.body )
+            .then( function(user) {
+                res.json( user );
+            } )
+            .catch( function(err) {
+                res.status( 500 ).send( err );
+            } );
     } );
 
     app.get( '/user/:id', function(req, res) {
