@@ -208,6 +208,31 @@ module.exports = {
             } );
     },
 
+
+    /**
+     * delete user by user id
+     * @param  {Number} userid user id
+     * @return {Promise}        promise
+     */
+    delete: function(userid) {
+        var self = this;
+        return new Promise( function(resolve, reject) {
+                self.getUserById( userid )
+                    .then( function(user) {
+                        user.destroy( function(err, model) {
+                            if (err) {
+                                reject( err );
+                            } else {
+                                resolve( model );
+                            }
+                        } );
+                    } )
+                    .catch( function(e) {
+                        reject( e );
+                    } );
+            } );
+    },
+
     /**
      * save description
      * @param  {user}

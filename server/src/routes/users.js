@@ -70,15 +70,14 @@ module.exports = function(app) {
     } );
 
     app.delete( '/user/:id', function(req, res) {
-        app.models.users.destroy( {
-            id: req.params.id
-        }, function(err) {
-                if (err) return res.json( {
-                        err: err
-                    }, 500 );
-                res.json( {
-                    status: 'ok'
-                } );
+        var userid = req.params.id;
+
+        userController.delete( userid )
+            .then( function(user) {
+                res.json( user );
+            } )
+            .catch( function(err) {
+                res.status( 500 ).send( err );
             } );
     } );
 

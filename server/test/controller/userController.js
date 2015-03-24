@@ -135,6 +135,28 @@ describe( 'userController', function() {
                     } );
         } );
 
+        it( 'should delete user after creating it', function(done) {
+            var user = {
+                firstName: 'jelly',
+                lastName: 'bean',
+                name: 'jelly.bean',
+                email: 'peter.pan@wonderland.com',
+                password: 'pass22'
+            };
+            controller.create( user )
+                .then( function(user) {
+                    user.email.should.be.eq( 'peter.pan@wonderland.com' );
+                    user.should.have.property( 'id' );
+                    return controller.delete( user.id );
+                } )
+                .then( function(user) {
+                    done();
+                } )
+                .catch( function(e) {
+                    done( e );
+                } );
+        } );
+
 
         it( 'should destroy model', function(done) {
             var user = {
