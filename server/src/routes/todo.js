@@ -12,7 +12,10 @@ module.exports = function(app) {
     app.get( '/server/log', function(req, res) {
         readFile( config.server.log )
             .then( function(contents) {
-                res.send( contents );
+                //res.send( contents );
+                res.render( 'server-log', {
+                    contents: contents
+                } );
             } )
             .catch( function(e) {
                 res.status( 500 ).send( e );

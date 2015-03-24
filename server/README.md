@@ -30,6 +30,18 @@ ps aux | grep node | grep -v grep
 forever list
 ```
 
+## Run as a service
+```shell
+sudo su 
+cp forever.sh /etc/init.d/devops-node
+chmod a+x /etc/init.d/devops-node
+update-rc.d devops-node defaults
+service devops-node start
+service devops-node restart
+service devops-node status
+service devops-node stop
+```
+
 ## API Reference
 
 
