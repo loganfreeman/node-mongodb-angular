@@ -84,18 +84,12 @@ module.exports = function(app) {
     } );
 
     app.post( '/user/:id', function(req, res) {
-        // Don't pass ID to update
-        // delete req.body.id;
-
-        console.log( 'Updating user id ' + req.params.id );
-
-        app.models.users.update( {
-            id: req.params.id
-        }, req.body, function(err, model) {
-                if (err) return res.json( {
-                        err: err
-                    }, 500 );
-                res.json( model );
+        userController.save( req.body )
+            .then( function(user) {
+                res.json( user );
+            } )
+            .catch( function(e) {
+                res.status( 500 ).send( e );
             } );
     } );
 };

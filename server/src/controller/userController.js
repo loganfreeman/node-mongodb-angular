@@ -235,22 +235,28 @@ module.exports = {
 
     /**
      * save description
-     * @param  {user}
+     * @param  {json}
      * @return {promise}
      */
-    save: function(user) {
+    save: function(source) {
+
+        var self = this;
         return new Promise( function(resolve, reject) {
-                var options = {
-                    validate: true,
-                    throws: true
-                };
-                user.save( options, function(err, model) {
-                    if (err) {
-                        reject( err );
-                    } else {
-                        resolve( model );
-                    }
-                } );
+                self.getUserById( source.id )
+                    .then( function(user) {
+                        var options = {
+                            validate: true,
+                            throws: true
+                        };
+                        _.assign( user, source );
+                        user.save( options, function(err, model) {
+                            if (err) {
+                                reject( err );
+                            } else {
+                                resolve( model );
+                            }
+                        } );
+                    } );
             } );
     },
 

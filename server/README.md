@@ -99,6 +99,29 @@ delete the session user, redirect the user to the home page
  (This is used to register a user, a user is associated with a group, group governs access level )
 ```
 
+```javascript
+        var user = {
+            firstName: 'jelly',
+            lastName: 'bean',
+            name: 'jelly.bean',
+            email: 'snow.white@mysteryforest.com',
+            password: 'pass22'
+        };
+
+
+        var options = {
+            url: 'http://localhost:8081/user',
+            method: 'PUT',
+            json: user
+        };
+
+        request( options )
+            .spread( function(res, body) {
+                console.log( body );
+                return body; // body should be a JSON object which represents the created user
+            } )
+```
+
 #### GET **http://localhost:8080/user?group=:id**
 ```
  return list of users for a specific group

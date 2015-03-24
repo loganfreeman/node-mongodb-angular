@@ -19,6 +19,29 @@ var expect = require( 'chai' ).expect,
 var assert = require( 'assert' );
 
 describe( 'user route', function() {
+
+
+    it( 'should update user', function(done) {
+        var user = {
+            id: 2,
+            firstName: 'shanhong',
+            lastName: 'cheng'
+        };
+        var options = {
+            url: 'http://localhost:8081/user/' + user.id,
+            method: 'POST',
+            json: user
+        };
+        request( options )
+            .spread( function(res, body) {
+                body.firstName.should.be.eq( 'shanhong' );
+                body.lastName.should.be.eq( 'cheng' );
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+    } );
     it( 'should return 200', function(done) {
         http.get( helpers.getUrl( '/' ), function(res) {
             assert.equal( 200, res.statusCode );
