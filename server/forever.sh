@@ -112,10 +112,9 @@ start() {
     # The pidfile contains the child process pid, not the forever process pid.
     # We're only using it as a marker for whether or not the process is
     # running.
-    daemon --user=$NODE_USER \
-        forever --pidFile $PIDFILE --sourceDir $APPLICATION_DIRECTORY \
+    forever --pidFile $PIDFILE --sourceDir $APPLICATION_DIRECTORY \
         -a -l $LOGFILE --minUptime 5000 --spinSleepTime 2000 \
-        start $APPLICATION_START
+        start $APPLICATION_START 2>&1 > /dev/null &
     RETVAL=$?
 }
  
@@ -125,7 +124,8 @@ stop() {
         # Tell Forever to stop the process. Note that doing it this way means
         # that each application that runs as a service must have a different
         # start file name, regardless of which directory it is in.
-        sudo -u $NODE_USER -s forever stop $APPLICATION_START
+        PID=`cat $PIDFILE`
+        forever stop $PID 2>&1 > /dev/null &
         # Get rid of the pidfile, since Forever won't do that.
         rm -f $PIDFILE
         RETVAL=$?
@@ -136,14 +136,23 @@ stop() {
 }
  
 restart() {
-    if [ -f $PIDFILE ]; then
-        echo "Restarting $NAME"
-        sudo -u $NODE_USER -s forever restart $APPLICATION_START
-        RETVAL=$?
-    else
-        start
-    fi    
+    stop
+    start
 }
+ 
+status() {
+    echo "Status for $NAME:"
+    # This is taking the lazy way out on status, as it will return a list of
+    # all running Forever processes. You get to figure out what you want to
+    # know from that information.
+    #
+    # On Ubuntu, this isn't even necessary. To find out whether the service is
+    # running, use "service my-application status" which bypasses this script
+    # entirely provided you used the service utility to start the process.
+    forever list
+    RETVAL=$?
+}
+
  
 status() {
     echo "Status for $NAME:"
