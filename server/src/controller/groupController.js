@@ -67,6 +67,43 @@ module.exports = {
     },
 
 
+    getUsers: function(group_id) {
+        var self = this;
+        return new Promise( function(resolve, reject) {
+                var params = {};
+                params.where = {
+                    group_id: group_id
+                };
+                db['user_group'].all( params, function(err, groups) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        Promise.resolve( groups )
+                            .map( function(group) {
+                                return group.user_id;
+                            } )
+                            .then( function(userIdList) {
+                                return _.uniq( userIdList );
+                            } )
+                            .then( function(userIdList) {
+                                var params = {};
+                                params.where = {
+                                    id: userIdList
+                                };
+                                db['users'].all( params, function(err, users) {
+                                    if (err) {
+                                        reject( err );
+                                    } else {
+                                        resolve( users );
+                                    }
+                                } );
+                            } );
+                    }
+                } );
+            } );
+    },
+
+
     getGroupList: function(ids) {
         return new Promise( function(resolve, reject) {
                 db['groups'].all( function(err, models) {

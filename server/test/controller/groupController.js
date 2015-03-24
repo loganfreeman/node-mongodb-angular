@@ -4,11 +4,26 @@ var db = require( '../../src/jugglingdb/init.js' );
 
 var _ = require( 'lodash' );
 
+
+var helpers = require( '../helpers.js' );
+
 var expect = require( 'chai' ).expect,
     should = require( 'chai' ).should();
 
 
 describe( 'groups', function() {
+
+
+    it( 'should get users by group ID', function(done) {
+        controller.getUsers( 3 )
+            .then( function(users) {
+                helpers.verifyArray( users, db['users'] );
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+    } );
 
 
     it( 'should add user to group', function(done) {

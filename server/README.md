@@ -142,7 +142,7 @@ add a user to a group
             } )
 ```
 
-#### GET **http://localhost:8080/user?group=:id**
+#### GET **http://localhost:8080/groups/:groupid/users**
 ```
  return list of users for a specific group
 ```
