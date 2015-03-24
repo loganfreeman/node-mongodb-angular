@@ -34,4 +34,21 @@ describe( 'groups routes', function() {
                 done( e );
             } );
     } );
+
+    it( 'should add user to group', function(done) {
+        var options = {
+            url: 'http://localhost:8081/groups/3/53',
+            method: 'PUT'
+        };
+
+        request( options )
+            .spread( function(res, body) {
+                var group = JSON.parse( body );
+                group.name.should.be.eq( 'test' );
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+    } );
 } );

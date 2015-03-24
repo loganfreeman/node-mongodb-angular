@@ -16,4 +16,27 @@ module.exports = function(app) {
                 res.status( 500 ).send( e );
             } );
     } );
+
+    /**
+     * add a user to a group
+     *
+     * 
+     */
+    app.put( '/groups/:groupid/:userid', function(req, res) {
+        var userid = req.params.userid;
+        var groupid = req.params.groupid;
+        groupController.addUserToGroup( userid, groupid )
+            .then( function(model) {
+                return model.group_id;
+            } )
+            .then( function(group_id) {
+                return groupController.getGroup( group_id );
+            } )
+            .then( function(group) {
+                res.json( group );
+            } )
+            .catch( function(e) {
+                res.status( 500 ).send( e );
+            } );
+    } );
 };
