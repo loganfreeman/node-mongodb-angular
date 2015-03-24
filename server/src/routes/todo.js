@@ -14,7 +14,7 @@ module.exports = function(app) {
             .then( function(contents) {
                 //res.send( contents );
                 res.render( 'server-log', {
-                    contents: '<pre><code>' + contents + '</code></pre>'
+                    contents: contents
                 } );
             } )
             .catch( function(e) {
