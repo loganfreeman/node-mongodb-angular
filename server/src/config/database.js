@@ -3,17 +3,26 @@ var authentication = {
     production: {
         database: 'ops_dashboard',
         username: 'ops_dashboard',
-        password: 'Najmacjeid'
+        password: 'Najmacjeid',
+        port: 5432
     },
     development: {
         database: 'todo',
         username: 'michael',
-        password: 'root'
+        password: 'root',
+        port: 5432
     },
     devops: {
         database: 'ops_dashboard',
         username: 'ops_dashboard',
-        password: 'Najmacjeid'
+        password: 'Najmacjeid',
+        port: 5432
+    },
+    ops: {
+        database: 'ops_dashboard',
+        username: 'ops_dashboard',
+        password: 'Najmacjeid',
+        port: 5433
     }
 };
 

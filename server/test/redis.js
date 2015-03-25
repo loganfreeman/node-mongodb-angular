@@ -3,23 +3,48 @@ var expect = require( 'chai' ).expect,
 
 var redisHook = require( '../src/config/redis.js' );
 
+var os = require('os');
+
 describe( 'redis', function() {
     describe( '#pwd', function() {
         it( 'should not return error', function() {
+
             // http://nodejs.org/api.html#_child_processes
             var sys = require( 'sys' );
             var exec = require( 'child_process' ).exec;
             var child;
 
-            // executes `pwd`
-            child = exec( 'pwd', function(error, stdout, stderr) {
-                sys.print( 'stdout: ' + stdout );
-                // sys.print( 'stderr: ' + stderr );
-                should.not.exist( stderr );
-                if (error !== null) {
-                    console.log( 'exec error: ' + error );
-                }
-            } );
+            switch(os.platform()){
+                case 'win32':
+                    checkWindows();
+                    break;
+                case 'darwin':
+                    checkLinux();
+                    break;
+                case 'linux':
+                    checkLinux();
+                    break;
+                default:
+                    break;
+            }
+
+            function checkLinux(){
+                // executes `pwd`
+                child = exec( 'pwd', function(error, stdout, stderr) {
+                    sys.print( 'stdout: ' + stdout );
+                    // sys.print( 'stderr: ' + stderr );
+                    should.not.exist( stderr );
+                    if (error !== null) {
+                        console.log( 'exec error: ' + error );
+                    }
+                } );
+            }
+
+            function checkWindows(){
+
+            }
+
+
         } );
 
 
