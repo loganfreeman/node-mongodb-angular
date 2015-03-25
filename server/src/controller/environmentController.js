@@ -45,7 +45,9 @@ module.exports = {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(model);
+                    model.stacks(function(err, stacks) {
+                        resolve(model);
+                    })
                 }
             });
         });

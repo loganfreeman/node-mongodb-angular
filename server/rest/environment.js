@@ -18,6 +18,8 @@ var expect = require('chai').expect,
 
 var assert = require('assert');
 
+var uuid = require('node-uuid');
+
 
 describe('environment routes', function() {
     it('should return all environments', function(done) {
@@ -41,6 +43,45 @@ describe('environment routes', function() {
                 var environment = JSON.parse(body);
                 environment.should.have.property('$stacks');
                 done();
+            })
+            .catch(function(err) {
+                done(err);
+            })
+    });
+
+    it('should create then delete', function(done) {
+        var environment = {
+            name: 'temp11111',
+            description: 'temp environment'
+        };
+        var options = {
+            method: 'PUT',
+            url: 'http://localhost:8081/environment',
+            json: environment
+        };
+        request(options)
+            .spread(function(res, body) {
+                if (res.statusCode != 200) {
+                    throw Error(JSON.stringify(body));
+                };
+
+                return body;
+            })
+            .then(function(env) {
+
+                env.should.have.property('stacks');
+                env.stacks.length.should.be.eq(0);
+                var options = {
+                    method: 'DELETE',
+                    url: 'http://localhost:8081/environment/' + env.id
+                };
+                request(options).
+                spread(function(res, body) {
+                        done();
+                    })
+                    .catch(function(err) {
+                        done(err);
+                    })
             })
             .catch(function(err) {
                 done(err);
