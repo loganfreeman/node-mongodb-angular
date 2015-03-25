@@ -24,6 +24,10 @@ var url = require( 'url' );
 
 
 module.exports = {
+
+    isJSONArray: function(arr) {
+        return Array.isArray( arr );
+    },
     verifyArray: function(arr, type) {
         arr.should.be.instanceof( Array );
         _.each( arr, function(item) {

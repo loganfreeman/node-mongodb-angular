@@ -154,6 +154,13 @@ add a user to a group
  Return list of groups in JSON ( the group visibility is governed by session user )
 ```
 
+```javascript
+request( 'http://localhost:8081/groups' )
+            .spread( function(res, body) {
+                var groups = JSON.parse( body );                
+            } )
+```
+
 #### GET **http://localhost:8080/group/:id**
 ```
  Return the group in JSON
