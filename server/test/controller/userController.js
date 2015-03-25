@@ -85,9 +85,9 @@ describe( 'userController', function() {
 
 
         it( 'should login for another user', function(done) {
-            controller.login( 'ccastillo', 'hell$66' ).
+            controller.login( 'carlos.boozer', 'hell$66' ).
                 then( function(user) {
-                    user.name.should.be.eq( 'ccastillo' );
+                    user.name.should.be.eq( 'carlos.boozer' );
                     user.email.should.be.eq( 'ccastillo@contactpointsolutions.com' );
                     user.should.have.property( 'token' );
                     done();
@@ -184,23 +184,24 @@ describe( 'userController', function() {
                     } );
         } );
 
+
+
         it( 'should update model', function(done) {
-            var user = new db['users'];
-            user.id = 2;
-            user.firstName = 'Jackie';
-            user.lastName = 'Chen';
-            user.name = 'scheng';
-            user.email = 'scheng@contactpointsolutions.com';
-            user.password = '$2a$10$eczSQhaHISNuoKsH080P4.SJe0VoY1ucybcSiW/Ny.2FPD2zHfYyO';
-            controller.save(user)
+            var user = {};
+            user.id = 3;
+            user.firstName = 'carlos';
+            user.lastName = 'boozer';
+            user.name = 'carlos.boozer';
+            controller.save( user )
                 .then( function(user) {
                     user.should.be.instanceof( db['users'] );
-                    user.firstName.should.be.eq( 'Jackie' );
-                    user.lastName.should.be.eq( 'Chen' );
+                    user.firstName.should.be.eq( 'carlos' );
+                    user.lastName.should.be.eq( 'boozer' );
                     done();
-                }, function(err) {
-                        done( err );
-                    } );
+                } )
+                .catch( function(e) {
+                    done( e );
+                } );
 
         } );
 

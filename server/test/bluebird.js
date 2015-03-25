@@ -35,6 +35,23 @@ var expect = require( 'chai' ).expect,
 
 describe( 'bluebird', function() {
 
+    describe( 'extend', function() {
+        it( 'should assign', function() {
+            var user = new db['users'];
+            user.firstName = 'John';
+            user.lastName = 'Wall';
+
+
+            _.assign( user, {
+                firstName: 'Peter',
+                lastName: 'Jackson'
+            } );
+
+            user.firstName.should.be.eq( 'Peter' );
+            user.lastName.should.be.eq( 'Jackson' );
+        } );
+    } );
+
 
     describe( 'map', function() {
         it( 'should resolve as array', function(done) {

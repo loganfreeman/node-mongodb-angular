@@ -244,11 +244,13 @@ module.exports = {
         return new Promise( function(resolve, reject) {
                 self.getUserById( source.id )
                     .then( function(user) {
+                        return _.assign( user, source );
+                    } )
+                    .then( function(user) {
                         var options = {
                             validate: true,
                             throws: true
                         };
-                        _.assign( user, source );
                         user.save( options, function(err, model) {
                             if (err) {
                                 reject( err );
@@ -256,6 +258,9 @@ module.exports = {
                                 resolve( model );
                             }
                         } );
+                    } )
+                    .catch( function(e) {
+                        reject( e );
                     } );
             } );
     },
