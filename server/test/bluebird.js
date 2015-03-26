@@ -22,6 +22,8 @@ var protocol = config.getProtocol();
 
 var url = require( 'url' );
 
+var NullReferenceError = require( '../src/exception' ).NullReferenceError;
+
 
 var join = Promise.join;
 var fs = Promise.promisifyAll( require( 'fs' ) );
@@ -31,9 +33,67 @@ var helpers = require( './helpers.js' );
 var _ = require( 'lodash' );
 
 var expect = require( 'chai' ).expect,
+    AssertionError = require( 'chai' ).AssertionError,
     should = require( 'chai' ).should();
 
 describe( 'bluebird', function() {
+
+
+    describe( 'steps', function() {
+        it( 'should exit on zero', function(done) {
+            Promise.resolve( 1 )
+                .then( function(v) {
+                    v = v - 1;
+                    v.should.not.be.eq( 0 );
+                    return v;
+                } )
+                .then( function(v) {
+                    return v = 1 / v;
+                } )
+                .then( function(v) {
+                    v.should.not.be.eq( Infinity );
+                    done();
+                } )
+                .catch( AssertionError, function(e) {
+                    done();
+                } )
+                .catch( function(e) {
+                    done( e );
+                } );
+        } );
+
+        it( 'should exit on null reference', function(done) {
+            Promise.resolve( null )
+                .then( function(o) {
+                    return o.toString();
+                } )
+                .catch( function(e) {
+                    return (e instanceof TypeError);
+                }, function(e) {
+                        done();
+                    } )
+                .catch( function(e) {
+                    done( e );
+                } );
+
+        } );
+
+        it( 'should exit on null reference', function(done) {
+            Promise.resolve( null )
+                .then( function(o) {
+                    if (!o)
+                        throw NullReferenceError();
+                    return o.toString();
+                } )
+                .catch( NullReferenceError, function(e) {
+                    done();
+                } )
+                .catch( function(e) {
+                    done( e );
+                } );
+
+        } );
+    } );
 
     describe( 'extend', function() {
         it( 'should assign', function() {

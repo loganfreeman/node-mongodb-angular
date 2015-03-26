@@ -22,6 +22,9 @@ var HttpUnauthorized = ClientError.extend( 'HttpUnauthorized', 401 );
 var HttpConflict = ClientError.extend( 'HttpConflict', 409 ); //unique constraint error
 var HttpForbidden = ClientError.extend( 'HttpForbidden', 403 );
 
+var NullReferenceError = Error.extend( 'ClientError', 400 );
+var ObjectNotFoundError = Error.extend( 'ClientError', 400 );
+
 
 
 function ZabbixError(msg) {
@@ -56,5 +59,7 @@ module.exports = {
     HttpNotFound: HttpNotFound,
     HttpUnauthorized: HttpUnauthorized,
     HttpForbidden: HttpForbidden,
-    HttpConflict: HttpConflict
+    HttpConflict: HttpConflict,
+    NullReferenceError: NullReferenceError,
+    ObjectNotFoundError: ObjectNotFoundError
 };
