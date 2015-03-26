@@ -33,5 +33,19 @@ describe('deploy routes', function() {
 			.catch(function(err) {
 				done(err);
 			})
+	});
+
+	it('should get deploys by instance ID', function(done) {
+		request('http://localhost:8081/deploys/instance/1')
+			.spread(function(res, deploys) {
+				var deploys = JSON.parse(deploys);
+				_.each(deploys, function(instance) {
+					instance.should.have.property('instance_id');
+				})
+				done();
+			})
+			.catch(function(err) {
+				done(err);
+			})
 	})
 })

@@ -12,4 +12,16 @@ module.exports = function(app) {
 				res.status(500).send(e);
 			})
 	});
+
+
+	app.get('/deploys/instance/:instanceid', function(req, res) {
+		var instanceid = req.params.instanceid;
+		deployController.getDeployByInstance(instanceid)
+			.then(function(deploys) {
+				res.json(deploys);
+			})
+			.catch(function(e) {
+				res.status(500).send(e);
+			})
+	})
 };
