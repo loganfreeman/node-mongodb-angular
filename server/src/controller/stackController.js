@@ -13,10 +13,90 @@ var Promise = require( 'bluebird' );
 
 var _ = require( 'lodash' );
 
+var exceptions = require( '../exception' );
+
+var NullReferenceError = exceptions.NullReferenceError;
+var ObjectNotFoundError = exceptions.ObjectNotFoundError;
+
 
 
 
 module.exports = {
+
+    getStackById: function(id) {
+        return new Promise( function(resolve, reject) {
+                schema['stack'].find( id, function(err, model) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( model );
+                    }
+                } );
+            } );
+    },
+
+
+    create: function(data) {
+        return new Promise( function(resolve, reject) {
+                schema['stack'].create( data, function(err, model) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( model );
+                    }
+                } );
+            } );
+    },
+
+    save: function(source) {
+        var self = this;
+        return new Promise( function(resolve, reject) {
+                self.getStackById( source.id )
+                    .then( function(stack) {
+                        if (!stack) {
+                            throw NullReferenceError( 'Stack instance doesn\'t exist' );
+                        }
+                        return _.assign( stack, source );
+                    } )
+                    .then( function(stack) {
+                        var options = {
+                            validate: true,
+                            throws: true
+                        };
+                        stack.save( options, function(err, model) {
+                            if (err) {
+                                reject( err );
+                            } else {
+                                resolve( model );
+                            }
+                        } );
+                    } )
+                    .catch( function(e) {
+                        reject( e );
+                    } );
+            } );
+    },
+
+    delete: function(id) {
+        var self = this;
+        return new Promise( function(resolve, reject) {
+                self.getStackById( id )
+                    .then( function(deploy) {
+                        if (!deploy) {
+                            resolve();
+                        } else {
+                            deploy.destroy( function(err) {
+                                if (err) {
+                                    reject( err );
+                                } else {
+                                    resolve();
+                                }
+                            } );
+                        }
+
+                    } );
+            } );
+    },
 
 
     getStacks: function() {
