@@ -29,7 +29,7 @@ module.exports = {
                             .map( function(model) {
                                 return new Promise( function(resolve, reject) {
                                         model.instances( function(err, instances) {
-                                            model.$instances = instances;
+                                            // model.$instances = instances;
                                             if (err) {
                                                 reject( err );
                                             } else {
