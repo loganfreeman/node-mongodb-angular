@@ -23,6 +23,16 @@ module.exports = function(app) {
 			})
 	});
 
+	app.put('/deploy', function(req, res) {
+		deployController.create(req.body)
+			.then(function(deploy) {
+				res.json(deploy);
+			})
+			.catch(function(err) {
+				res.status(500).send(err);
+			})
+	})
+
 
 	app.get('/deploys/instance/:instanceid', function(req, res) {
 		var instanceid = req.params.instanceid;

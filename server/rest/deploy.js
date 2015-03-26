@@ -47,5 +47,45 @@ describe('deploy routes', function() {
 			.catch(function(err) {
 				done(err);
 			})
+	});
+
+
+	it('should create then delete', function(done) {
+		var instance = {
+			deploy_date: new Date,
+			user_id: 2,
+			instance_id: 1,
+			comments: 'this is inserted by test'
+		};
+		var options = {
+			method: 'PUT',
+			url: 'http://localhost:8081/deploy',
+			json: instance
+		};
+		request(options)
+			.spread(function(res, body) {
+				if (res.statusCode != 200) {
+					throw Error(JSON.stringify(body));
+				};
+				return body;
+			})
+			.then(function(deploy) {
+
+				// console.log('TO DELETE: ' + JSON.stringify(deploy));
+				var options = {
+					method: 'DELETE',
+					url: 'http://localhost:8081/deploy/' + deploy.id
+				};
+				request(options).
+				spread(function(res, body) {
+						done();
+					})
+					.catch(function(err) {
+						done(err);
+					})
+			})
+			.catch(function(err) {
+				done(err);
+			})
 	})
 })
