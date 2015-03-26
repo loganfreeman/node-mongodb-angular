@@ -19,9 +19,31 @@ var expect = require( 'chai' ).expect,
 
 var helpers = require( '../helpers.js' );
 
+var NullReferenceError = require( '../../src/exception' ).NullReferenceError;
+
 
 
 describe( 'instanceController', function() {
+
+
+    it( 'should update comments', function(done) {
+        var description = 'this is modified by instanceController' + +new Date;
+        var instance = {
+            description: description,
+            id: 1
+        };
+        controller.save(instance)
+            .then( function(instance) {
+                instance.description.should.be.eq( description );
+                done();
+            } )
+            .catch( NullReferenceError, function(e) {
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+    } );
 
     it( 'should create new instances', function(done) {
         var data = {
