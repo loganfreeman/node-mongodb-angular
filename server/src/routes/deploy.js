@@ -23,5 +23,17 @@ module.exports = function(app) {
 			.catch(function(e) {
 				res.status(500).send(e);
 			})
+	});
+
+	app.delete('/deploy/:id', function(req, res) {
+		deployController.delete(req.params.id)
+			.then(function() {
+				res.status(200).send('OK');
+			})
+			.catch(function(err) {
+				res.status(500).send(err);
+			})
 	})
+
+
 };

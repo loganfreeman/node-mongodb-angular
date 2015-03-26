@@ -1,23 +1,23 @@
-var schema = require( '../jugglingdb/init.js' );
+var schema = require('../jugglingdb/init.js');
 
-var Promise = require( 'bluebird' );
+var Promise = require('bluebird');
 
-var _ = require( 'lodash' );
+var _ = require('lodash');
 
 
 module.exports = {
 
 
     getDeploys: function() {
-        return new Promise( function(resolve, reject) {
-                schema['deploy'].all( function(err, models) {
-                    if (err) {
-                        reject( err );
-                    } else {
-                        resolve( models );
-                    }
-                } );
-            } );
+        return new Promise(function(resolve, reject) {
+            schema['deploy'].all(function(err, models) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(models);
+                }
+            });
+        });
     },
 
     /**
@@ -30,15 +30,28 @@ module.exports = {
         params.where = {
             instance_id: instance
         };
-        return new Promise( function(resolve, reject) {
-                schema['deploy'].all( params, function(err, models) {
-                    if (err) {
-                        reject( err );
-                    } else {
-                        resolve( models );
-                    }
-                } );
-            } );
+        return new Promise(function(resolve, reject) {
+            schema['deploy'].all(params, function(err, models) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(models);
+                }
+            });
+        });
+    },
+
+
+    getDeployById: function(id) {
+        return new Promise(function(resolve, reject) {
+            schema['deploy'].find(id, function(err, model) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(model);
+                }
+            })
+        })
     },
 
     /**
@@ -48,15 +61,31 @@ module.exports = {
      */
     create: function(data) {
 
-        return new Promise( function(resolve, reject) {
-                schema['deploy'].create( data, function(err, model) {
-                    if (err) {
-                        reject( err );
-                    } else {
-                        resolve( model );
-                    }
-                } );
-            } );
+        return new Promise(function(resolve, reject) {
+            schema['deploy'].create(data, function(err, model) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(model);
+                }
+            });
+        });
+    },
+
+    delete: function(id) {
+        var self = this;
+        return new Promise(function(resolve, reject) {
+            self.getDeployById(id)
+                .then(function(deploy) {
+                    deploy.destroy(function(err) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve();
+                        }
+                    });
+                })
+        })
     }
 
 };
