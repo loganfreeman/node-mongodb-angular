@@ -21,9 +21,33 @@ var expect = require( 'chai' ).expect,
 
 var helpers = require( '../helpers.js' );
 
+var NullReferenceError = require( '../../src/exception' ).NullReferenceError;
+
+
 
 
 describe( 'stackController', function() {
+
+    it( 'should update description', function(done) {
+        var description = 'this is modified by stackController' + +new Date;
+        var instance = {
+            description: description,
+            id: 1
+        };
+        controller.save(instance)
+            .then( function(instance) {
+                instance.description.should.be.eq( description );
+            } )
+            .catch( NullReferenceError, function(e) {
+                throw e;
+            } )
+            .then( function() {
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+    } );
 
     it( 'should create new stack', function(done) {
         var data = {
