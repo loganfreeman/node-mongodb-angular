@@ -1,14 +1,15 @@
-var db = require( '../models' );
+var db = require('../models');
+
+var deployController = require('../controller/deployController.js');
 
 module.exports = function(app) {
-    app.get( '/deploy', function(req, res) {
-        db.Deploy.findAll().success( function(instances) {
-            res.json( instances );
-        } ).error( function(error) {
-            res.render( 'error', {
-                error: error,
-                message: 'An error occured during retrieving deploy'
-            } );
-        } );
-    } );
+	app.get('/deploys', function(req, res) {
+		deployController.getDeploys()
+			.then(function(deploys) {
+				res.json(deploys);
+			})
+			.catch(function(e) {
+				res.status(500).send(e);
+			})
+	});
 };
