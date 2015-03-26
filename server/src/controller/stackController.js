@@ -25,7 +25,24 @@ module.exports = {
                     if (err) {
                         reject( err );
                     } else {
-                        resolve( models );
+                        Promise.resolve( models )
+                            .map( function(model) {
+                                return new Promise( function(resolve, reject) {
+                                        model.instances( function(err, instances) {
+                                            if (err) {
+                                                reject( err );
+                                            } else {
+                                                resolve( model );
+                                            }
+                                        } );
+                                    } );
+                            } )
+                            .then( function(promises) {
+                                Promise.all( promises )
+                                    .then( function(stacks) {
+                                        resolve( stacks );
+                                    } );
+                            } );
                     }
                 } );
             } );
