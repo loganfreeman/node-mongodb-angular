@@ -33,7 +33,7 @@ module.exports = {
     },
 
 
-    create: function(instance) {
+    create: function(data) {
         return new Promise( function(resolve, reject) {
                 schema['instance'].create( data, function(err, model) {
                     if (err) {

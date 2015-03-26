@@ -22,6 +22,32 @@ var helpers = require( '../helpers.js' );
 
 
 describe( 'instanceController', function() {
+
+    it( 'should create new instances', function(done) {
+        var data = {
+            name: 'Temp',
+            description: 'Created by instanceController',
+            stack_id: 1,
+            ip: '192.168.100.128/25'
+        };
+        controller.create( data )
+            .then( function(model) {
+                helpers.verifyId( model, db['instance'] );
+                // console.log( model );
+                model.ip.should.be.eq( '192.168.100.128/25' );
+                return model;
+            } )
+            .then( function(instance) {
+                return controller.delete( instance.id );
+            } )
+            .then( function() {
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+    } );
+
     it( 'should return instances', function(done) {
         controller.getInstances()
             .then( function(models) {
