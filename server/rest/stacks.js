@@ -21,6 +21,71 @@ var assert = require( 'assert' );
 var uuid = require( 'node-uuid' );
 
 describe( 'stack routes', function() {
+
+    it( 'should update stack', function(done) {
+
+        var description = 'this is updated through route ' + +new Date();
+        var data = {
+            description: description,
+            id: 1
+        };
+        var options = {
+            url: 'http://localhost:8081/stack',
+            json: data,
+            method: 'POST'
+        };
+        request( options )
+            .spread( function(res, body) {
+                body.description.should.be.eq( description );
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+
+    } );
+
+    it( 'should create then delete', function(done) {
+        var instance = {
+            name: 'test',
+            description: 'this is inserted by test',
+            environment_id: 1
+        };
+        var options = {
+            method: 'PUT',
+            url: 'http://localhost:8081/stack',
+            json: instance
+        };
+        request( options )
+            .spread( function(res, body) {
+                if (res.statusCode != 200) {
+                    throw Error( JSON.stringify( body ) );
+                }
+                return body;
+            } )
+            .then( function(stack) {
+
+                stack.name.should.be.eq( 'test' );
+
+                // console.log('TO DELETE: ' + JSON.stringify(deploy));
+                var options = {
+                    method: 'DELETE',
+                    url: 'http://localhost:8081/stack/' + stack.id
+                };
+                request( options ).
+                    spread( function(res, body) {
+                        done();
+                    } )
+                    .catch( function(err) {
+                        done( err );
+                    } );
+            } )
+            .catch( function(err) {
+                done( err );
+            } );
+    } );
+
+
     it( 'should get stacks and associated instances', function(done) {
         request( 'http://localhost:8081/stacks' )
             .spread( function(res, body) {

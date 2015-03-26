@@ -1,12 +1,44 @@
-var db = require('../models');
+var instanceController = require( '../controller/instanceController.js' );
 module.exports = function(app) {
-	app.get('/instances', function(req, res) {
-		db.Instance.findAll().success(function(instances) {
-			res.render('instances', {
-				title: 'isntance list',
-				instances: instances
-			});
-		});
-	});
+    app.get( '/instances', function(req, res) {
+        instanceController.getInstances()
+            .then( function(instances) {
+                res.json( instances );
+            } )
+            .catch( function(e) {
+                res.status( 500 ).send( e );
+            } );
+    } );
+
+
+    app.put( '/instance', function(req, res) {
+        instanceController.create( req.body )
+            .then( function(stack) {
+                res.json( stack );
+            } )
+            .catch( function(e) {
+                res.status( 500 ).send( e );
+            } );
+    } );
+
+    app.post( '/instance', function(req, res) {
+        instanceController.save( req.body )
+            .then( function(stack) {
+                res.json( stack );
+            } )
+            .catch( function(e) {
+                res.status( 500 ).send( e );
+            } );
+    } );
+
+    app.delete( '/instance/:id', function(req, res) {
+        instanceController.delete( req.params.id )
+            .then( function() {
+                res.status( 200 ).send( 'OK' );
+            } )
+            .catch( function(e) {
+                res.status( 500 ).send( e );
+            } );
+    } );
 
 };
