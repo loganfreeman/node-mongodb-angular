@@ -10,4 +10,15 @@ module.exports = function(app) {
                 res.status( 500 ).send( e );
             } );
     } );
+
+
+    app.get( '/environment/:envid/stacks', function(req, res) {
+        stackController.getStacksByEnv( req.params.envid )
+            .then( function(stacks) {
+                res.json( stacks );
+            } )
+            .catch( function(e) {
+                res.status( 500 ).send( e );
+            } );
+    } );
 };

@@ -33,4 +33,17 @@ describe( 'stack routes', function() {
                 done();
             } );
     } );
+
+    it( 'should get stacks and associated instances', function(done) {
+        request( 'http://localhost:8081/environment/1/stacks' )
+            .spread( function(res, body) {
+                var stacks = JSON.parse( body );
+                stacks.should.be.instanceof( Array );
+                _.each( stacks, function(stack) {
+                    stack.should.have.property( 'instances' );
+                    stack.instances.should.be.instanceof( Array );
+                } );
+                done();
+            } );
+    } );
 } );
