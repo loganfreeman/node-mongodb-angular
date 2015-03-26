@@ -77,13 +77,18 @@ module.exports = {
         return new Promise(function(resolve, reject) {
             self.getDeployById(id)
                 .then(function(deploy) {
-                    deploy.destroy(function(err) {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve();
-                        }
-                    });
+                    if (!deploy) {
+                        resolve();
+                    } else {
+                        deploy.destroy(function(err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve();
+                            }
+                        });
+                    }
+
                 })
         })
     }

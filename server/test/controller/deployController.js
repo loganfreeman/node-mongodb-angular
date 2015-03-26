@@ -48,6 +48,28 @@ describe('deployController', function() {
             });
     });
 
+    it('should not return deploy by non-existant id', function(done) {
+        controller.getDeployById('12313321313')
+            .then(function(deploy) {
+                expect(deploy).to.be.null;
+                done();
+            })
+            .catch(function(err) {
+                done(err);
+            })
+    });
+
+
+    it('should not throw err when deleting non-existant instance', function(done) {
+        controller.delete('112244')
+            .then(function() {
+                done();
+            })
+            .catch(function(err) {
+                done(err);
+            })
+    })
+
 
     it('should create new deploy', function(done) {
         var data = {
