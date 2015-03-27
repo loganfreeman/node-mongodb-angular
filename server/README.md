@@ -168,9 +168,12 @@ request( 'http://localhost:8081/groups' )
 ```javascript
 request('http://localhost:8081/group/1')
 ```
-#### Get **http://localhost:8080//deploys/instance/:instanceid**
+#### Get **http://localhost:8080/deploys/instance/:instanceid**
 ```
  return list of deploys for a specific instance
+```
+```javascript
+    request('http://localhost:8081/deploys/instance/1')
 ```
 #### Get **http://localhost:8080/deploy?instance=:id&last=true**
 ```
@@ -202,13 +205,22 @@ request('http://localhost:8081/group/1')
 ```
  Return the instance in JSON
 ```
-#### GET **http://localhost:8080/stack?environment=:id**
+```javascript
+    request('http://localhost:8081/instance/1')
+```
+#### GET **http://localhost:8080/environment/:envid/stacks**
 ```
  Return list of stacks for a specific environment
 ```
-#### Get **http://localhost:8080/environment**
+```javacsript
+    request('http://localhost:8080/environment/1/stacks')
+```
+#### Get **http://localhost:8080/environments**
 ```
  return list of environments
+```
+```javascript
+    request('http://localhost:8081/environments')
 ```
 #### PUT **http://localhost:8080/deploy**
 ```
