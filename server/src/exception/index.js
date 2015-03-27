@@ -24,6 +24,7 @@ var HttpForbidden = ClientError.extend( 'HttpForbidden', 403 );
 
 var NullReferenceError = Error.extend( 'ClientError', 400 );
 var ObjectNotFoundError = Error.extend( 'ClientError', 400 );
+var DuplicateKeyError = Error.extend( 'ClientError', 400 );
 
 
 
@@ -61,5 +62,6 @@ module.exports = {
     HttpForbidden: HttpForbidden,
     HttpConflict: HttpConflict,
     NullReferenceError: NullReferenceError,
-    ObjectNotFoundError: ObjectNotFoundError
+    ObjectNotFoundError: ObjectNotFoundError,
+    DuplicateKeyError: DuplicateKeyError
 };

@@ -4,6 +4,12 @@ var Promise = require( 'bluebird' );
 
 var _ = require( 'lodash' );
 
+var exceptions = require( '../exception' );
+
+var NullReferenceError = exceptions.NullReferenceError;
+var ObjectNotFoundError = exceptions.ObjectNotFoundError;
+var DuplicateKeyError = exceptions.DuplicateKeyError;
+
 
 module.exports = {
 
@@ -119,13 +125,9 @@ module.exports = {
     },
 
 
-    create: function(group) {
+    getGroupById: function(id) {
         return new Promise( function(resolve, reject) {
-                var options = {
-                    validate: true,
-                    throws: true
-                };
-                group.save( options, function(err, model) {
+                db['groups'].find( id, function(err, model) {
                     if (err) {
                         reject( err );
                     } else {
@@ -133,5 +135,68 @@ module.exports = {
                     }
                 } );
             } );
-    }
+    },
+
+
+    create: function(data) {
+        return new Promise( function(resolve, reject) {
+                db['groups'].create( data, function(err, model) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( model );
+                    }
+                } );
+            } );
+    },
+
+    save: function(source) {
+        var self = this;
+        return new Promise( function(resolve, reject) {
+                self.getGroupById( source.id )
+                    .then( function(group) {
+                        if (!group) {
+                            throw NullReferenceError( 'Group instance doesn\'t exist' );
+                        }
+                        return _.assign( group, source );
+                    } )
+                    .then( function(group) {
+                        var options = {
+                            validate: true,
+                            throws: true
+                        };
+                        group.save( options, function(err, model) {
+                            if (err) {
+                                reject( err );
+                            } else {
+                                resolve( model );
+                            }
+                        } );
+                    } )
+                    .catch( function(e) {
+                        reject( e );
+                    } );
+            } );
+    },
+
+    delete: function(id) {
+        var self = this;
+        return new Promise( function(resolve, reject) {
+                self.getGroupById( id )
+                    .then( function(group) {
+                        if (!group) {
+                            resolve();
+                        } else {
+                            group.destroy( function(err) {
+                                if (err) {
+                                    reject( err );
+                                } else {
+                                    resolve();
+                                }
+                            } );
+                        }
+
+                    } );
+            } );
+    },
 };

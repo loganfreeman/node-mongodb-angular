@@ -232,6 +232,23 @@ request( 'http://localhost:8081/groups' )
 
  return the newly created instance
 ```
+```javascript
+        var instance = {
+            name: 'test',
+            description: 'this is inserted by test',
+            stack_id: 1,
+            ip: '192.168.100.128/25'
+        };
+        var options = {
+            method: 'PUT',
+            url: 'http://localhost:8081/instance',
+            json: instance
+        };
+        request( options )
+            .spread( function(res, body) {
+                return body;
+            } )
+```
 #### PUT **http://localhost:8080/stack**
 
 ```
@@ -239,6 +256,23 @@ request( 'http://localhost:8081/groups' )
 
  return the newly created stack
 ````
+
+```javascript
+        var instance = {
+            name: 'test',
+            description: 'this is inserted by test',
+            environment_id: 1
+        };
+        var options = {
+            method: 'PUT',
+            url: 'http://localhost:8081/stack',
+            json: instance
+        };
+        request( options )
+            .spread( function(res, body) {
+                return body;
+            } )
+```
 #### PUT **http://localhost:8080/environment**
 
 ```
@@ -246,6 +280,22 @@ request( 'http://localhost:8081/groups' )
 
  return the newly created environment
 ```
+
+```javascript
+        var environment = {
+            name: 'new',
+            description: 'temp environment'
+        };
+        var options = {
+            method: 'PUT',
+            url: 'http://localhost:8081/environment',
+            json: environment
+        };
+        request(options)
+            .spread(function(res, body) {
+                return body;
+            })
+```            
 
 
 ## Tests
