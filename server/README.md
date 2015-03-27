@@ -165,7 +165,10 @@ request( 'http://localhost:8081/groups' )
 ```
  Return the group in JSON
 ```
-#### Get **http://localhost:8080/deploy?instance=:id**
+```javascript
+request('http://localhost:8081/group/1')
+```
+#### Get **http://localhost:8080//deploys/instance/:instanceid**
 ```
  return list of deploys for a specific instance
 ```
@@ -211,6 +214,23 @@ request( 'http://localhost:8081/groups' )
 ```
  Create a new deploy, return the newly created deploy in JSON
 ```
+```javascript
+        var instance = {
+            deploy_date: new Date,
+            user_id: 2,
+            instance_id: 1,
+            comments: 'this is inserted by test'
+        };
+        var options = {
+            method: 'PUT',
+            url: 'http://localhost:8081/deploy',
+            json: instance
+        };
+        request(options)
+            .spread( function(res, body) {
+                return body;
+            } )
+```
 #### POST **http://localhost:8080/deploy**
 ```
  request body: the modified deploy in JSON.
@@ -224,6 +244,22 @@ request( 'http://localhost:8081/groups' )
  request body: new group in JSON
 
  return the newly created group
+```
+
+```javascript
+        var instance = {
+            name: 'Ghost',
+            description: 'this is created by groups route'
+        };
+        var options = {
+            method: 'PUT',
+            url: 'http://localhost:8081/group',
+            json: instance
+        };
+        request( options )
+            .spread( function(res, body) {
+                return body;
+            } )
 ```
 #### PUT **http://localhost:8080/instance**
 
