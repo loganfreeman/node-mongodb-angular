@@ -9,6 +9,8 @@ var controller = require( '../../src/controller/userController.js' );
 
 var db = require( '../../src/jugglingdb/init.js' );
 
+var helpers = require( '../helpers.js' );
+
 
 var _ = require( 'lodash' );
 
@@ -20,6 +22,17 @@ describe( 'userController', function() {
 
 
     describe( '#getUserById', function() {
+
+        it( 'should get users by group id', function(done) {
+            controller.getUsersByGroupId( 1 )
+                .then( function(users) {
+                    helpers.verifyArray( users, db['users'] );
+                    done();
+                } )
+                .catch( function(e) {
+                    done( e );
+                } );
+        } );
         it( 'should get user by id', function(done) {
             controller.getUserById( 2 ).
                 then( function(user) {

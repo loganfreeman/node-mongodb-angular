@@ -45,6 +45,37 @@ module.exports = {
 
     },
 
+
+    getUsersByGroupId: function(id) {
+        var self = this;
+
+
+        return new Promise( function(resolve, reject) {
+                var params = {};
+                params.where = {
+                    group_id: id
+                };
+                db['users'].all( params, function(err, users) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        Promise.resolve( users )
+                            .map( function(user) {
+                                return self.attachGroup( user );
+                            } )
+                            .then( function(promises) {
+                                Promise.all( promises )
+                                    .then( function(users) {
+                                        resolve( users );
+                                    } );
+                            } );
+                    }
+                } );
+            } );
+
+
+    },
+
     /**
      * attach groups to a user, return a promise that fulfill a user
      * @param  {user}

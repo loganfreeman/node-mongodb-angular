@@ -142,12 +142,13 @@ add a user to a group
             } )
 ```
 
-#### GET **http://localhost:8080/groups/:groupid/users**
+#### GET **http://localhost:8080/users/group/:groupid**
 ```
  return list of users for a specific group
 ```
-
-
+```javascript
+request('http://localhost:8081/users/group/:groupid')
+```
 
 #### GET **http://locahost:8080/groups**
 ```

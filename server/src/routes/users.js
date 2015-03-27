@@ -5,7 +5,18 @@ var userController = require( '../controller/userController.js' );
 var groupController = require( '../controller/groupController.js' );
 
 module.exports = function(app) {
-    // Build Express Routes (CRUD routes for /users)
+
+
+    app.get( '/users/group/:groupid', function(req, res) {
+        userController.getUsersByGroupId( req.params.groupid )
+            .then( function(users) {
+                res.json( users );
+            } )
+            .catch( function(e) {
+                res.status( 500 ).send( e );
+            } );
+    } );
+
 
 
     app.post( '/login', function(req, res) {

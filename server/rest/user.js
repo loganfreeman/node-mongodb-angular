@@ -20,6 +20,19 @@ var assert = require( 'assert' );
 
 describe( 'user route', function() {
 
+    it( 'should get users by group ID', function(done) {
+        request( 'http://localhost:8081/users/group/1' )
+            .spread( function(res, users) {
+                var users = JSON.parse( users );
+                users[0].should.have.property( 'email' );
+                users[0].should.have.property( 'groups' );
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+    } );
+
 
     it( 'should update user', function(done) {
         var user = {
