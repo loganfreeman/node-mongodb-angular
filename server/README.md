@@ -197,9 +197,12 @@ request('http://localhost:8081/group/1')
  Search the application log by a needle, return all the lines that contain the needle.
 ```
 
-#### GET **http://localhost:8080/instance?stack=:id**
+#### GET **http://localhost:8080/instances/stack/:id**
 ```
  Return list of instances for a specific stack in JSON ( the instances visibility is governed by session user )
+```
+```javascript
+request( 'http://localhost:8081/instances/stack/1' )
 ```
 #### GET **http://localhost:8080/instance/:id**
 ```
@@ -246,6 +249,22 @@ request('http://localhost:8081/group/1')
 #### POST **http://localhost:8080/deploy**
 ```
  request body: the modified deploy in JSON.
+```
+```javascript
+        var comments = 'this is updated through route ' + +new Date();
+        var data = {
+            comments: comments,
+            id: 2
+        };
+        var options = {
+            url: 'http://localhost:8081/deploy',
+            json: data,
+            method: 'POST'
+        };
+        request( options )
+            .spread( function(res, body) {
+                done();
+            } )
 ```
 #### POST **http://localhost:8080/deploy/:id/start**
 ```

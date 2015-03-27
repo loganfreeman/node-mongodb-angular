@@ -22,6 +22,18 @@ var uuid = require( 'node-uuid' );
 
 describe( 'instance routes', function() {
 
+    it( 'should get instances by stack ID', function(done) {
+        request( 'http://localhost:8081/instances/stack/1' )
+            .spread( function(res, instances) {
+                var instances = JSON.parse( instances );
+                instances[0].should.have.property( 'ip' );
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+    } );
+
     it( 'should update instance', function(done) {
 
         var description = 'this is updated through route ' + +new Date();

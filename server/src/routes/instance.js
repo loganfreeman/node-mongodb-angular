@@ -41,4 +41,15 @@ module.exports = function(app) {
             } );
     } );
 
+
+    app.get( '/instances/stack/:stackid', function(req, res) {
+        instanceController.getInstancesByStack( req.params.stackid )
+            .then( function(instances) {
+                res.json( instances );
+            } )
+            .catch( function(e) {
+                res.status( 500 ).send( e );
+            } );
+    } );
+
 };
