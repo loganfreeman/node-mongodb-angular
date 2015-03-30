@@ -21,13 +21,107 @@ describe( 'ZabbixApi', function() {
 
     describe( 'zabbixController', function() {
 
+        it( 'should check maintenance exists', function(done) {
+            controller.maintenanceExists( {
+                'name': 'Sunday maintenance'
+            } )
+                .then( function(result) {
+                    result.should.be.eq( false );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should get host interface', function(done) {
+            controller.getHostInterface( {
+                'output': 'extend',
+                'hostids': '30057'
+            } )
+                .then( function(result) {
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should check host interface', function(done) {
+            controller.hostInterfaceExists( {
+                'ip': '127.0.0.1'
+            } )
+                .then( function(result) {
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should get host groups', function(done) {
+            controller.getHostGroup( {
+                'filter': {
+                    'name': [
+                        'Zabbix servers',
+                        'Linux servers'
+                    ]
+                }
+            } )
+                .then( function(groups) {
+                    console.dir( groups );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should check hostgroup exists', function(done) {
+            controller.hostGroupExists( {
+                'name': 'Linux servers'
+            } )
+                .then( function(result) {
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should get hosts', function(done) {
+            controller.getHost( {
+                'output': ['hostid'],
+                'selectGroups': 'extend'
+            } )
+                .then( function(hosts) {
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should check host exist', function(done) {
+            controller.checkHost( {
+                'host': 'zabbix server'
+            } )
+                .then( function(res) {
+                    res.should.be.eq( false );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
         it( 'should retrieve service availability', function(done) {
             controller.getServiceAvailability( '1', [{
                 'from': +moment().subtract( 1, 'days' ).toDate(),
                 'to': +new Date
             }] )
                 .then( function(res) {
-                    console.log( JSON.stringify( res ) );
+                    //console.log( JSON.stringify( res ) );
                     done();
                 } )
                 .catch( function(e) {

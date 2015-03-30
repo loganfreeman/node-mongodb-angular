@@ -18,6 +18,65 @@ var ZabbixApi = require( 'zabbix-api' );
 var api = new ZabbixApi( config.zabbix.username, config.zabbix.password, config.zabbix.api_url );
 
 module.exports = {
+
+    maintenanceExists: function(options) {
+        return new Promise( function(resolve, reject) {
+                api.request( 'maintenance.exists', options, function(err, res) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( res );
+                    }
+                } );
+            } );
+    },
+
+    getHostInterface: function(options) {
+        return new Promise( function(resolve, reject) {
+                api.request( 'hostinterface.get', options, function(err, res) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( res );
+                    }
+                } );
+            } );
+    },
+
+    hostInterfaceExists: function(options) {
+        return new Promise( function(resolve, reject) {
+                api.request( 'hostinterface.exists', options, function(err, res) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( res );
+                    }
+                } );
+            } );
+    },
+
+    getHostGroup: function(options) {
+        return new Promise( function(resolve, reject) {
+                api.request( 'hostgroup.get', options, function(err, res) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( res );
+                    }
+                } );
+            } );
+    },
+    hostGroupExists: function(filter) {
+        return new Promise( function(resolve, reject) {
+                api.request( 'hostgroup.exists', filter, function(err, res) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( res );
+                    }
+                } );
+            } );
+    },
     getHistory: function(options) {
         return new Promise( function(resolve, reject) {
                 api.request( 'history.get', options, function(err, res) {
@@ -61,6 +120,31 @@ module.exports = {
                         }
                     } );
             } );
+    },
+
+    checkHost: function(filter) {
+        return new Promise( function(resolve, reject) {
+                api.request( 'host.exists', filter, function(err, res) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( res );
+                    }
+                } );
+            } );
+    },
+
+    getHost: function(options) {
+        return new Promise( function(resolve, reject) {
+                api.request( 'host.get', options, function(err, res) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( res );
+                    }
+                } );
+            } );
+
     }
 
 };
