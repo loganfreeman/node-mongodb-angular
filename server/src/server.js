@@ -125,7 +125,7 @@ swagger.configureDeclaration( 'pet', {
 
 // set api info
 swagger.setApiInfo( {
-    title: 'Swagger Sample App'
+    title: 'Devops Restful API'
 } );
 
 /*swagger.setAuthorizations( {
