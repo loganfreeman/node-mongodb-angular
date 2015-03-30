@@ -19,6 +19,65 @@ var api = new ZabbixApi( config.zabbix.username, config.zabbix.password, config.
 
 module.exports = {
 
+    getApplication: function(options) {
+        return new Promise( function(resolve, reject) {
+                api.request( 'application.get', options, function(err, res) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( res );
+                    }
+                } );
+            } );
+    },
+
+    applicationExists: function(options) {
+        return new Promise( function(resolve, reject) {
+                api.request( 'application.exists', options, function(err, res) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( res );
+                    }
+                } );
+            } );
+    },
+    getItem: function(options) {
+        return new Promise( function(resolve, reject) {
+                api.request( 'item.get', options, function(err, res) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( res );
+                    }
+                } );
+            } );
+    },
+
+    itemExists: function(options) {
+        return new Promise( function(resolve, reject) {
+                api.request( 'item.exists', options, function(err, res) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( res );
+                    }
+                } );
+            } );
+    },
+
+    getMaintenance: function(options) {
+        return new Promise( function(resolve, reject) {
+                api.request( 'maintenance.get', options, function(err, res) {
+                    if (err) {
+                        reject( err );
+                    } else {
+                        resolve( res );
+                    }
+                } );
+            } );
+    },
+
     maintenanceExists: function(options) {
         return new Promise( function(resolve, reject) {
                 api.request( 'maintenance.exists', options, function(err, res) {

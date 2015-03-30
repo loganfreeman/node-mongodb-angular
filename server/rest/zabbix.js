@@ -20,6 +20,76 @@ describe( 'ZabbixApi', function() {
 
 
     describe( 'zabbixController', function() {
+        it( 'should get application', function(done) {
+            controller.getApplication( {
+                'output': 'extend',
+                'hostids': '10001',
+                'sortfield': 'name'
+            } )
+                .then( function(result) {
+                    console.dir( result );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should check application exists', function(done) {
+            controller.applicationExists( {
+                'name': 'Memory'
+            } )
+                .then( function(result) {
+                    result.should.be.eq( true );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+        it( 'should get item', function(done) {
+            controller.getItem( {
+                'output': 'extend',
+                'search': {
+                    'key_': 'system'
+                }
+            } )
+                .then( function(result) {
+                    //console.dir( result );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should check item exists', function(done) {
+            controller.itemExists( {
+                'key_': 'vm.memory.size[available]'
+            } )
+                .then( function(result) {
+                    result.should.be.eq( true );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should get host maintenance', function(done) {
+            controller.getMaintenance( {
+                'output': 'extend',
+                'selectGroups': 'extend',
+                'selectTimeperiods': 'extend'
+            } )
+                .then( function(result) {
+                    console.dir( result );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
 
         it( 'should check maintenance exists', function(done) {
             controller.maintenanceExists( {

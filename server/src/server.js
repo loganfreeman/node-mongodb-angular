@@ -25,6 +25,8 @@ var winston = require( 'winston' ),
 
 var methodOverride = require( 'method-override' );
 
+var cors = require( 'cors' );
+
 
 
 switch (config.sessionStore()) {
@@ -50,6 +52,14 @@ app.use( bodyParser.urlencoded( {
     extended: true
 } ) );
 app.use( bodyParser.json() );
+
+// enable all cors requests
+var corsOptions = {
+    credentials: true,
+    origin: true,
+    methods: ['GET', 'POST', 'OPTIONS', 'PUT']
+};
+app.use( cors( corsOptions ) );
 
 // override with the X-HTTP-Method-Override header in the request
 app.use( methodOverride( 'X-HTTP-Method-Override' ) );
@@ -90,6 +100,59 @@ app.use( logger( 'dev' ) );
 
 // load all routes in the routes directory
 require( './routes' )( app );
+
+// swagger config
+var swagger = require( 'swagger-node-express' ).createNew( app );
+
+var petResources = require( './swagger/resources.js' );
+
+var petModels = require( './swagger/models.js' );
+
+// Add models and methods to swagger
+swagger.addModels( petModels )
+    .addGet( petResources.findByTags ) // - /pet/findByTags
+    .addGet( petResources.findByStatus ) // - /pet/findByStatus
+    .addGet( petResources.findById ) // - /pet/{petId}
+    .addPost( petResources.addPet )
+    .addPut( petResources.updatePet )
+    .addDelete( petResources.deletePet );
+
+swagger.configureDeclaration( 'pet', {
+    description: 'Operations about Pets',
+    // authorizations: ['oauth2'],
+    produces: ['application/json']
+} );
+
+// set api info
+swagger.setApiInfo( {
+    title: 'Swagger Sample App'
+} );
+
+/*swagger.setAuthorizations( {
+    apiKey: {
+        type: 'apiKey',
+        passAs: 'header'
+    }
+} );*/
+
+// Configures the app's base path and api version.
+// swagger.configureSwaggerPaths( '', 'api-docs', '' );
+swagger.configure( 'http://localhost:8081', '1.0.0' );
+
+// Serve up swagger ui at /docs via static route
+var docs_handler = express.static( __dirname + '/../node_modules/swagger-node-express/swagger-ui/' );
+app.get( /^\/docs(\/.*)?$/, function(req, res, next) {
+    if (req.url === '/docs') { // express static barfs on root url w/o trailing slash
+        res.writeHead( 302, {
+            'Location': req.url + '/'
+        } );
+        res.end();
+        return;
+    }
+    // take off leading /docs so that connect locates file correctly
+    req.url = req.url.substr( '/docs'.length );
+    return docs_handler( req, res, next );
+} );
 
 
 
