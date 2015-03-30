@@ -140,7 +140,7 @@ swagger.setApiInfo( {
 swagger.configure( 'http://localhost:8081', '1.0.0' );
 
 // Serve up swagger ui at /docs via static route
-var docs_handler = express.static( __dirname + '/../node_modules/swagger-node-express/swagger-ui/' );
+var docs_handler = express.static( __dirname + '/../swagger-ui/' );
 app.get( /^\/docs(\/.*)?$/, function(req, res, next) {
     if (req.url === '/docs') { // express static barfs on root url w/o trailing slash
         res.writeHead( 302, {
