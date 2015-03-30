@@ -152,20 +152,6 @@ status() {
     forever list
     RETVAL=$?
 }
-
- 
-status() {
-    echo "Status for $NAME:"
-    # This is taking the lazy way out on status, as it will return a list of
-    # all running Forever processes. You get to figure out what you want to
-    # know from that information.
-    #
-    # On Ubuntu, this isn't even necessary. To find out whether the service is
-    # running, use "service my-application status" which bypasses this script
-    # entirely provided you used the service utility to start the process.
-    sudo -u $NODE_USER -s forever list
-    RETVAL=$?
-}
  
 case "$1" in
     start)
