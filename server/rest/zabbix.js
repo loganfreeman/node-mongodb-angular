@@ -6,6 +6,10 @@ var _ = require( 'lodash' );
 
 var async = require( 'async' );
 
+var controller = require( '../src/controller/zabbixController.js' );
+
+var moment = require( 'moment' );
+
 
 describe( 'ZabbixApi', function() {
     this.timeout( 5000 );
@@ -14,6 +18,49 @@ describe( 'ZabbixApi', function() {
     var client = new ZabbixApi( 'reports', 'yI9SJmVkB5SdM', api_url );
     var fakeone = new ZabbixApi( 'fake', 'fake', api_url );
 
+
+    describe( 'zabbixController', function() {
+
+        it( 'should retrieve service availability', function(done) {
+            controller.getServiceAvailability( '1', [{
+                'from': +moment().subtract( 1, 'days' ).toDate(),
+                'to': +new Date
+            }] )
+                .then( function(res) {
+                    console.log( JSON.stringify( res ) );
+                    done();
+                } )
+                .catch( function(e) {
+                    done( e );
+                } );
+        } );
+        it( 'should get history', function(done) {
+            controller.getHistory( {
+                limit: 10
+            } )
+                .then( function(res) {
+                    //console.log( res );
+                    done();
+                } )
+                .catch( function(e) {
+                    done( e );
+                } );
+        } );
+
+        it( 'should get event', function(done) {
+            controller.getEvent( {
+                limit: 10
+            } )
+                .then( function(res) {
+                    //console.log( res );
+                    done();
+                } )
+                .catch( function(e) {
+                    done( e );
+                } );
+        } );
+    } );
+
     describe( '#login', function() {
         it( 'should return an auth token', function(done) {
             client.login( function(err, res) {
@@ -21,6 +68,18 @@ describe( 'ZabbixApi', function() {
                 expect( res ).to.be.a( 'string' );
                 done();
             } );
+        } );
+
+        it( 'should return history', function(done) {
+            client.request( 'history.get', {
+                hostids: 1
+            }, function(err, res) {
+                    if (err) {
+                        done( err );
+                    } else {
+                        done();
+                    }
+                } );
         } );
 
         it( 'should return an error when user or password is incorrect', function(done) {
