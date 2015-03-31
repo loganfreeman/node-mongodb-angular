@@ -12,22 +12,22 @@ var getApplication = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/application/get',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'The method allows to retrieve applications according to the given parameters',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'getApplication',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'application' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.getApplication( req.body )
             .then( function(items) {
                 res.json( items );
             } )
             .catch( function(err) {
-                throw swe.notFound( 'item', res );
+                throw swe.notFound( 'application', res );
             } );
     }
 };
@@ -37,22 +37,22 @@ var applicationExists = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/application/exists',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'This method checks if at least one application that matches the given filter criteria exists.',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'applicationExists',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'application' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.applicationExists( req.body )
             .then( function(items) {
                 res.json( items );
             } )
             .catch( function(err) {
-                throw swe.notFound( 'item', res );
+                throw swe.notFound( 'application', res );
             } );
     }
 };
@@ -62,17 +62,17 @@ var itemExists = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/item/exists',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'This method checks if at least one item that matches the given filter criteria exists.',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'itemExists',
         consumes: ['application/json'],
         produces: ['application/json'],
         responseMessages: [swe.notFound( 'item' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.itemExists( req.body )
             .then( function(items) {
                 res.json( items );
             } )
@@ -87,22 +87,22 @@ var getMaintenance = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/maintenance/get',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'The method allows to retrieve maintenances according to the given parameters.',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'getMaintenance',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'maintenance' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.getMaintenance( req.body )
             .then( function(items) {
                 res.json( items );
             } )
             .catch( function(err) {
-                throw swe.notFound( 'item', res );
+                throw swe.notFound( 'maintenance', res );
             } );
     }
 };
@@ -112,22 +112,22 @@ var maintenanceExists = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/maintenance/exists',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'This method checks if at least one maintenance that matches the given filter criteria exists.',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'maintenanceExists',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'maintenance' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.maintenanceExists( req.body )
             .then( function(items) {
                 res.json( items );
             } )
             .catch( function(err) {
-                throw swe.notFound( 'item', res );
+                throw swe.notFound( 'maintenance', res );
             } );
     }
 };
@@ -137,22 +137,22 @@ var getHostInterface = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/hostinterface/get',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'The method allows to retrieve host interfaces according to the given parameters.',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'getHostInterface',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'host interfaces' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.getHostInterface( req.body )
             .then( function(items) {
                 res.json( items );
             } )
             .catch( function(err) {
-                throw swe.notFound( 'item', res );
+                throw swe.notFound( 'host interfaces', res );
             } );
     }
 };
@@ -162,22 +162,22 @@ var hostInterfaceExists = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/hostinterface/exists',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'This method checks if at least one host interface that matches the given filter criteria exists.',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'hostInterfaceExists',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'host interfaces' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.hostInterfaceExists( req.body )
             .then( function(items) {
                 res.json( items );
             } )
             .catch( function(err) {
-                throw swe.notFound( 'item', res );
+                throw swe.notFound( 'host interfaces', res );
             } );
     }
 };
@@ -187,22 +187,22 @@ var getHostGroup = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/hostgroup/get',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'The method allows to retrieve host groups according to the given parameters',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'getHostGroup',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'host groups' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.getHostGroup( req.body )
             .then( function(items) {
                 res.json( items );
             } )
             .catch( function(err) {
-                throw swe.notFound( 'item', res );
+                throw swe.notFound( 'host groups', res );
             } );
     }
 };
@@ -212,22 +212,22 @@ var hostGroupExists = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/hostgroup/exists',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'This method checks if at least one host group that matches the given filter criteria exists.',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'hostGroupExists',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'host group' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.hostGroupExists( req.body )
             .then( function(items) {
                 res.json( items );
             } )
             .catch( function(err) {
-                throw swe.notFound( 'item', res );
+                throw swe.notFound( 'host group', res );
             } );
     }
 };
@@ -237,22 +237,22 @@ var getHistory = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/history/get',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'The method allows to retrieve history data according to the given parameters.',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'getHistory',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'history data' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.getHistory( req.body )
             .then( function(items) {
                 res.json( items );
             } )
             .catch( function(err) {
-                throw swe.notFound( 'item', res );
+                throw swe.notFound( 'history data', res );
             } );
     }
 };
@@ -262,22 +262,22 @@ var getEvent = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/event/get',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'The method allows to retrieve events according to the given parameters',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'getEvent',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'event' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.getEvent( req.body )
             .then( function(items) {
                 res.json( items );
             } )
             .catch( function(err) {
-                throw swe.notFound( 'item', res );
+                throw swe.notFound( 'event', res );
             } );
     }
 };
@@ -287,17 +287,17 @@ var getServiceAvailability = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/serviceavailability/get',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'This method allows to calculate availability information about IT services.',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'getServiceAvailability',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'service availability' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.getServiceAvailability( req.body )
             .then( function(items) {
                 res.json( items );
             } )
@@ -312,22 +312,22 @@ var checkHost = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/host/exits',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'This method checks if at least one host that matches the given filter criteria exists.',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'checkHost',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'host' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.checkHost( req.body )
             .then( function(items) {
                 res.json( items );
             } )
             .catch( function(err) {
-                throw swe.notFound( 'item', res );
+                throw swe.notFound( 'host', res );
             } );
     }
 };
@@ -337,22 +337,22 @@ var getHost = {
         // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/host/get',
         method: 'POST',
-        notes: 'The method allows to retrieve items according to the given parameters',
+        notes: 'The method allows to retrieve hosts according to the given parameters',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'getItem',
+        nickname: 'getHost',
         consumes: ['application/json'],
         produces: ['application/json'],
-        responseMessages: [swe.notFound( 'item' )],
+        responseMessages: [swe.notFound( 'host' )],
         parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
-        zabbix.getItem( req.body )
+        zabbix.getHost( req.body )
             .then( function(items) {
                 res.json( items );
             } )
             .catch( function(err) {
-                throw swe.notFound( 'item', res );
+                throw swe.notFound( 'host', res );
             } );
     }
 };
