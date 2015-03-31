@@ -1,4 +1,6 @@
-var config = require( '../../src/config/database.js' );
+var db = require( '../../src/config/database.js' );
+
+var config = require( '../../src/config/config.js' );
 
 var expect = require( 'chai' ).expect,
     should = require( 'chai' ).should();
@@ -6,7 +8,11 @@ var expect = require( 'chai' ).expect,
 describe( 'config', function() {
     describe( '#database', function() {
         it( 'should return configuration based on node env settings', function() {
-            config.getAuthen().should.have.property( 'database' );
+            db.getAuthen().should.have.property( 'database' );
+        } );
+
+        it( 'should get baseurl', function() {
+            config.getBaseUrl().should.be.eq( 'http://localhost:8081' );
         } );
     } );
 } );

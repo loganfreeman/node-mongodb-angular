@@ -39,5 +39,9 @@ module.exports = {
             return process.env.HTTP_HOST;
         }
         return 'localhost';
+    },
+
+    getBaseUrl: function() {
+        return this.getProtocol() + '://' + this.getHost() + ':' + this.getPort();
     }
 };

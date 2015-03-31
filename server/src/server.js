@@ -104,6 +104,8 @@ require( './routes' )( app );
 // swagger config
 var swagger = require( 'swagger-node-express' ).createNew( app );
 
+require( './swagger/models.js' )( swagger );
+
 require( './swagger/resources.js' )( swagger );
 
 
@@ -131,14 +133,14 @@ swagger.setApiInfo( {
 
 // Configures the app's base path and api version.
 // swagger.configureSwaggerPaths( '', 'api-docs', '' );
-swagger.configure( 'http://localhost:8081', '1.0.0' );
+swagger.configure( config.getBaseUrl(), '1.0.0' );
 
 // Serve up swagger ui at /docs via static route
 var docs_handler = express.static( __dirname + '/../swagger-ui/' );
 app.get( /^\/docs(\/.*)?$/, function(req, res, next) {
     if (req.url === '/docs') { // express static barfs on root url w/o trailing slash
         res.writeHead( 302, {
-            'Location': req.url + '/'
+            'Location': req.url + '/?url=' + config.getBaseUrl() + '/api-docs.json'
         } );
         res.end();
         return;

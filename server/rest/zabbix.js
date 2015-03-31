@@ -28,6 +28,21 @@ describe( 'ZabbixApi', function() {
 
     describe( 'zabbixController', function() {
 
+
+        it( 'should throw item not found', function(done) {
+            request( 'http://localhost:8081/zabbix/item/not/found' )
+                .spread( function(res, body) {
+                    var body = JSON.parse( body );
+                    body.code.should.be.eq( 404 );
+                    body.message.should.be.eq( 'item not found' );
+                    done();
+                } )
+                .catch( function(err) {
+                    console.log( err );
+                    done( err );
+                } );
+        } );
+
         it( 'should get item', function(done) {
             var options = {
                 method: 'POST',
@@ -41,9 +56,9 @@ describe( 'ZabbixApi', function() {
             };
             request( options )
                 .spread( function(res, body) {
-                    console.dir( typeof body );
+                    // console.dir( typeof body );
                     _.each( body, function(item) {
-                        console.log( item['key_'] );
+                        // console.log( item['key_'] );
                         item['key_'].should.match( /system/i );
                     } );
                     done();
