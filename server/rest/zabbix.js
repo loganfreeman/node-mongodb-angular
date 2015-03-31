@@ -10,6 +10,13 @@ var controller = require( '../src/controller/zabbixController.js' );
 
 var moment = require( 'moment' );
 
+var Promise = require( 'bluebird' );
+
+var request = Promise.promisify( require( 'request' ) );
+// request.debug = true;
+
+var queryString = require( 'querystring' );
+
 
 describe( 'ZabbixApi', function() {
     this.timeout( 5000 );
@@ -20,6 +27,31 @@ describe( 'ZabbixApi', function() {
 
 
     describe( 'zabbixController', function() {
+
+        it( 'should get item', function(done) {
+            var options = {
+                method: 'POST',
+                json: {
+                    output: 'extend',
+                    search: {
+                        'key_': 'system'
+                    }
+                },
+                url: 'http://localhost:8081/zabbix/item/get'
+            };
+            request( options )
+                .spread( function(res, body) {
+                    console.dir( typeof body );
+                    _.each( body, function(item) {
+                        console.log( item['key_'] );
+                        item['key_'].should.match( /system/i );
+                    } );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
         it( 'should get application', function(done) {
             controller.getApplication( {
                 'output': 'extend',
@@ -27,7 +59,7 @@ describe( 'ZabbixApi', function() {
                 'sortfield': 'name'
             } )
                 .then( function(result) {
-                    console.dir( result );
+                    // console.dir( result );
                     done();
                 } )
                 .catch( function(err) {

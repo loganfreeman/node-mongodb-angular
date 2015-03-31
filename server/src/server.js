@@ -109,19 +109,18 @@ var petResources = require( './swagger/resources.js' );
 var petModels = require( './swagger/models.js' );
 
 // Add models and methods to swagger
-swagger.addModels( petModels )
-    .addGet( petResources.findByTags ) // - /pet/findByTags
-    .addGet( petResources.findByStatus ) // - /pet/findByStatus
-    .addGet( petResources.findById ) // - /pet/{petId}
-    .addPost( petResources.addPet )
-    .addPut( petResources.updatePet )
-    .addDelete( petResources.deletePet );
+swagger
+    .addModels( petModels )
+    .addPost( petResources.getItem );
 
-swagger.configureDeclaration( 'pet', {
-    description: 'Operations about Pets',
+
+/*swagger.configureDeclaration( 'zabbix', {
+    description: 'Operations about zabbix',
     // authorizations: ['oauth2'],
     produces: ['application/json']
-} );
+} );*/
+
+
 
 // set api info
 swagger.setApiInfo( {

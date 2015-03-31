@@ -1,4 +1,12 @@
 exports.models = {
+    'Params': {
+        output: 'string',
+        hostids: 'array',
+        seach: {
+            'key_': 'string'
+        },
+        sortfield: 'string'
+    },
     'Category': {
         'id': 'Category',
         'required': ['id', 'name'],
