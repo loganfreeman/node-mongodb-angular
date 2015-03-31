@@ -106,7 +106,9 @@ require( './routes' )( app );
 // swagger config
 var swagger = require( 'swagger-node-express' ).createNew( app );
 
-require( './swagger/models.js' )( swagger );
+var models = require( './swagger/models.js' );
+
+swagger.addModels( models );
 
 require( './swagger/resources.js' )( swagger );
 

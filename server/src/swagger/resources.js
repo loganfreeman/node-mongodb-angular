@@ -9,15 +9,17 @@ var _ = require( 'lodash' );
 
 var getItem = {
     spec: {
-        description: 'The method allows to retrieve items according to the given parameters',
+        // description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/item/get',
         method: 'POST',
         notes: 'The method allows to retrieve items according to the given parameters',
-        //type: 'Params',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
         nickname: 'getItem',
+        consumes: ['application/json'],
         produces: ['application/json'],
         responseMessages: [swe.notFound( 'item' )],
-        //parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Params' )],
+        parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Option' )],
     },
     action: function(req, res) {
         zabbix.getItem( req.body )
@@ -32,10 +34,11 @@ var getItem = {
 
 var itemNotFound = {
     spec: {
-        description: 'throw item not found',
+        notes: 'throw item not found',
         path: '/zabbix/item/not/found',
         method: 'GET',
-        nickname: 'itemNotFound'
+        nickname: 'itemNotFound',
+        responseMessages: [swe.notFound( 'item' )]
     },
     action: function(req, res) {
         throw swe.notFound( 'item', res );
