@@ -137,7 +137,11 @@ swagger.setApiInfo( {
 
 // Configures the app's base path and api version.
 // swagger.configureSwaggerPaths( '', 'api-docs', '' );
-swagger.configure( config.getBaseUrl(), '1.0.0' );
+var swaggerBaseUrl = config.getPublicUrl();
+if (app.get( 'env' ) === 'development') {
+    swaggerBaseUrl = config.getBaseUrl();
+}
+swagger.configure( swaggerBaseUrl, '1.0.0' );
 
 /*// Serve up swagger ui at /docs via static route
 var docs_handler = express.static( __dirname + '/../swagger-ui/' );

@@ -43,5 +43,9 @@ module.exports = {
 
     getBaseUrl: function() {
         return this.getProtocol() + '://' + this.getHost() + ':' + this.getPort();
+    },
+
+    getPublicUrl: function() {
+        return 'http://dev.ops-dashboard.tdc.logmycalls.com/';
     }
 };
