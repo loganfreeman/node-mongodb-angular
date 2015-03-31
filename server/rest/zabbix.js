@@ -26,9 +26,7 @@ describe( 'ZabbixApi', function() {
     var fakeone = new ZabbixApi( 'fake', 'fake', api_url );
 
 
-    describe( 'zabbixController', function() {
-
-
+    describe( 'zabbix routes', function() {
         it( 'should throw item not found', function(done) {
             request( 'http://localhost:8081/zabbix/item/not/found' )
                 .spread( function(res, body) {
@@ -67,6 +65,207 @@ describe( 'ZabbixApi', function() {
                     done( err );
                 } );
         } );
+        it( 'should get application', function(done) {
+            var options = {
+                method: 'POST',
+                json: {
+                    'output': 'extend',
+                    'hostids': '10196',
+                    'sortfield': 'name'
+                },
+                url: 'http://localhost:8081/zabbix/application/get'
+            };
+            request( options )
+                .spread( function(res, body) {
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should check application exists', function(done) {
+            var options = {
+                method: 'POST',
+                json: {
+                    'hostid': '10196',
+                    'name': 'Memory'
+                },
+                url: 'http://localhost:8081/zabbix/application/exists'
+            };
+            request( options )
+                .spread( function(res, body) {
+                    body.should.be.eq( true );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should check item exists', function(done) {
+            var options = {
+                method: 'POST',
+                json: {
+                    'hostids': '10196'
+                },
+                url: 'http://localhost:8081/zabbix/item/exists'
+            };
+            request( options )
+                .spread( function(res, body) {
+                    body.should.be.eq( true );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should get maintenance', function(done) {
+            var options = {
+                method: 'POST',
+                json: {
+                    'output': 'extend',
+                    'selectGroups': 'extend',
+                    'selectTimeperiods': 'extend'
+                },
+                url: 'http://localhost:8081/zabbix/maintenance/get'
+            };
+            request( options )
+                .spread( function(res, body) {
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should get host interface', function(done) {
+            var options = {
+                method: 'POST',
+                json: {
+                    'output': 'extend',
+                    'hostids': '10196'
+                },
+                url: 'http://localhost:8081/zabbix/hostinterface/get'
+            };
+            request( options )
+                .spread( function(res, body) {
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should get host group', function(done) {
+            var options = {
+                method: 'POST',
+                json: {
+                    'output': 'extend',
+                    'filter': {
+                        'name': [
+                            'Zabbix servers',
+                            'Linux servers'
+                        ]
+                    }
+                },
+                url: 'http://localhost:8081/zabbix/hostgroup/get'
+            };
+            request( options )
+                .spread( function(res, body) {
+                    body.length.should.be.eq( 2 );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should get history', function(done) {
+            var options = {
+                method: 'POST',
+                json: {
+                    'output': 'extend',
+                    limit: 10
+                },
+                url: 'http://localhost:8081/zabbix/history/get'
+            };
+            request( options )
+                .spread( function(res, body) {
+                    body.length.should.be.eq( 10 );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should get event', function(done) {
+            var options = {
+                method: 'POST',
+                json: {
+                    'output': 'extend',
+                    limit: 10
+                },
+                url: 'http://localhost:8081/zabbix/event/get'
+            };
+            request( options )
+                .spread( function(res, body) {
+                    body.length.should.be.eq( 10 );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should get event', function(done) {
+            var options = {
+                method: 'POST',
+                json: {
+                    'output': 'extend',
+                    limit: 10
+                },
+                url: 'http://localhost:8081/zabbix/event/get'
+            };
+            request( options )
+                .spread( function(res, body) {
+                    body.length.should.be.eq( 10 );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+        it( 'should get host', function(done) {
+            var options = {
+                method: 'POST',
+                json: {
+                    'output': 'extend',
+                    groupids: 2
+                },
+                url: 'http://localhost:8081/zabbix/host/get'
+            };
+            request( options )
+                .spread( function(res, body) {
+                    body.length.should.be.gt( 0 );
+                    done();
+                } )
+                .catch( function(err) {
+                    done( err );
+                } );
+        } );
+
+
+    } );
+
+
+    describe( 'zabbixController', function() {
+
+
+
         it( 'should get application', function(done) {
             controller.getApplication( {
                 'output': 'extend',
