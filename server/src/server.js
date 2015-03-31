@@ -104,14 +104,9 @@ require( './routes' )( app );
 // swagger config
 var swagger = require( 'swagger-node-express' ).createNew( app );
 
-var petResources = require( './swagger/resources.js' );
+require( './swagger/resources.js' )( swagger );
 
-var petModels = require( './swagger/models.js' );
 
-// Add models and methods to swagger
-swagger
-    .addModels( petModels )
-    .addPost( petResources.getItem );
 
 
 /*swagger.configureDeclaration( 'zabbix', {

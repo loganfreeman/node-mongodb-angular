@@ -5,19 +5,19 @@ var swe = sw.errors;
 
 var zabbix = require( '../controller/zabbixController.js' );
 
-var petData = require( './services.js' );
+var _ = require( 'lodash' );
 
-exports.getItem = {
+var getItem = {
     spec: {
         description: 'The method allows to retrieve items according to the given parameters',
         path: '/zabbix/item/get',
         method: 'POST',
         notes: 'The method allows to retrieve items according to the given parameters',
-        type: 'Params',
+        //type: 'Params',
         nickname: 'getItem',
         produces: ['application/json'],
         responseMessages: [swe.notFound( 'item' )],
-        parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Params' )],
+        //parameters: [paramTypes.body( 'body', '(object) Parameters defining the desired output', 'Params' )],
     },
     action: function(req, res) {
         zabbix.getItem( req.body )
@@ -30,145 +30,32 @@ exports.getItem = {
     }
 };
 
-// the description will be picked up in the resource listing
-exports.findById = {
-    'spec': {
-        description: 'Operations about pets',
-        path: '/pet/{petId}',
+var itemNotFound = {
+    spec: {
+        description: 'throw item not found',
+        path: '/zabbix/item/not/found',
         method: 'GET',
-        summary: 'Find pet by ID',
-        notes: 'Returns a pet based on ID',
-        type: 'Pet',
-        nickname: 'getPetById',
-        produces: ['application/json'],
-        parameters: [paramTypes.path( 'petId', 'ID of pet that needs to be fetched', 'string' )],
-        responseMessages: [swe.invalid( 'id' ), swe.notFound( 'pet' )]
+        nickname: 'itemNotFound'
     },
-    'action': function(req, res) {
-        if (!req.params.petId) {
-            throw swe.invalid( 'id' );
-        }
-        var id = parseInt( req.params.petId );
-        var pet = petData.getPetById( id );
-
-        if (pet) {
-            res.send( JSON.stringify( pet ) );
-        }
-        else
-            throw swe.notFound( 'pet', res );
+    action: function(req, res) {
+        throw swe.notFound( 'item', res );
     }
 };
 
-exports.findByStatus = {
-    'spec': {
-        path: '/pet/findByStatus',
-        notes: 'Multiple status values can be provided with comma-separated strings',
-        summary: 'Find pets by status',
-        method: 'GET',
-        parameters: [
-            paramTypes.query( 'status', 'Status in the store', 'string', true, ['available', 'pending', 'sold'], 'available' )
-        ],
-        type: 'array',
-        items: {
-            $ref: 'Pet'
-        },
-        responseMessages: [swe.invalid( 'status' )],
-        nickname: 'findPetsByStatus'
-    },
-    'action': function(req, res) {
-        var statusString = url.parse( req.url, true ).query['status'];
-        if (!statusString) {
-            throw swe.invalid( 'status', res );
-        }
 
-        var output = petData.findPetByStatus( statusString );
-        res.send( JSON.stringify( output ) );
-    }
+var swaggerMethods = {
+    'POST': 'addPost',
+    'GET': 'addGet',
+    'DELETE': 'addDelete',
+    'PUT': 'addPut'
 };
 
-exports.findByTags = {
-    'spec': {
-        path: '/pet/findByTags',
-        notes: 'Multiple tags can be provided with comma-separated strings. Use tag1, tag2, tag3 for testing.',
-        summary: 'Find pets by tags',
-        method: 'GET',
-        parameters: [paramTypes.query( 'tags', 'Tags to filter by', 'string', true )],
-        type: 'array',
-        items: {
-            $ref: 'Pet'
-        },
-        responseMessages: [swe.invalid( 'tag' )],
-        nickname: 'findPetsByTags'
-    },
-    'action': function(req, res) {
-        var tagsString = url.parse( req.url, true ).query['tags'];
-        if (!tagsString) {
-            throw swe.invalid( 'tag', res );
-        }
-        var output = petData.findPetByTags( tagsString );
-        sw.setHeaders( res );
-        res.send( JSON.stringify( output ) );
-    }
-};
 
-exports.addPet = {
-    'spec': {
-        path: '/pet',
-        notes: 'adds a pet to the store',
-        summary: 'Add a new pet to the store',
-        method: 'POST',
-        parameters: [paramTypes.body( 'body', 'Pet object that needs to be added to the store', 'Pet' )],
-        responseMessages: [swe.invalid( 'input' )],
-        nickname: 'addPet'
-    },
-    'action': function(req, res) {
-        var body = req.body;
+var methods = [getItem, itemNotFound];
 
-        if (typeof body === 'undefined' || typeof body.id === 'undefined') {
-            throw swe.invalid( 'pet', res );
-        } else {
-            petData.addPet( body );
-            res.send( JSON.stringify( body ) );
-        }
-    }
-};
-
-exports.updatePet = {
-    'spec': {
-        path: '/pet',
-        notes: 'updates a pet in the store',
-        method: 'PUT',
-        summary: 'Update an existing pet',
-        parameters: [paramTypes.body( 'body', 'Pet object that needs to be updated in the store', 'Pet' )],
-        responseMessages: [swe.invalid( 'id' ), swe.notFound( 'pet' ), swe.invalid( 'input' )],
-        nickname: 'addPet'
-    },
-    'action': function(req, res) {
-        var body = req.body;
-        if (typeof body === 'undefined' || typeof body.id === 'undefined') {
-            throw swe.invalid( 'pet', res );
-        } else {
-            petData.addPet( body );
-            res.send( {
-                'success': true
-            } );
-        }
-    }
-};
-
-exports.deletePet = {
-    'spec': {
-        path: '/pet/{id}',
-        notes: 'removes a pet from the store',
-        method: 'DELETE',
-        summary: 'Remove an existing pet',
-        parameters: [paramTypes.path( 'id', 'ID of pet that needs to be removed', 'string' )],
-        responseMessages: [swe.invalid( 'id' ), swe.notFound( 'pet' )],
-        nickname: 'deletePet'
-    },
-    'action': function(req, res) {
-        var id = parseInt( req.params.id );
-        petData.deletePet( id );
-        res.send( 204 );
-    }
+module.exports = function(swagger) {
+    _.each( methods, function(method) {
+        var operation = swaggerMethods[method.spec.method];
+        swagger[operation]( method );
+    } );
 };
