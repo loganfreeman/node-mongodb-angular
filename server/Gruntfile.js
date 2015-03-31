@@ -1,10 +1,32 @@
+var config = require( './src/config/config.js' );
+
 module.exports = function(grunt) {
 
     require( 'load-grunt-tasks' )( grunt );
 
+    grunt.template.addDelimiters( 'handlebars-like-delimiters', '{{', '}}' );
+
 
     grunt.initConfig( {
         pkg: grunt.file.readJSON( 'package.json' ),
+
+
+        'template': {
+            'process-html-template': {
+                'options': {
+                    'data': {
+                        'title': 'My blog post',
+                        'author': 'Mathias Bynens',
+                        'content': 'Lorem ipsum dolor sit amet.',
+                        'baseUrl': config.getBaseUrl()
+                    },
+                    'delimiters': 'handlebars-like-delimiters'
+                },
+                'files': {
+                    'swagger-ui/index.html': ['swagger-ui/index.html.tpl']
+                }
+            }
+        },
         // Configure a mochaTest task
         mochaTest: {
             test: {
@@ -46,4 +68,9 @@ module.exports = function(grunt) {
     grunt.registerTask( 'test', ['mochaTest:test'] );
 
     grunt.registerTask( 'rest', ['mochaTest:server'] );
+
+    grunt.loadNpmTasks( 'grunt-template' );
+    grunt.registerTask( 'default', [
+        'template'
+    ] );
 };
