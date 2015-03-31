@@ -19,7 +19,7 @@ var queryString = require( 'querystring' );
 
 
 describe( 'ZabbixApi', function() {
-    this.timeout( 5000 );
+    this.timeout( 10000 );
 
     var api_url = 'http://zabbix.cpscloud.com/zabbix/api_jsonrpc.php';
     var client = new ZabbixApi( 'reports', 'yI9SJmVkB5SdM', api_url );
