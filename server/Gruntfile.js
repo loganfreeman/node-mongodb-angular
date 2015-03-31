@@ -69,8 +69,4 @@ module.exports = function(grunt) {
 
     grunt.registerTask( 'rest', ['mochaTest:server'] );
 
-    grunt.loadNpmTasks( 'grunt-template' );
-    grunt.registerTask( 'default', [
-        'template'
-    ] );
 };

@@ -72,6 +72,8 @@ app.use( '/dashboard', express.static( __dirname + '../../../dashboard/build' ) 
 
 app.use( '/forza', express.static( __dirname + '../../../forza/dist' ) );
 
+app.use( '/docs', express.static( __dirname + '/../swagger-ui/' ) );
+
 
 //Register ejs as .html. If we did
 //not call this, we would need to
@@ -135,7 +137,7 @@ swagger.setApiInfo( {
 // swagger.configureSwaggerPaths( '', 'api-docs', '' );
 swagger.configure( config.getBaseUrl(), '1.0.0' );
 
-// Serve up swagger ui at /docs via static route
+/*// Serve up swagger ui at /docs via static route
 var docs_handler = express.static( __dirname + '/../swagger-ui/' );
 app.get( /^\/docs(\/.*)?$/, function(req, res, next) {
     if (req.url === '/docs') { // express static barfs on root url w/o trailing slash
@@ -148,7 +150,7 @@ app.get( /^\/docs(\/.*)?$/, function(req, res, next) {
     // take off leading /docs so that connect locates file correctly
     req.url = req.url.substr( '/docs'.length );
     return docs_handler( req, res, next );
-} );
+} );*/
 
 
 
