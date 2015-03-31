@@ -10,6 +10,10 @@ module.exports.models = {
             'groupids': {
                 'type': 'array',
                 'description': 'Return only items that belong to the hosts from the given groups'
+            },
+            'hostids': {
+                'type': 'array',
+                'description': 'Return only items with the given host IDs.'
             }
         }
     }
