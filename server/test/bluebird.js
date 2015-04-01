@@ -32,11 +32,29 @@ var helpers = require( './helpers.js' );
 
 var _ = require( 'lodash' );
 
+var chargify = require( 'chargify' );
+
+var chargify_site = chargify( config.chargify.site, config.chargify.key );
+
 var expect = require( 'chai' ).expect,
     AssertionError = require( 'chai' ).AssertionError,
-    should = require( 'chai' ).should();
+    should = require( 'chai' ).should(),
+    assert = require( 'assert' );
 
 describe( 'bluebird', function() {
+
+    describe( 'chargify', function() {
+        it( 'should list users', function(done) {
+            chargify_site.get( 'customers.json', function(err, res, body) {
+                if (err)
+                    throw err;
+                assert.equal( res.statusCode, 200 );
+                assert.ok( body.length );
+                done();
+            } );
+        } );
+
+    } );
 
 
     describe( 'steps', function() {

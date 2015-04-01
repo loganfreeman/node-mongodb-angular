@@ -1,4 +1,8 @@
 module.exports = {
+    chargify: {
+        site: 'logmycalls',
+        key: 'CL4Kf0fefTuPB3MYz_NN'
+    },
     zabbix: {
         username: 'reports',
         password: 'yI9SJmVkB5SdM',
