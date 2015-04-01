@@ -106,11 +106,18 @@ require( './routes' )( app );
 // swagger config
 var swagger = require( 'swagger-node-express' ).createNew( app );
 
-var models = require( './swagger/models.js' );
+var zabbixModels = require( './swagger/models.js' );
 
-swagger.addModels( models );
+swagger.addModels( zabbixModels );
 
 require( './swagger/resources.js' )( swagger );
+
+
+var chargifyModels = require( './chargify/models.js' );
+
+swagger.addModels( chargifyModels );
+
+require( './chargify/resources.js' )( swagger );
 
 
 
