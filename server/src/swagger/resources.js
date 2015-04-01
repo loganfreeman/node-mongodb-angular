@@ -396,12 +396,8 @@ var itemNotFound = {
 };
 
 
-var swaggerMethods = {
-    'POST': 'addPost',
-    'GET': 'addGet',
-    'DELETE': 'addDelete',
-    'PUT': 'addPut'
-};
+var swaggerMethods = require( '../swaggerMethodMap.js' );
+
 
 
 var methods = [itemNotFound, getApplication, applicationExists, getItem, itemExists, getMaintenance,
