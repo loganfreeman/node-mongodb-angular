@@ -120,6 +120,12 @@ swagger.addModels( chargifyModels );
 require( './chargify/resources.js' )( swagger );
 
 
+var zuoraModels = require( './zuora/models.js' );
+
+swagger.addModels( zuoraModels );
+
+require( './zuora/resources.js' )( swagger );
+
 
 
 /*swagger.configureDeclaration( 'zabbix', {
