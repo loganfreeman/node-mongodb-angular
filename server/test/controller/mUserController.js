@@ -10,12 +10,76 @@ var helpers = require( '../helpers.js' );
 
 var Promise = require( 'bluebird' );
 
+var mongoose = require( 'mongoose' );
 
 var NullReferenceError = require( '../../src/exception' ).NullReferenceError;
 
 
+var conn;
+
+
+
 describe( 'mongoose User Controller', function() {
-    it( 'should return a Promise', function() {
-        controller.getUser().should.be.instanceof( Promise );
+
+    this.timeout( 5000 );
+    before( function(done) {
+        conn = mongoose.connect( 'mongodb://localhost/devops' ).connection;
+        conn.once( 'open', function() {
+            controller.createUser( {
+                firstname: 'barry',
+                lastname: 'allan',
+                username: 'barry.allan',
+                email: 'ballan@flash.com',
+                password: 'test'
+            } )
+                .then( function(user) {
+                    user.email.should.be.eq( 'ballan@flash.com' );
+
+                    done();
+                } )
+                .catch( function(err) {
+                    return err.name == 'ValidationError';
+                }, function(err) {
+                        done();
+                    } );
+        } )
+            .on( 'error', function(err) {
+                throw err;
+            } );
+
     } );
+
+    after( function(done) {
+        controller.getUser( {
+            email: 'ballan@flash.com'
+        } ).then( function(user) {
+            if (!user) {
+                done();
+            } else {
+                user.email.should.be.eq( 'ballan@flash.com' );
+                user.remove( function(err) {
+                    if (err) {
+                        done( err );
+                    } else {
+                        done();
+                    }
+                } );
+            }
+
+        } );
+    } );
+    it( 'should return a Promise', function(done) {
+
+
+        controller.getUser( {
+            email: 'ballan@flash.com'
+        } ).then( function(user) {
+            user.email.should.be.eq( 'ballan@flash.com' );
+            done();
+        } );
+
+    } );
+
+
+
 } );

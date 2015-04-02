@@ -1,5 +1,6 @@
 var Promise = require( 'bluebird' );
 
+var colors = require( 'colors' );
 
 var request = Promise.promisify( require( 'request' ) );
 
@@ -44,6 +45,7 @@ var expect = require( 'chai' ).expect,
 describe( 'bluebird', function() {
 
     describe( 'chargify', function() {
+        this.timeout( 5000 );
         it( 'should list users', function(done) {
             chargify_site.get( 'customers.json', function(err, res, body) {
                 if (err)
@@ -58,6 +60,25 @@ describe( 'bluebird', function() {
 
 
     describe( 'steps', function() {
+
+        this.timeout( 2500 );
+
+
+        it( 'should throw async err', function(done) {
+
+            var promise = new Promise( function(resolve, reject) {
+                setTimeout( function() {
+                    reject( Error( 'Random Error Async' ) );
+                }, 2000 );
+            } );
+            promise.catch( function(err) {
+                err.message.should.be.eq( 'Random Error Async' );
+                console.log( 'catch asyncrous error'.red );
+            } )
+                .then( function() {
+                    done();
+                } );
+        } );
         it( 'should exit on zero', function(done) {
             Promise.resolve( 1 )
                 .then( function(v) {

@@ -25,7 +25,7 @@ var HttpForbidden = ClientError.extend( 'HttpForbidden', 403 );
 var NullReferenceError = Error.extend( 'ClientError', 400 );
 var ObjectNotFoundError = Error.extend( 'ClientError', 400 );
 var DuplicateKeyError = Error.extend( 'ClientError', 400 );
-
+var UserNotFoundError = Error.extend( 'ClientError', 400 );
 
 
 function ZabbixError(msg) {
@@ -63,5 +63,6 @@ module.exports = {
     HttpConflict: HttpConflict,
     NullReferenceError: NullReferenceError,
     ObjectNotFoundError: ObjectNotFoundError,
-    DuplicateKeyError: DuplicateKeyError
+    DuplicateKeyError: DuplicateKeyError,
+    UserNotFoundError: UserNotFoundError
 };

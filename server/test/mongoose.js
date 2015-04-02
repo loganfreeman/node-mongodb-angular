@@ -9,12 +9,15 @@ var expect = require( 'chai' ).expect,
     should = require( 'chai' ).should();
 
 
+var conn;
+
+
 describe( 'mongoose', function() {
 
     this.timeout( 5000 );
 
     before( function(done) {
-        var conn = mongoose.connect( 'mongodb://localhost/devops' ).connection;
+        conn = mongoose.connect( 'mongodb://localhost/devops' ).connection;
         conn.once( 'open', function() {
             models.should.have.property( 'User' );
             var user = new models.User( {
