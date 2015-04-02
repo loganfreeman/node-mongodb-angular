@@ -109,9 +109,15 @@ describe( 'user schema', function() {
         db.close();
     } );
 
-    it( 'should set statics methods', function() {
+    it( 'should set statics methods', function(done) {
         UserCollection.should.have.property( 'load' );
 
+        UserCollection.load( {
+            email: 'barryallan@cctv.com'
+        } ).exec( function(err, user) {
+            expect( user ).to.be.null;
+            done();
+        } );
 
     } );
 } );
