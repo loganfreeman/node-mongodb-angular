@@ -156,5 +156,23 @@ describe( 'express-mongoose', function() {
         } );
     } );
 
+    it( 'should usePromise', function(done) {
+        Drumset.usePromise()
+            .then( function(models) {
+                _.each( models, function(model) {
+                    model.type.should.be.eq( 'Acoustic' );
+                } );
+                done();
+            } );
+    } );
+
+    it( 'should queryError', function(done) {
+        Drumset.queryError().exec( function(err, models) {
+            expect( err ).not.be.null;
+            done();
+        } );
+    } );
+
+
 
 } );

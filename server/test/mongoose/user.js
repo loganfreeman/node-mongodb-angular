@@ -1,0 +1,1 @@
+describe( 'mongoose-user', function() {} );
