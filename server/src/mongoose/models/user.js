@@ -143,25 +143,10 @@ UserSchema.methods = {
     }
 };
 
-/**
- * Statics
- */
 
-UserSchema.statics = {
-
-    /**
-     * Load
-     *
-     * @param {Object} options
-     * @param {Function} cb
-     * @api private
-     */
-
-    load: function(options, cb) {
-        var User = mongoose.model( 'User' );
-        User.findOne( options.criteria )
-            .exec( cb );
-    }
+UserSchema.statics.load = function(criteria) {
+    // return a Query
+    return this.findOne( criteria );
 };
 
 mongoose.model( 'User', UserSchema );
