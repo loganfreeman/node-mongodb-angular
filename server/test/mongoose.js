@@ -52,7 +52,7 @@ describe( 'mongoose', function() {
         } );
     } );
 
-    it( 'should have User', function(done) {
+    it( 'should set User password', function(done) {
         var options = {
             criteria: {
                 email: 'ballan@flash.com'
@@ -60,7 +60,13 @@ describe( 'mongoose', function() {
         };
         User.load( options, function(err, user) {
             user.email.should.be.eq( 'ballan@flash.com' );
-            done();
+            user.password = 'hao123';
+            user.save( function(err, doc) {
+                doc.authenticate( 'hao123' ).should.be.eq( true );
+                if (err)
+                    throw err;
+                done();
+            } );
         } );
     } );
 
