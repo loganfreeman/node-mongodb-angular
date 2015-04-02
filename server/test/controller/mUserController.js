@@ -17,7 +17,13 @@ var NullReferenceError = require( '../../src/exception' ).NullReferenceError;
 
 var conn;
 
+/**
+ * Mongoose connection helper.
+ */
 
+function connect() {
+    return mongoose.createConnection( 'mongodb://localhost/express_goose_test' );
+}
 
 describe( 'mongoose User Controller', function() {
 
