@@ -75,6 +75,9 @@ DrumsetSchema.statics.usePromiseRedirect = function(status) {
 mongoose.model( 'Drumset', DrumsetSchema );
 
 
+require( '../src/mongoose/models' );
+
+
 
 /**
  * Mongoose connection helper.
@@ -83,6 +86,21 @@ mongoose.model( 'Drumset', DrumsetSchema );
 function connect() {
     return mongoose.createConnection( 'mongodb://localhost/express_goose_test' );
 }
+
+describe( 'user schema', function() {
+    this.timeout( 5000 );
+    var collection = 'users_' + (Math.random() * 100000 | 0);
+    var db, UserCollection;
+
+    before( function() {} );
+
+    after( function() {} );
+
+    it( 'should set statics methods', function() {
+        var User = mongoose.model( 'User' );
+        User.should.have.property( 'load' );
+    } );
+} );
 
 describe( 'express-mongoose', function() {
 
