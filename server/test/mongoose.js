@@ -83,8 +83,8 @@ require( '../src/mongoose/models' );
  * Mongoose connection helper.
  */
 
-function connect() {
-    return mongoose.createConnection( 'mongodb://localhost/express_goose_test' );
+function connect(database) {
+    return mongoose.createConnection( 'mongodb://localhost/' + database );
 }
 
 describe( 'user schema', function() {
@@ -92,13 +92,27 @@ describe( 'user schema', function() {
     var collection = 'users_' + (Math.random() * 100000 | 0);
     var db, UserCollection;
 
-    before( function() {} );
 
-    after( function() {} );
+    var sampleUser = {
+        firstname: 'barry',
+        lastname: 'allan',
+        email: 'barryallan@cctv.com',
+        password: 'hao123'
+    };
+
+    before( function() {
+        db = connect( 'devops' );
+        UserCollection = db.model( 'User', collection );
+    } );
+
+    after( function() {
+        db.close();
+    } );
 
     it( 'should set statics methods', function() {
-        var User = mongoose.model( 'User' );
-        User.should.have.property( 'load' );
+        UserCollection.should.have.property( 'load' );
+
+
     } );
 } );
 
@@ -110,7 +124,7 @@ describe( 'express-mongoose', function() {
 
     before( function(done) {
         // add dummy data
-        db = connect();
+        db = connect( 'test' );
         Drumset = db.model( 'Drumset', collection );
         var pending = 4;
 
