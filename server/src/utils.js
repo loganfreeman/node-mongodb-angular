@@ -12,3 +12,8 @@ module.exports.where = function(key, value) {
     };
     return params;
 };
+
+
+module.exports.validatePresenceOf = function(value) {
+    return value && value.length;
+};
