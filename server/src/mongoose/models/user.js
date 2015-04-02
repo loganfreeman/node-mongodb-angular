@@ -158,7 +158,8 @@ UserSchema.statics = {
      */
 
     load: function(options, cb) {
-        this.findOne( options.criteria )
+        var User = mongoose.model( 'User' );
+        User.findOne( options.criteria )
             .exec( cb );
     }
 };
