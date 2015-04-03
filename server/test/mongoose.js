@@ -1,17 +1,16 @@
-
 /**
  * Module dependencies.
  */
 
-var _ = require( 'lodash' );
+var _ = require('lodash');
 
-var expect = require( 'chai' ).expect,
-    should = require( 'chai' ).should();
+var expect = require('chai').expect,
+    should = require('chai').should();
 
-var mongoose = require( 'mongoose' );
+var mongoose = require('mongoose');
 
 
-require( '../src/mongoose/models' );
+require('../src/mongoose/models');
 
 
 
@@ -20,12 +19,54 @@ require( '../src/mongoose/models' );
  */
 
 function connect(database) {
-    return mongoose.createConnection( 'mongodb://localhost/' + database );
+    return mongoose.createConnection('mongodb://localhost/' + database);
 }
 
-describe( 'express-mongoose', function() {
 
-    this.timeout( 5000 );
+
+describe('group schema', function() {
+    this.timeout(5000);
+    var collection = 'group_' + (Math.random() * 100000 | 0);
+    var db, Group;
+    var sample = {
+        name: 'sample',
+        description: 'this is a sample group'
+    };
+    before(function(done) {
+        db = connect('test');
+        Group = db.model('Group', collection);
+
+        Group.create(sample, itemCreated);
+
+        function itemCreated(err) {
+            if (err) {
+                done(err);
+            } else {
+                done();
+            }
+        }
+    });
+    after(function(done) {
+        // clean up the test db
+        db.db.dropDatabase(function() {
+            db.close();
+            done();
+        });
+    });
+    it('should load group', function(done) {
+        Group.findOne({
+                name: 'sample'
+            })
+            .exec(function(err, model) {
+                model.name.should.be.eq('sample');
+                done();
+            })
+    })
+})
+
+describe('user schema', function() {
+
+    this.timeout(5000);
     var collection = 'drumsets_' + (Math.random() * 100000 | 0);
     var db, User;
 
@@ -37,156 +78,155 @@ describe( 'express-mongoose', function() {
         email: 'barray@cctv.com'
     };
 
-    before( function(done) {
+    before(function(done) {
         // add dummy data
-        db = connect( 'test' );
-        User = db.model( 'User', collection );
+        db = connect('test');
+        User = db.model('User', collection);
         var pending = 1;
 
-        User.create( sample, added );
+        User.create(sample, added);
 
 
         function added(err) {
             if (err) {
-                console.log( err );
+                console.log(err);
             }
             if (added.err) return;
 
             if (err) {
                 db.close();
-                return done( added.err = err );
+                return done(added.err = err);
             }
 
             if (--pending) return;
             done();
         }
-    } );
+    });
 
-    after( function(done) {
+    after(function(done) {
         // clean up the test db
-        db.db.dropDatabase( function() {
+        db.db.dropDatabase(function() {
             db.close();
             done();
-        } );
-    } );
+        });
+    });
 
-    it( 'should useQuery', function(done) {
-        User.findOne( {
+    it('should useQuery', function(done) {
+        User.findOne({
             email: 'barray@cctv.com'
-        } ).exec( function(err, model) {
-            console.log( model );
-            model.email.should.be.eq( 'barray@cctv.com' );
-            model.authenticate( 'electronic' ).should.be.eq( true );
+        }).exec(function(err, model) {
+            console.log(model);
+            model.email.should.be.eq('barray@cctv.com');
+            model.authenticate('electronic').should.be.eq(true);
             done();
-        } );
-    } );
+        });
+    });
 
-    it( 'should not create user with duplicate email', function(done) {
-        User.create( sample, function(err) {
+    it('should not create user with duplicate email', function(done) {
+        User.create(sample, function(err) {
             //console.log( err );
-            err.name.should.be.eq( 'ValidationError' );
-            _.each( err.errors, function(e) {
-                e.name.should.be.eq( 'ValidatorError' );
-                e.path.should.match( /^(username|email)$/ );
-            } );
+            err.name.should.be.eq('ValidationError');
+            _.each(err.errors, function(e) {
+                e.name.should.be.eq('ValidatorError');
+                e.path.should.match(/^(username|email)$/);
+            });
             done();
-        } );
-    } );
+        });
+    });
 
 
 
+});
 
-} );
+describe('drumset schema', function() {
 
-describe( 'express-mongoose', function() {
-
-    this.timeout( 5000 );
+    this.timeout(5000);
     var collection = 'drumsets_' + (Math.random() * 100000 | 0);
     var db, Drumset;
 
-    before( function(done) {
+    before(function(done) {
         // add dummy data
-        db = connect( 'test' );
-        Drumset = db.model( 'Drumset', collection );
+        db = connect('test');
+        Drumset = db.model('Drumset', collection);
         var pending = 4;
 
-        Drumset.create( {
+        Drumset.create({
             brand: 'Roland',
             color: 'black',
             type: 'electronic',
             _id: '4da8b662057a83596c000001'
-        }, added );
+        }, added);
 
-        Drumset.create( {
+        Drumset.create({
             brand: 'GMS',
             color: 'Silver Sparkle',
             type: 'Acoustic',
             _id: '4da8b662057a83596c000002'
-        }, added );
+        }, added);
 
-        Drumset.create( {
+        Drumset.create({
             brand: 'DW',
             color: 'Broken Glass',
             type: 'Acoustic',
             _id: '4da8b662057a83596c000003'
-        }, added );
+        }, added);
 
-        Drumset.create( {
+        Drumset.create({
             brand: 'Meinl',
             color: 'black',
             type: 'Acoustic',
             _id: '4da8b662057a83596c000004'
-        }, added );
+        }, added);
 
         function added(err) {
             if (added.err) return;
 
             if (err) {
                 db.close();
-                return done( added.err = err );
+                return done(added.err = err);
             }
 
             if (--pending) return;
             done();
         }
-    } );
+    });
 
-    after( function(done) {
+    after(function(done) {
         // clean up the test db
-        db.db.dropDatabase( function() {
+        db.db.dropDatabase(function() {
             db.close();
             done();
-        } );
-    } );
+        });
+    });
 
-    it( 'should useQuery', function(done) {
-        Drumset.useQuery().exec( function(err, models) {
+    it('should useQuery', function(done) {
+        Drumset.useQuery().exec(function(err, models) {
             //console.log( model );
-            _.each( models, function(model) {
-                model.color.should.be.eq( 'black' );
-            } );
+            _.each(models, function(model) {
+                model.color.should.be.eq('black');
+            });
 
             done();
-        } );
-    } );
+        });
+    });
 
-    it( 'should usePromise', function(done) {
+    it('should usePromise', function(done) {
         Drumset.usePromise()
-            .then( function(models) {
-                _.each( models, function(model) {
-                    model.type.should.be.eq( 'Acoustic' );
-                } );
+            .then(function(models) {
+                _.each(models, function(model) {
+                    model.type.should.be.eq('Acoustic');
+                });
                 done();
-            } );
-    } );
+            });
+    });
 
-    it( 'should queryError', function(done) {
-        Drumset.queryError().exec( function(err, models) {
-            expect( err ).not.be.null;
+    it('should queryError', function(done) {
+        Drumset.queryError().exec(function(err, models) {
+            expect(err).not.be.null;
             done();
-        } );
-    } );
+        });
+    });
 
 
 
-} );
+});
