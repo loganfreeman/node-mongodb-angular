@@ -85,11 +85,23 @@ describe('user schema', function() {
         var userPromise = User.findOne({
             email: 'barray@cctv.com'
         }).exec();
+
+        var userId;
         Promise.all([userPromise])
             .then(function(values) {
                 var user = values[0];
                 user.groups.length.should.be.eq(2);
-                done();
+                userId = user.id;
+                Promise.resolve(user.groups)
+                    .map(function(group) {
+                        return Group.findById(group).exec();
+                    })
+                    .then(function(groupPromises) {
+                        Promise.all(groupPromises)
+                            .then(function(groups) {
+                                done();
+                            });
+                    })
             })
     });
 
