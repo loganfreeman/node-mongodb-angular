@@ -101,9 +101,14 @@ describe('user schema', function() {
         }).exec();
         Promise.all([userPromise, group1, group2])
             .then(function(values) {
-                values[0].email.should.be.eq('barray@cctv.com');
-                values[1].name.should.be.eq('group #1');
-                values[2].name.should.be.eq('group #2');
+                var user = values[0],
+                    group1 = values[1],
+                    group2 = values[2];
+                user.groups.push(group1);
+                user.groups.push(group2);
+                user.email.should.be.eq('barray@cctv.com');
+                group1.name.should.be.eq('group #1');
+                group2.name.should.be.eq('group #2');
                 done();
             })
             .catch(function(err) {
