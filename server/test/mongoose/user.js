@@ -81,8 +81,12 @@ describe('user schema', function() {
     });
 
     it('should return promise', function() {
-        var userPromise = User.create(sample);
+        var userPromise = User.create(sample),
+            findOne = User.findOne({
+                email: 'barray@cctv.com'
+            }).exec();
         userPromise.should.be.instanceOf(mongoose.Promise);
+        findOne.should.be.instanceOf(mongoose.Promise);
     })
 
 
