@@ -74,7 +74,7 @@ describe( 'express-mongoose', function() {
         } ).exec( function(err, model) {
             console.log( model );
             model.email.should.be.eq( 'barray@cctv.com' );
-
+            model.authenticate( 'electronic' ).should.be.eq( true );
             done();
         } );
     } );
