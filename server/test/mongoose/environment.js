@@ -91,6 +91,7 @@ describe('user schema', function() {
                 name: 'sample Environment'
             }).exec()
             .then(function(env) {
+                env.stacks.length.should.be.eq(2);
                 env.name.should.be.eq('sample Environment');
                 env.description = 'set by unit test';
                 env.save().should.be.instanceOf(mongoose.Promise);
