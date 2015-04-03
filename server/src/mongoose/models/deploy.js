@@ -32,4 +32,4 @@ DeploySchema.plugin(relationship, {
 	relationshipPathName: 'instance'
 });
 
-mongoose.models("Deploy", DeploySchema)
+mongoose.model("Deploy", DeploySchema);

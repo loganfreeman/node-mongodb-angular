@@ -32,4 +32,4 @@ StackSchema.plugin(relationship, {
 	relationshipPathName: 'environment'
 });
 
-mongoose.models("Stack", StackSchema)
+mongoose.model("Stack", StackSchema)

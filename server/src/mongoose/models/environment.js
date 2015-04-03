@@ -23,4 +23,4 @@ var EnvironmentSchema = new Schema({
 	}]
 });
 
-mongoose.models("Environment", EnvironmentSchema)
+mongoose.model("Environment", EnvironmentSchema);

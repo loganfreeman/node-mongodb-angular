@@ -36,4 +36,4 @@ InstanceSchema.plugin(relationship, {
 	relationshipPathName: 'stack'
 });
 
-mongoose.models("Instance", InstanceSchema)
+mongoose.model("Instance", InstanceSchema)
