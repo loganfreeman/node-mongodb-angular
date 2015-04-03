@@ -23,36 +23,60 @@ function connect(database) {
     return mongoose.createConnection( 'mongodb://localhost/' + database );
 }
 
-describe( 'user schema', function() {
+describe( 'express-mongoose', function() {
+
     this.timeout( 5000 );
-    var collection = 'users_' + (Math.random() * 100000 | 0);
-    var db, UserCollection;
+    var collection = 'drumsets_' + (Math.random() * 100000 | 0);
+    var db, Drumset;
+
+    before( function(done) {
+        // add dummy data
+        db = connect( 'test' );
+        Drumset = db.model( 'Drumset', collection );
+        var pending = 1;
+
+        Drumset.create( {
+            brand: 'Roland',
+            color: 'black',
+            type: 'electronic'
+        }, added );
 
 
-    var sampleUser = {
-        firstname: 'barry',
-        lastname: 'allan',
-        email: 'barryallan@cctv.com',
-        password: 'hao123',
-        username: 'barryallan'
-    };
+        function added(err) {
+            if (added.err) return;
 
-    before( function() {
-        db = connect( 'devops' );
-        UserCollection = db.model( 'User', collection );
+            if (err) {
+                db.close();
+                return done( added.err = err );
+            }
+
+            if (--pending) return;
+            done();
+        }
     } );
 
-    after( function() {
-        db.close();
+    after( function(done) {
+        // clean up the test db
+        db.db.dropDatabase( function() {
+            db.close();
+            done();
+        } );
     } );
 
-    it( 'should set statics methods', function() {
-        UserCollection.should.have.property( 'load' );
-        UserCollection.should.have.property( 'create' );
+    it( 'should useQuery', function(done) {
+        Drumset.useQuery().exec( function(err, models) {
+            //console.log( model );
+            _.each( models, function(model) {
+                model.color.should.be.eq( 'black' );
+            } );
 
-
-
+            done();
+        } );
     } );
+
+
+
+
 } );
 
 describe( 'express-mongoose', function() {

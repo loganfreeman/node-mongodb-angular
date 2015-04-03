@@ -1,6 +1,4 @@
 var mongoose = require( 'mongoose' ),
-    express = require( 'express' ),
-    assert = require( 'assert' ),
     Promise = mongoose.Promise,
     Schema = mongoose.Schema;
 

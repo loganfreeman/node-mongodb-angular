@@ -3,11 +3,11 @@
  * Module dependencies.
  */
 
-var mongoose = require( 'mongoose' );
 var crypto = require( 'crypto' );
 
-var Schema = mongoose.Schema;
-
+var mongoose = require( 'mongoose' ),
+    Promise = mongoose.Promise,
+    Schema = mongoose.Schema;
 /**
  * User Schema
  */
