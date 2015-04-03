@@ -58,14 +58,14 @@ describe('user schema', function() {
                     .then(function(values) {
                         Promise.resolve(values)
                             .map(function(stack) {
-                                stack.environment = env;
+                                stack.environment = env._id;
                                 return stack.save();
                             })
                             .then(function(savePromises) {
                                 Promise.all(savePromises)
                                     .then(function(stacks) {
                                         _.each(stacks, function(stack) {
-                                            console.log(stack);
+                                            stack.environment.toString().should.be.eq(envId);
                                         });
                                         done();
                                     })
