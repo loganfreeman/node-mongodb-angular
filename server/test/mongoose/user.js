@@ -99,6 +99,9 @@ describe('user schema', function() {
                     .then(function(groupPromises) {
                         Promise.all(groupPromises)
                             .then(function(groups) {
+                                _.each(groups, function(group) {
+                                    group.users[0].toString().should.be.eq(userId);
+                                })
                                 done();
                             });
                     })
