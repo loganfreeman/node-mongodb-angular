@@ -8,6 +8,10 @@ var crypto = require( 'crypto' );
 var mongoose = require( 'mongoose' ),
     Promise = mongoose.Promise,
     Schema = mongoose.Schema;
+
+
+var uniqueValidator = require( 'mongoose-unique-validator' );
+
 /**
  * User Schema
  */
@@ -23,11 +27,15 @@ var UserSchema = new Schema( {
     },
     email: {
         type: String,
-        default: ''
+        default: '',
+        required: true,
+        unique: true
     },
     username: {
         type: String,
-        default: ''
+        default: '',
+        required: true,
+        unique: true
     },
     hashed_password: {
         type: String,
@@ -128,5 +136,6 @@ UserSchema.methods = {
     }
 };
 
+UserSchema.plugin( uniqueValidator );
 
 mongoose.model( 'User', UserSchema );
