@@ -54,7 +54,11 @@ describe('user schema', function() {
             .then(function(env) {
                 envId = env.id;
                 env.name.should.be.eq('sample Environment');
-                done();
+                Promise.all([stackPromise, stackPromise1])
+                    .then(function(values) {
+                        done();
+                    })
+
             })
     });
 
@@ -68,8 +72,21 @@ describe('user schema', function() {
 
 
 
-    it('should load by Id', function() {
+    it('should load by Id', function(done) {
+        Environment.findOne({
+                name: 'sample Environment'
+            }).exec()
+            .then(function(env) {
+                env.name.should.be.eq('sample Environment');
+                env.description = 'set by unit test';
+                env.save().should.be.instanceOf(mongoose.Promise);
+                env.save().then(function(env) {
+                    // console.log(env);
+                    env.description.should.be.eq('set by unit test');
+                    done();
+                })
 
+            })
     });
 
 });
