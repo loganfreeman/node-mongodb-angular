@@ -27,21 +27,23 @@ describe( 'express-mongoose', function() {
 
     this.timeout( 5000 );
     var collection = 'drumsets_' + (Math.random() * 100000 | 0);
-    var db, Drumset;
+    var db, User;
+
+    var sample = {
+        firstname: 'Roland',
+        lastname: 'black',
+        password: 'electronic',
+        username: 'test',
+        email: 'barray@cctv.com'
+    };
 
     before( function(done) {
         // add dummy data
         db = connect( 'test' );
-        Drumset = db.model( 'User', collection );
+        User = db.model( 'User', collection );
         var pending = 1;
 
-        Drumset.create( {
-            firstname: 'Roland',
-            lastname: 'black',
-            password: 'electronic',
-            username: 'test',
-            email: 'barray@cctv.com'
-        }, added );
+        User.create( sample, added );
 
 
         function added(err) {
@@ -69,12 +71,24 @@ describe( 'express-mongoose', function() {
     } );
 
     it( 'should useQuery', function(done) {
-        Drumset.findOne( {
+        User.findOne( {
             email: 'barray@cctv.com'
         } ).exec( function(err, model) {
             console.log( model );
             model.email.should.be.eq( 'barray@cctv.com' );
             model.authenticate( 'electronic' ).should.be.eq( true );
+            done();
+        } );
+    } );
+
+    it( 'should not create user with duplicate email', function(done) {
+        User.create( sample, function(err) {
+            //console.log( err );
+            err.name.should.be.eq( 'ValidationError' );
+            _.each( err.errors, function(e) {
+                e.name.should.be.eq( 'ValidatorError' );
+                e.path.should.match( /^(username|email)$/ );
+            } );
             done();
         } );
     } );
