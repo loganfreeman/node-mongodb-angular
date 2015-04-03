@@ -69,21 +69,6 @@ UserSchema.path( 'email' ).validate( function(email) {
     return email.length;
 }, 'Email cannot be blank' );
 
-UserSchema.path( 'email' ).validate( function(email, fn) {
-    var User = mongoose.model( 'User' );
-
-    // Check only when it is a new user or when email field is modified
-    if (this.isNew || this.isModified( 'email' )) {
-        User.find( {
-            email: email
-        } ).exec( function(err, users) {
-            fn( !err && users.length === 0 );
-        } );
-    } else {
-        fn( true );
-    }
-}, 'Email already exists' );
-
 UserSchema.path( 'username' ).validate( function(username) {
     return username.length;
 }, 'Username cannot be blank' );
@@ -143,10 +128,5 @@ UserSchema.methods = {
     }
 };
 
-
-UserSchema.statics.load = function(criteria) {
-    // return a Query
-    return this.findOne( criteria );
-};
 
 mongoose.model( 'User', UserSchema );

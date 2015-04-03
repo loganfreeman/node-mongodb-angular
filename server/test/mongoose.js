@@ -32,17 +32,22 @@ describe( 'express-mongoose', function() {
     before( function(done) {
         // add dummy data
         db = connect( 'test' );
-        Drumset = db.model( 'Drumset', collection );
+        Drumset = db.model( 'User', collection );
         var pending = 1;
 
         Drumset.create( {
-            brand: 'Roland',
-            color: 'black',
-            type: 'electronic'
+            firstname: 'Roland',
+            lastname: 'black',
+            password: 'electronic',
+            username: 'test',
+            email: 'barray@cctv.com'
         }, added );
 
 
         function added(err) {
+            if (err) {
+                console.log( err );
+            }
             if (added.err) return;
 
             if (err) {
@@ -64,11 +69,11 @@ describe( 'express-mongoose', function() {
     } );
 
     it( 'should useQuery', function(done) {
-        Drumset.useQuery().exec( function(err, models) {
-            //console.log( model );
-            _.each( models, function(model) {
-                model.color.should.be.eq( 'black' );
-            } );
+        Drumset.findOne( {
+            email: 'barray@cctv.com'
+        } ).exec( function(err, model) {
+            console.log( model );
+            model.email.should.be.eq( 'barray@cctv.com' );
 
             done();
         } );
