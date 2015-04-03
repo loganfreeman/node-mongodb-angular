@@ -104,4 +104,27 @@ describe('user schema', function() {
             })
     });
 
+    it('should associate stacks with environment', function(done) {
+        Environment.findOne({
+                name: 'sample Environment'
+            }).exec()
+            .then(function(env) {
+                env.stacks.length.should.be.eq(2);
+                Promise.resolve(env.stacks)
+                    .map(function(stackId) {
+                        return Stack.findById(stackId).exec();
+                    })
+                    .then(function(stackPromises) {
+                        Promise.all(stackPromises)
+                            .then(function(stacks) {
+                                _.each(stacks, function(stack) {
+                                    stack.environment.toString().should.be.eq(env.id);
+                                })
+                                done();
+                            });
+                    })
+
+            })
+    });
+
 });
