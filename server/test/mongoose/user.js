@@ -43,33 +43,34 @@ describe('user schema', function() {
         db = connect('test');
         User = db.model('User');
         Group = db.model('Group');
-        var pending = 3;
 
-        User.create(sample, added);
-
-        Group.create({
-            name: 'group1'
-        }, added);
-
-        Group.create({
-            name: 'group2'
-        }, added);
-
-
-        function added(err) {
-            if (err) {
-                console.log(err);
-            }
-            if (added.err) return;
-
-            if (err) {
-                db.close();
-                return done(added.err = err);
-            }
-
-            if (--pending) return;
-            done();
-        }
+        var group1 = Group.create({
+            name: 'group #1'
+        });
+        var group2 = Group.create({
+            name: 'group #2'
+        });
+        var userPromise = User.create(sample);
+        Promise.all([userPromise, group1, group2])
+            .then(function(values) {
+                var user = values[0],
+                    group1 = values[1],
+                    group2 = values[2];
+                user.groups.push(group1);
+                user.groups.push(group2);
+                user.email.should.be.eq('barray@cctv.com');
+                group1.name.should.be.eq('group #1');
+                group2.name.should.be.eq('group #2');
+                // done();
+                user.save(function(err, model) {
+                    // console.log(model);
+                    model.groups.length.should.be.eq(2);
+                    done();
+                });
+            })
+            .catch(function(err) {
+                done(err);
+            })
     });
 
     after(function(done) {
@@ -88,39 +89,6 @@ describe('user schema', function() {
         userPromise.should.be.instanceOf(mongoose.Promise);
         findOne.should.be.instanceOf(mongoose.Promise);
     });
-
-    it('should create all groups', function(done) {
-        var group1 = Group.create({
-            name: 'group #1'
-        });
-        var group2 = Group.create({
-            name: 'group #2'
-        });
-        var userPromise = User.findOne({
-            email: 'barray@cctv.com'
-        }).exec();
-        Promise.all([userPromise, group1, group2])
-            .then(function(values) {
-                var user = values[0],
-                    group1 = values[1],
-                    group2 = values[2];
-                user.groups.push(group1);
-                user.groups.push(group2);
-                user.email.should.be.eq('barray@cctv.com');
-                group1.name.should.be.eq('group #1');
-                group2.name.should.be.eq('group #2');
-                // done();
-                user.save(function(err, model) {
-                    console.log(model);
-                    model.groups.length.should.be.eq(2);
-                    done();
-                });
-            })
-            .catch(function(err) {
-                done(err);
-            })
-    })
-
 
     it('should useQuery', function(done) {
         User.findOne({
