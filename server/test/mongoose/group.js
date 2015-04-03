@@ -110,7 +110,7 @@ describe('user schema', function() {
                     Promise.all(userPromises)
                         .then(function(users) {
                             _.each(users, function(user) {
-                                console.log(user);
+                                user.groups[0].toString().should.be.eq(groupId);
                             })
                             done();
                         });
