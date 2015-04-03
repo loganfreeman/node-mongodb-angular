@@ -81,6 +81,18 @@ describe('user schema', function() {
         });
     });
 
+    it('should load by Id', function(done) {
+        var userPromise = User.findOne({
+            email: 'barray@cctv.com'
+        }).exec();
+        Promise.all([userPromise])
+            .then(function(values) {
+                var user = values[0];
+                user.groups.length.should.be.eq(2);
+                done();
+            })
+    });
+
     it('should return promise', function() {
         var userPromise = User.create(sample),
             findOne = User.findOne({
