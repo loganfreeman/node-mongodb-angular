@@ -56,7 +56,21 @@ describe('user schema', function() {
                 env.name.should.be.eq('sample Environment');
                 Promise.all([stackPromise, stackPromise1])
                     .then(function(values) {
-                        done();
+                        Promise.resolve(values)
+                            .map(function(stack) {
+                                stack.environment = env;
+                                return stack.save();
+                            })
+                            .then(function(savePromises) {
+                                Promise.all(savePromises)
+                                    .then(function(stacks) {
+                                        _.each(stacks, function(stack) {
+                                            console.log(stack);
+                                        });
+                                        done();
+                                    })
+                            })
+
                     })
 
             })
