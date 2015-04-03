@@ -1,22 +1,22 @@
-
 /**
  * Module dependencies.
  */
 
-var crypto = require( 'crypto' );
+var crypto = require('crypto');
 
-var mongoose = require( 'mongoose' ),
+var mongoose = require('mongoose'),
     Promise = mongoose.Promise,
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    relationship = require("mongoose-relationship");
 
 
-var uniqueValidator = require( 'mongoose-unique-validator' );
+var uniqueValidator = require('mongoose-unique-validator');
 
 /**
  * User Schema
  */
 
-var UserSchema = new Schema( {
+var UserSchema = new Schema({
     firstname: {
         type: String,
         default: ''
@@ -48,42 +48,47 @@ var UserSchema = new Schema( {
     authToken: {
         type: String,
         default: ''
-    }
-} );
+    },
+    groups: [{
+        type: Schema.ObjectId,
+        ref: "Group",
+        childPath: "users"
+    }]
+});
 
 /**
  * Virtuals
  */
 
 UserSchema
-    .virtual( 'password' )
-    .set( function(password) {
+    .virtual('password')
+    .set(function(password) {
         this._password = password;
         this.salt = this.makeSalt();
-        this.hashed_password = this.encryptPassword( password );
-    } )
-    .get( function() {
+        this.hashed_password = this.encryptPassword(password);
+    })
+    .get(function() {
         return this._password;
-    } );
+    });
 
 /**
  * Validations
  */
 
-var validatePresenceOf = require( '../../utils.js' ).validatePresenceOf;
+var validatePresenceOf = require('../../utils.js').validatePresenceOf;
 
 
-UserSchema.path( 'email' ).validate( function(email) {
+UserSchema.path('email').validate(function(email) {
     return email.length;
-}, 'Email cannot be blank' );
+}, 'Email cannot be blank');
 
-UserSchema.path( 'username' ).validate( function(username) {
+UserSchema.path('username').validate(function(username) {
     return username.length;
-}, 'Username cannot be blank' );
+}, 'Username cannot be blank');
 
-UserSchema.path( 'hashed_password' ).validate( function(hashed_password) {
+UserSchema.path('hashed_password').validate(function(hashed_password) {
     return hashed_password.length;
-}, 'Password cannot be blank' );
+}, 'Password cannot be blank');
 
 
 /**
@@ -101,7 +106,7 @@ UserSchema.methods = {
      */
 
     authenticate: function(plainText) {
-        return this.encryptPassword( plainText ) === this.hashed_password;
+        return this.encryptPassword(plainText) === this.hashed_password;
     },
 
     /**
@@ -112,7 +117,7 @@ UserSchema.methods = {
      */
 
     makeSalt: function() {
-        return Math.round(( new Date().valueOf() * Math.random() )) + '';
+        return Math.round((new Date().valueOf() * Math.random())) + '';
     },
 
     /**
@@ -127,15 +132,19 @@ UserSchema.methods = {
         if (!password) return '';
         try {
             return crypto
-                .createHmac( 'sha1', this.salt )
-                .update( password )
-                .digest( 'hex' );
-        } catch ( err ) {
+                .createHmac('sha1', this.salt)
+                .update(password)
+                .digest('hex');
+        } catch (err) {
             return '';
         }
     }
 };
 
-UserSchema.plugin( uniqueValidator );
+UserSchema.plugin(uniqueValidator);
 
-mongoose.model( 'User', UserSchema );
+UserSchema.plugin(relationship, {
+    relationshipPathName: 'groups'
+});
+
+mongoose.model('User', UserSchema);
