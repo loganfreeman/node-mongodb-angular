@@ -109,7 +109,12 @@ describe('user schema', function() {
                 user.email.should.be.eq('barray@cctv.com');
                 group1.name.should.be.eq('group #1');
                 group2.name.should.be.eq('group #2');
-                done();
+                // done();
+                user.save(function(err, model) {
+                    console.log(model);
+                    model.groups.length.should.be.eq(2);
+                    done();
+                });
             })
             .catch(function(err) {
                 done(err);
@@ -121,7 +126,7 @@ describe('user schema', function() {
         User.findOne({
             email: 'barray@cctv.com'
         }).exec(function(err, model) {
-            console.log(model);
+            // console.log(model);
             model.email.should.be.eq('barray@cctv.com');
             model.authenticate('electronic').should.be.eq(true);
             done();
