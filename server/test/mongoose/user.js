@@ -100,6 +100,9 @@ describe('user schema', function() {
             }).exec();
         userPromise.should.be.instanceOf(mongoose.Promise);
         findOne.should.be.instanceOf(mongoose.Promise);
+
+        var findById = User.findById(Math.random() * 100000).exec();
+        findById.should.be.instanceOf(mongoose.Promise);
     });
 
     it('should useQuery', function(done) {
