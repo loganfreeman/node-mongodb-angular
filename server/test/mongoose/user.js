@@ -12,6 +12,8 @@ var mongoose = require('mongoose');
 
 require('../../src/mongoose/models');
 
+var Promise = require('bluebird');
+
 
 
 /**
@@ -69,6 +71,19 @@ describe('user schema', function() {
             done();
         }
     });
+
+    after(function(done) {
+        // clean up the test db
+        db.db.dropDatabase(function() {
+            db.close();
+            done();
+        });
+    });
+
+    it('should return promise', function() {
+        var userPromise = User.create(sample);
+        userPromise.should.be.instanceOf(mongoose.Promise);
+    })
 
 
     it('should useQuery', function(done) {
