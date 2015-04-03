@@ -87,6 +87,28 @@ describe('user schema', function() {
             }).exec();
         userPromise.should.be.instanceOf(mongoose.Promise);
         findOne.should.be.instanceOf(mongoose.Promise);
+    });
+
+    it('should create all groups', function(done) {
+        var group1 = Group.create({
+            name: 'group #1'
+        });
+        var group2 = Group.create({
+            name: 'group #2'
+        });
+        var userPromise = User.findOne({
+            email: 'barray@cctv.com'
+        }).exec();
+        Promise.all([userPromise, group1, group2])
+            .then(function(values) {
+                values[0].email.should.be.eq('barray@cctv.com');
+                values[1].name.should.be.eq('group #1');
+                values[2].name.should.be.eq('group #2');
+                done();
+            })
+            .catch(function(err) {
+                done(err);
+            })
     })
 
 
