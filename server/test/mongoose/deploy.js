@@ -30,7 +30,7 @@ function connect(database) {
 describe('user schema', function() {
 
     this.timeout(5000);
-    var db, Deploy, Stack, User, Instance, user, deploy;
+    var db, Deploy, Stack, User, Instance, user, deploy, instance;
 
     var sample = {
         firstname: 'Roland',
@@ -57,6 +57,17 @@ describe('user schema', function() {
             })
             .then(function(model) {
                 deploy = model;
+                return Instance.create({
+                    name: 'test'
+                });
+            })
+            .then(function(model) {
+                instance = model;
+                deploy.instance = instance._id;
+                return deploy.save();
+            })
+            .then(function(model) {
+                console.log(model);
                 done();
             })
 
@@ -79,6 +90,15 @@ describe('user schema', function() {
             done();
         })
     });
+
+    it('should set instance', function(done) {
+        Instance.findById(deploy.instance).exec().then(function(instance) {
+            instance.name.should.be.eq('test');
+            instance.deploys.length.should.be.eq(1);
+            console.log(instance);
+            done();
+        })
+    })
 
 
 
