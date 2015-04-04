@@ -35,6 +35,7 @@ describe('user schema', function() {
         db = connect('test');
         Environment = db.model('Environment');
         Stack = db.model('Stack');
+        Instance = db.model('Instance');
 
         var environment = Environment.create({
             name: 'sample Environment'
@@ -101,6 +102,41 @@ describe('user schema', function() {
                     done();
                 })
 
+            })
+    });
+
+    it('should add instances', function(done) {
+        var stack;
+        Environment.findOne({
+                name: 'sample Environment'
+            }).exec()
+            .then(function(env) {
+                env.stacks.length.should.be.eq(2);
+                stack = env.stacks[0];
+                // console.log(stack);
+                var instances = [];
+                instances.push(Instance.create({
+                    name: 'first instance'
+                }));
+                instances.push(Instance.create({
+                    name: 'second instance'
+                }));
+                Promise.all(instances)
+                    .map(function(instance) {
+                        instance.stack = stack;
+                        return instance.save();
+                    })
+                    .then(function(instances) {
+                        _.each(instances, function(instance) {
+                            console.log(instance);
+                        })
+                        return Stack.findById(stack).exec();
+                    })
+                    .then(function(stack) {
+                        // console.log(stack);
+                        stack.instances.length.should.be.eq(2);
+                        done();
+                    })
             })
     });
 
