@@ -15,6 +15,8 @@ require('../../src/mongoose/models');
 var Promise = require('bluebird');
 
 
+var ObjectId = mongoose.Schema.Types.ObjectId;
+
 
 /**
  * Mongoose connection helper.
@@ -71,8 +73,11 @@ describe('user schema', function() {
 
 
 
-    it('should load by Id', function() {
-        console.log(deploy);
+    it('should load by Id', function(done) {
+        User.findById(deploy.user).exec().then(function(user) {
+            user.email.should.be.eq('barray@cctv.com');
+            done();
+        })
     });
 
 
