@@ -1,4 +1,10 @@
+var mongoose = require( 'mongoose' );
 
+var config = require( '../config/config.js' );
+
+exports.connect = function connect() {
+    return mongoose.createConnection( 'mongodb://localhost/' + config.mongo.database );
+};
 /**
  * Formats mongoose errors into proper array
  *

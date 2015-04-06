@@ -2,17 +2,17 @@
  * Module dependencies.
  */
 
-var _ = require('lodash');
+var _ = require( 'lodash' );
 
-var expect = require('chai').expect,
-    should = require('chai').should();
+var expect = require( 'chai' ).expect,
+    should = require( 'chai' ).should();
 
-var mongoose = require('mongoose');
+var mongoose = require( 'mongoose' );
 
 
-require('../../src/mongoose/models');
+require( '../../src/mongoose/models' );
 
-var Promise = require('bluebird');
+var Promise = require( 'bluebird' );
 
 
 
@@ -21,13 +21,13 @@ var Promise = require('bluebird');
  */
 
 function connect(database) {
-    return mongoose.createConnection('mongodb://localhost/' + database);
+    return mongoose.createConnection( 'mongodb://localhost/' + database );
 }
 
 
-describe('user schema', function() {
+describe( 'user schema', function() {
 
-    this.timeout(5000);
+    this.timeout( 5000 );
     var db, User, Group;
 
     var sample = {
@@ -38,111 +38,124 @@ describe('user schema', function() {
         email: 'barray@cctv.com'
     };
 
-    before(function(done) {
+    before( function(done) {
         // add dummy data
-        db = connect('test');
-        User = db.model('User');
-        Group = db.model('Group');
+        db = connect( 'test' );
+        User = db.model( 'User' );
+        Group = db.model( 'Group' );
 
-        var group1 = Group.create({
+        var group1 = Group.create( {
             name: 'group #1'
-        });
-        var group2 = Group.create({
+        } );
+        var group2 = Group.create( {
             name: 'group #2'
-        });
-        var userPromise = User.create(sample);
-        Promise.all([userPromise, group1, group2])
-            .then(function(values) {
+        } );
+        var userPromise = User.create( sample );
+        Promise.all( [userPromise, group1, group2] )
+            .then( function(values) {
                 var user = values[0],
                     group1 = values[1],
                     group2 = values[2];
-                user.groups.push(group1);
-                user.groups.push(group2);
-                user.email.should.be.eq('barray@cctv.com');
-                group1.name.should.be.eq('group #1');
-                group2.name.should.be.eq('group #2');
+                user.groups.push( group1 );
+                user.groups.push( group2 );
+                user.email.should.be.eq( 'barray@cctv.com' );
+                group1.name.should.be.eq( 'group #1' );
+                group2.name.should.be.eq( 'group #2' );
                 // done();
-                user.save(function(err, model) {
+                user.save( function(err, model) {
                     // console.log(model);
-                    model.groups.length.should.be.eq(2);
+                    model.groups.length.should.be.eq( 2 );
                     done();
-                });
-            })
-            .catch(function(err) {
-                done(err);
-            })
-    });
+                } );
+            } )
+            .catch( function(err) {
+                done( err );
+            } );
+    } );
 
-    after(function(done) {
+    after( function(done) {
         // clean up the test db
-        db.db.dropDatabase(function() {
+        db.db.dropDatabase( function() {
             db.close();
             done();
-        });
-    });
+        } );
+    } );
 
-    it('should load by Id', function(done) {
-        var userPromise = User.findOne({
+    it( 'should login with username and password', function(done) {
+        User.findOne( {
+            username: 'test'
+        } ).exec()
+            .then( function(user) {
+                return user.authenticate( 'electronic' );
+            } )
+            .then( function(result) {
+                result.should.be.eq( true );
+                done();
+            } );
+    } );
+
+    it( 'should load by Id', function(done) {
+        var userPromise = User.findOne( {
             email: 'barray@cctv.com'
-        }).exec();
+        } ).exec();
 
         var userId;
-        Promise.all([userPromise])
-            .then(function(values) {
+        Promise.all( [userPromise] )
+            .then( function(values) {
                 var user = values[0];
-                user.groups.length.should.be.eq(2);
+                user.groups.length.should.be.eq( 2 );
                 userId = user.id;
-                Promise.resolve(user.groups)
-                    .map(function(group) {
-                        return Group.findById(group).exec();
-                    })
-                    .then(function(groupPromises) {
-                        Promise.all(groupPromises)
-                            .then(function(groups) {
-                                _.each(groups, function(group) {
-                                    group.users[0].toString().should.be.eq(userId);
-                                })
+                Promise.resolve( user.groups )
+                    .map( function(group) {
+                        return Group.findById( group ).exec();
+                    } )
+                    .then( function(groupPromises) {
+                        Promise.all( groupPromises )
+                            .then( function(groups) {
+                                _.each( groups, function(group) {
+                                    group.users[0].toString().should.be.eq( userId );
+                                } );
                                 done();
-                            });
-                    })
-            })
-    });
+                            } );
+                    } );
+            } );
+    } );
 
-    it('should return promise', function() {
-        var userPromise = User.create(sample),
-            findOne = User.findOne({
+    it( 'should return promise', function() {
+        var userPromise = User.create( sample ),
+            findOne = User.findOne( {
                 email: 'barray@cctv.com'
-            }).exec();
-        userPromise.should.be.instanceOf(mongoose.Promise);
-        findOne.should.be.instanceOf(mongoose.Promise);
+            } ).exec();
+        userPromise.should.be.instanceOf( mongoose.Promise );
+        findOne.should.be.instanceOf( mongoose.Promise );
 
-        var findById = User.findById(Math.random() * 100000).exec();
-        findById.should.be.instanceOf(mongoose.Promise);
-    });
+        var findById = User.findById( Math.random() * 100000 ).exec();
+        findById.should.be.instanceOf( mongoose.Promise );
+    } );
 
-    it('should useQuery', function(done) {
-        User.findOne({
+    it( 'should useQuery', function(done) {
+        User.findOne( {
             email: 'barray@cctv.com'
-        }).exec(function(err, model) {
+        } ).exec( function(err, model) {
             // console.log(model);
-            model.email.should.be.eq('barray@cctv.com');
-            model.authenticate('electronic').should.be.eq(true);
+            model.email.should.be.eq( 'barray@cctv.com' );
+            model.authenticate( 'electronic' ).should.be.eq( true );
             done();
-        });
-    });
+        } );
+    } );
 
-    it('should not create user with duplicate email', function(done) {
-        User.create(sample, function(err) {
+    it( 'should not create user with duplicate email', function(done) {
+        User.create( sample, function(err) {
             //console.log( err );
-            err.name.should.be.eq('ValidationError');
-            _.each(err.errors, function(e) {
-                e.name.should.be.eq('ValidatorError');
-                e.path.should.match(/^(username|email)$/);
-            });
+            err.name.should.be.eq( 'ValidationError' );
+            _.each( err.errors, function(e) {
+                e.name.should.be.eq( 'ValidatorError' );
+                e.path.should.match( /^(username|email)$/ );
+            } );
             done();
-        });
-    });
+        } );
+    } );
 
 
 
-});
+} );

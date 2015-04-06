@@ -126,6 +126,8 @@ swagger.addModels( zuoraModels );
 
 require( './zuora/resources.js' )( swagger );
 
+require( './resources/devops.js' )( swagger );
+
 
 
 /*swagger.configureDeclaration( 'zabbix', {

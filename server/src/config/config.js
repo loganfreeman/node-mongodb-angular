@@ -1,4 +1,7 @@
 module.exports = {
+    mongo: {
+        database: 'devops'
+    },
     chargify: {
         site: 'logmycalls',
         key: 'CL4Kf0fefTuPB3MYz_NN'

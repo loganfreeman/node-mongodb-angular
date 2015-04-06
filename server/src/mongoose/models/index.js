@@ -13,5 +13,10 @@ fs.readdirSync( __dirname )
     } );
 
 module.exports = {
-    User: mongoose.model( 'User' )
+    User: mongoose.model( 'User' ),
+    Environment: mongoose.model( 'Environment' ),
+    Deploy: mongoose.model( 'Deploy' ),
+    Instance: mongoose.model( 'Instance' ),
+    Stack: mongoose.model( 'Stack' ),
+    Group: mongoose.model( 'Group' )
 };
