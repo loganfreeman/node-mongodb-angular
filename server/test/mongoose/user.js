@@ -179,8 +179,8 @@ describe( 'user schema', function() {
                 user.groups = _.uniq( user.groups, function(id) {
                     return id.toString();
                 } );
-                console.log( group.users );
-                console.log( user.groups );
+                //console.log( group.users );
+                //console.log( user.groups );
                 Promise.all( [group.save(), user.save()] )
                     .then( function(values) {
                         done();
