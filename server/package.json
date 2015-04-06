@@ -46,6 +46,7 @@
     "moment": "^2.9.0",
     "mongodb": "^2.0.25",
     "mongoose": "^4.0.1",
+    "mongoose-relationship": "^0.1.4",
     "mongoose-unique-validator": "^0.4.1",
     "morgan": "^1.5.1",
     "nconf": "^0.7.1",
