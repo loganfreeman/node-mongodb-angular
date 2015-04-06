@@ -14,6 +14,79 @@ var mongoUtil = require( '../mongoose/utils.js' );
 
 var UserNotFoundError = require( '../exception' ).UserNotFoundError;
 
+var db = mongoUtil.connect();
+
+var Group = db.model( 'Group' );
+var User = db.model( 'User' );
+
+
+
+
+
+var listGroup = {
+    spec: {
+        path: '/devops/group',
+        method: 'GET',
+        notes: 'The method allows to get all groups',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'listGroups',
+        produces: ['application/json']
+    },
+    action: function(req, res) {
+        Group.find().exec()
+            .then( function(groups) {
+                res.json( groups );
+
+            } );
+
+    }
+};
+
+var createGroup = {
+    spec: {
+        path: '/devops/group',
+        method: 'PUT',
+        notes: 'The method allows to create a group',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'createGroup',
+        consumes: [
+            'application/x-www-form-urlencoded'
+        ],
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'name',
+            'in': 'formData',
+            'description': 'group name should be unique',
+            'required': true,
+            'type': 'string',
+            'paramType': 'form'
+            },
+            {
+                'name': 'description',
+                'in': 'formData',
+                'description': 'group description',
+                'type': 'string',
+                'paramType': 'form'
+        }],
+    },
+    action: function(req, res) {
+
+        Promise.resolve()
+            .then( function() {
+                return Group.create( req.body );
+            } )
+            .then( function(group) {
+                res.json( group );
+            } )
+            .catch( function(err) {
+                res.status( 500 ).send( err );
+            } );
+
+    }
+};
+
 
 var login = {
     spec: {
@@ -48,8 +121,6 @@ var login = {
         }],
     },
     action: function(req, res) {
-        console.log( req.body );
-        var db = mongoUtil.connect();
         var User = db.model( 'User' );
         User.findOne( {
             username: req.body.username
@@ -122,8 +193,6 @@ var register = {
         }],
     },
     action: function(req, res) {
-        console.log( req.body );
-        var db = mongoUtil.connect();
         var User = db.model( 'User' );
 
         Promise.resolve()
@@ -140,7 +209,7 @@ var register = {
     }
 };
 
-var methods = [login, register];
+var methods = [login, register, listGroup, createGroup];
 
 module.exports = function(swagger) {
     _.each( methods, function(method) {
