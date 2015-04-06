@@ -191,6 +191,24 @@ describe( 'user schema', function() {
             } );
     } );
 
+    it( 'should not return salt and password', function(done) {
+        var db, User, Group;
+        db = connect( 'devops' );
+        User = db.model( 'User' );
+        Group = db.model( 'Group' );
+        User.load( {
+            username: 'scheng'
+        } ).then( function(user) {
+            console.log( user );
+            //user.should.not.have.property( 'salt' );
+            //user.should.not.have.property( 'hashed_password' );
+
+            user.should.have.property( 'username' );
+            user.should.have.property( 'email' );
+            done();
+        } );
+    } );
+
 
 
 } );
