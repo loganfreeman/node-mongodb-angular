@@ -20,7 +20,55 @@ var Group = db.model( 'Group' );
 var User = db.model( 'User' );
 
 
-
+var addUserToGroup = {
+    spec: {
+        path: '/devops/group/{groupId}/user',
+        method: 'POST',
+        notes: 'The method allows to add a user to a group',
+        nickname: 'addUserToGroup',
+        consumes: [
+            'application/x-www-form-urlencoded'
+        ],
+        produces: ['application/json'],
+        parameters: [
+            {
+                'name': 'groupId',
+                'description': 'ID of the group',
+                'required': true,
+                'type': 'string',
+                'paramType': 'path'
+            },
+            {
+                'name': 'userId',
+                'in': 'formData',
+                'description': 'User ID',
+                'required': true,
+                'type': 'string',
+                'paramType': 'form'
+        }]
+    },
+    action: function(req, res) {
+        console.log( req.params );
+        console.log( req.body );
+        var group = Group.findById( req.params.groupId ).exec();
+        var user = User.findById( req.body.userId ).exec();
+        Promise.all( [group, user] )
+            .then( function(values) {
+                var group = values[0],
+                    user = values[1];
+                group.users.push( user );
+                user.groups.push( group );
+                Promise.all( [group.save(), user.save()] )
+                    .then( function(values) {
+                        console.log( values );
+                        res.json( values[0] );
+                    } )
+                    .catch( function(err) {
+                        res.status( 500 ).send( err );
+                    } );
+            } );
+    }
+};
 
 
 var listGroup = {
@@ -209,7 +257,7 @@ var register = {
     }
 };
 
-var methods = [login, register, listGroup, createGroup];
+var methods = [login, register, listGroup, createGroup, addUserToGroup];
 
 module.exports = function(swagger) {
     _.each( methods, function(method) {

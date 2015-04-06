@@ -14,6 +14,8 @@ require( '../../src/mongoose/models' );
 
 var Promise = require( 'bluebird' );
 
+var _ = require( 'lodash' );
+
 
 
 /**
@@ -154,6 +156,39 @@ describe( 'user schema', function() {
             } );
             done();
         } );
+    } );
+
+    it( 'should find by Id', function(done) {
+
+        var db, User, Group;
+        db = connect( 'devops' );
+        User = db.model( 'User' );
+        Group = db.model( 'Group' );
+        var group = Group.findById( '5522ee7d58292c77df437792' ).exec();
+        var user = User.findById( '5522ccb251c4decbb4ec7be5' ).exec();
+        Promise.all( [group, user] )
+            .then( function(values) {
+                var group = values[0],
+                    user = values[1];
+                group.users.push( user );
+                user.groups.push( group );
+
+                group.users = _.uniq( group.users, function(id) {
+                    return id.toString();
+                } );
+                user.groups = _.uniq( user.groups, function(id) {
+                    return id.toString();
+                } );
+                console.log( group.users );
+                console.log( user.groups );
+                Promise.all( [group.save(), user.save()] )
+                    .then( function(values) {
+                        done();
+                    } )
+                    .catch( function(err) {
+                        done( err );
+                    } );
+            } );
     } );
 
 
