@@ -50,7 +50,7 @@ var login = {
     action: function(req, res) {
         console.log( req.body );
         var db = mongoUtil.connect();
-        var user = db.model( 'User' );
+        var User = db.model( 'User' );
         User.findOne( {
             username: req.body.username
         } ).exec()
@@ -58,7 +58,7 @@ var login = {
                 if (user && user.authenticate( req.body.password )) {
                     res.json( user );
                 } else {
-                    res.status( 400 ).send( 'User not found' );
+                    res.status( 400 ).send( UserNotFoundError( 'User not found' ) );
                 }
 
             } );

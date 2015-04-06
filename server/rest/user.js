@@ -18,7 +18,41 @@ var expect = require( 'chai' ).expect,
 
 var assert = require( 'assert' );
 
+var UserNotFoundError = require( '../src/exception' ).UserNotFoundError;
+
+
 describe( 'user route', function() {
+
+    it( 'should not login', function(done) {
+        var postData = {
+            username: 'scheng',
+            password: '@33yyy'
+        };
+
+        var body = queryString.stringify( postData );
+
+        var options = {
+            url: 'http://localhost:8081/devops/login',
+            body: body,
+            method: 'POST',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded'
+            },
+        };
+
+        request( options )
+            .spread( function(res, body) {
+                console.log( body );
+                JSON.parse( body ).message.should.be.eq( 'User not found' );
+                //var user = JSON.parse( body );
+                //expect( user.email ).to.be.eq( 'scheng@contactpointsolutions.com' );
+                done();
+            } )
+            .catch( function(err) {
+                console.log( err );
+                done( err );
+            } );
+    } );
 
     it( 'should get users by group ID', function(done) {
         request( 'http://localhost:8081/users/group/1' )
