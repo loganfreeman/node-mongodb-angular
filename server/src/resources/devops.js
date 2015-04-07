@@ -18,6 +18,359 @@ var db = mongoUtil.connect();
 
 var Group = db.model( 'Group' );
 var User = db.model( 'User' );
+var Environment = db.model( 'Environment' );
+var Stack = db.model( 'Stack' );
+var Instance = db.model( 'Instance' );
+var Deploy = db.model( 'Deploy' );
+
+
+
+var listEnvironments = {
+    spec: {
+        path: '/devops/environment',
+        method: 'GET',
+        notes: 'The method allows to get all environments',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'listEnvironments',
+        produces: ['application/json']
+    },
+    action: function(req, res) {
+        Environment.find().exec()
+            .then( function(models) {
+                res.json( models );
+
+            } );
+
+    }
+};
+
+
+var createEnvironment = {
+    spec: {
+        path: '/devops/environment',
+        method: 'PUT',
+        notes: 'The method allows to create a environment',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'createEnvironment',
+        consumes: [
+            'application/x-www-form-urlencoded'
+        ],
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'name',
+            'in': 'formData',
+            'description': 'environment name should be unique',
+            'required': true,
+            'type': 'string',
+            'paramType': 'form'
+            },
+            {
+                'name': 'description',
+                'in': 'formData',
+                'description': 'environment description',
+                'type': 'string',
+                'paramType': 'form'
+        }],
+    },
+    action: function(req, res) {
+
+        Promise.resolve()
+            .then( function() {
+                return Environment.create( req.body );
+            } )
+            .then( function(environment) {
+                res.json( environment );
+            } )
+            .catch( function(err) {
+                res.status( 500 ).send( err );
+            } );
+
+    }
+};
+
+
+
+var getStackByEnvironmentId = {
+    spec: {
+        path: '/devops/environment/{environmentId}/stack',
+        method: 'GET',
+        notes: 'The method allows to get all stacks belonging to an environment',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'getStackByEnvironmentId',
+        produces: ['application/json']
+    },
+    action: function(req, res) {
+        Stack.find( {
+            environment: req.params.environmentId
+        } ).exec()
+            .then( function(models) {
+                res.json( models );
+
+            } );
+
+    }
+};
+
+var createStack = {
+    spec: {
+        path: '/devops/stack',
+        method: 'PUT',
+        notes: 'The method allows to create a stack',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'createStack',
+        consumes: [
+            'application/x-www-form-urlencoded'
+        ],
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'name',
+            'in': 'formData',
+            'description': 'group name should be unique',
+            'required': true,
+            'type': 'string',
+            'paramType': 'form'
+            },
+            {
+                'name': 'description',
+                'in': 'formData',
+                'description': 'group description',
+                'type': 'string',
+                'paramType': 'form'
+            }, {
+            'name': 'environment',
+            'in': 'formData',
+            'description': 'environment',
+            'type': 'string',
+            'paramType': 'form'
+        }],
+    },
+    action: function(req, res) {
+
+        Promise.resolve()
+            .then( function() {
+                return Stack.create( req.body );
+            } )
+            .then( function(group) {
+                res.json( group );
+            } )
+            .catch( function(err) {
+                res.status( 500 ).send( err );
+            } );
+
+    }
+};
+
+var addInstanceToStack = {
+    spec: {
+        path: '/devops/group/user',
+        method: 'POST',
+        notes: 'The method allows to add a user to a group',
+        nickname: 'addUserToGroupByName',
+        consumes: [
+            'application/x-www-form-urlencoded'
+        ],
+        produces: ['application/json'],
+        parameters: [
+            {
+                'name': 'groupName',
+                'description': 'name of the group',
+                'required': true,
+                'type': 'string',
+                'paramType': 'query'
+            },
+            {
+                'name': 'userName',
+                'description': 'User Name',
+                'required': true,
+                'type': 'string',
+                'paramType': 'query'
+        }]
+    },
+    action: function(req, res) {
+        var group = Group.findOne( req.params.groupName ).exec();
+        var user = User.findOne( req.body.userName ).exec();
+        Promise.all( [group, user] )
+            .then( function(values) {
+                var group = values[0],
+                    user = values[1];
+                group.users.push( user );
+                user.groups.push( group );
+                // make sure the groups and users array are unique
+                group.users = _.uniq( group.users, function(id) {
+                    return id.toString();
+                } );
+                user.groups = _.uniq( user.groups, function(id) {
+                    return id.toString();
+                } );
+
+
+                Promise.all( [group.save(), user.save()] )
+                    .then( function(values) {
+                        console.log( values );
+                        res.json( values[0] );
+                    } )
+                    .catch( function(err) {
+                        res.status( 500 ).send( err );
+                    } );
+            } );
+    }
+};
+
+var getInstanceByStackId = {
+    spec: {
+        path: '/devops/stack/{stackId}/instannce',
+        method: 'GET',
+        notes: 'The method allows to get all instances belonging to a stack',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'getInstanceByStackId',
+        produces: ['application/json']
+    },
+    action: function(req, res) {
+        Instance.find( {
+            stack: req.params.stackId
+        } ).exec()
+            .then( function(groups) {
+                res.json( groups );
+
+            } );
+
+    }
+};
+
+var listInstances = {
+    spec: {
+        path: '/devops/instance',
+        method: 'GET',
+        notes: 'The method allows to get all instances',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'listInstances',
+        produces: ['application/json']
+    },
+    action: function(req, res) {
+        Instance.find().exec()
+            .then( function(groups) {
+                res.json( groups );
+
+            } );
+
+    }
+};
+
+var createInstance = {
+    spec: {
+        path: '/devops/instance',
+        method: 'PUT',
+        notes: 'The method allows to create a instance',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'createInstance',
+        consumes: [
+            'application/x-www-form-urlencoded'
+        ],
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'name',
+            'in': 'formData',
+            'description': 'group name should be unique',
+            'required': true,
+            'type': 'string',
+            'paramType': 'form'
+            },
+            {
+                'name': 'description',
+                'in': 'formData',
+                'description': 'group description',
+                'type': 'string',
+                'paramType': 'form'
+        }],
+    },
+    action: function(req, res) {
+
+        Promise.resolve()
+            .then( function() {
+                return Instance.create( req.body );
+            } )
+            .then( function(group) {
+                res.json( group );
+            } )
+            .catch( function(err) {
+                res.status( 500 ).send( err );
+            } );
+
+    }
+};
+
+var getDeployByInstance = {
+    spec: {
+        path: '/devops/instance/{instanceId}/deploy',
+        method: 'GET',
+        notes: 'The method allows to get all deploys belonging to an instnace',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'getDeployByInstance',
+        produces: ['application/json']
+    },
+    action: function(req, res) {
+        Deploy.find( {
+            instance: req.params.instanceId
+        } ).exec()
+            .then( function(groups) {
+                res.json( groups );
+
+            } );
+
+    }
+};
+
+var createDeploy = {
+    spec: {
+        path: '/devops/deploy',
+        method: 'PUT',
+        notes: 'The method allows to create a deploy',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'createGroup',
+        consumes: [
+            'application/x-www-form-urlencoded'
+        ],
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'name',
+            'in': 'formData',
+            'description': 'group name should be unique',
+            'required': true,
+            'type': 'string',
+            'paramType': 'form'
+            },
+            {
+                'name': 'description',
+                'in': 'formData',
+                'description': 'group description',
+                'type': 'string',
+                'paramType': 'form'
+        }],
+    },
+    action: function(req, res) {
+
+        Promise.resolve()
+            .then( function() {
+                return Deploy.create( req.body );
+            } )
+            .then( function(group) {
+                res.json( group );
+            } )
+            .catch( function(err) {
+                res.status( 500 ).send( err );
+            } );
+
+    }
+};
 
 
 var addUserToGroupByName = {
@@ -47,8 +400,12 @@ var addUserToGroupByName = {
         }]
     },
     action: function(req, res) {
-        var group = Group.findOne( req.params.groupName ).exec();
-        var user = User.findOne( req.body.userName ).exec();
+        var group = Group.findOne( {
+            name: req.params.groupName
+        } ).exec();
+        var user = User.findOne( {
+            username: req.params.userName
+        } ).exec();
         Promise.all( [group, user] )
             .then( function(values) {
                 var group = values[0],
@@ -323,7 +680,7 @@ var register = {
     }
 };
 
-var methods = [login, register, listGroup, createGroup, addUserToGroup, addUserToGroupByName];
+var methods = [login, register, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment];
 
 module.exports = function(swagger) {
     _.each( methods, function(method) {
