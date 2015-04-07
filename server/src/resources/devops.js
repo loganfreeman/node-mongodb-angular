@@ -379,14 +379,7 @@ var createDeploy = {
             'application/x-www-form-urlencoded'
         ],
         produces: ['application/json'],
-        parameters: [{
-            'name': 'name',
-            'in': 'formData',
-            'description': 'group name should be unique',
-            'required': true,
-            'type': 'string',
-            'paramType': 'form'
-            },
+        parameters: [
             {
                 'name': 'deployDate',
                 'in': 'formData',
@@ -399,6 +392,14 @@ var createDeploy = {
                 'name': 'user',
                 'in': 'formData',
                 'description': 'user ID',
+                'required': true,
+                'type': 'string',
+                'paramType': 'form'
+            },
+            {
+                'name': 'instance',
+                'in': 'formData',
+                'description': 'instance ID',
                 'required': true,
                 'type': 'string',
                 'paramType': 'form'
