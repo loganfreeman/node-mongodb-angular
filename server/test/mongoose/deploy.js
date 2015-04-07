@@ -100,6 +100,23 @@ describe( 'user schema', function() {
         } );
     } );
 
+    it( 'should get deploy by user ID', function(done) {
+        var db = connect( 'devops' );
+        var Deploy = db.model( 'Deploy' );
+        Promise.resolve().then( function() {
+            return Deploy.find( {
+                user: '5522ccb251c4decbb4ec7be5'
+            } ).exec();
+        } )
+            .then( function(deploys) {
+                deploys.length.should.be.gt( 0 );
+                _.each( deploys, function(deploy) {
+                    deploy.user.toString().should.be.eq( '5522ccb251c4decbb4ec7be5' );
+                } );
+                done();
+            } );
+    } );
+
 
 
 } );

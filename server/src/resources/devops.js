@@ -345,7 +345,15 @@ var getDeployByInstance = {
         //summary: 'return items for the given criteria',
         //type: 'Category',
         nickname: 'getDeployByInstance',
-        produces: ['application/json']
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'instanceId',
+            'in': 'path',
+            'description': 'instance ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+        }]
     },
     action: function(req, res) {
         Deploy.find( {
@@ -366,7 +374,7 @@ var createDeploy = {
         notes: 'The method allows to create a deploy',
         //summary: 'return items for the given criteria',
         //type: 'Category',
-        nickname: 'createGroup',
+        nickname: 'createDeploy',
         consumes: [
             'application/x-www-form-urlencoded'
         ],
@@ -380,9 +388,25 @@ var createDeploy = {
             'paramType': 'form'
             },
             {
-                'name': 'description',
+                'name': 'deployDate',
                 'in': 'formData',
-                'description': 'group description',
+                'description': 'deploy Date',
+                'required': true,
+                'type': 'date',
+                'paramType': 'form'
+            },
+            {
+                'name': 'user',
+                'in': 'formData',
+                'description': 'user ID',
+                'required': true,
+                'type': 'string',
+                'paramType': 'form'
+            },
+            {
+                'name': 'comments',
+                'in': 'formData',
+                'description': 'deploy comments',
                 'type': 'string',
                 'paramType': 'form'
         }],
@@ -431,11 +455,12 @@ var addUserToGroupByName = {
         }]
     },
     action: function(req, res) {
+        console.log( req.query );
         var group = Group.findOne( {
-            name: req.params.groupName
+            name: req.query.groupName
         } ).exec();
         var user = User.findOne( {
-            username: req.params.userName
+            username: req.query.userName
         } ).exec();
         Promise.all( [group, user] )
             .then( function(values) {
@@ -712,7 +737,7 @@ var register = {
 };
 
 var methods = [login, register, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
-getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId];
+getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId, getDeployByInstance, createDeploy];
 
 module.exports = function(swagger) {
     _.each( methods, function(method) {
