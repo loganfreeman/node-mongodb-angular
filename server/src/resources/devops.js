@@ -292,10 +292,26 @@ var createInstance = {
         parameters: [{
             'name': 'name',
             'in': 'formData',
-            'description': 'group name should be unique',
+            'description': 'instance name should be unique',
             'required': true,
             'type': 'string',
             'paramType': 'form'
+            },
+            {
+                'name': 'ip',
+                'in': 'formData',
+                'description': 'ip address of the instance',
+                'required': true,
+                'type': 'string',
+                'paramType': 'form'
+            },
+            {
+                'name': 'stack',
+                'in': 'formData',
+                'description': 'stack ID',
+                'required': true,
+                'type': 'string',
+                'paramType': 'form'
             },
             {
                 'name': 'description',
@@ -696,7 +712,7 @@ var register = {
 };
 
 var methods = [login, register, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
-getStackByEnvironmentId, createStack];
+getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId];
 
 module.exports = function(swagger) {
     _.each( methods, function(method) {
