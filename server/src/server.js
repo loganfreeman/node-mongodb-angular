@@ -82,7 +82,7 @@ app.use( '/', express.static( __dirname + '/public' ) );
 
 app.use( '/dashboard', express.static( __dirname + '../../../dashboard/build' ) );
 
-app.use( '/forza', express.static( __dirname + '../../../forza/dist' ) );
+app.use( '/', express.static( __dirname + '../../../forza/dist' ) );
 
 app.use( '/docs', express.static( __dirname + '/../swagger-ui/' ) );
 
