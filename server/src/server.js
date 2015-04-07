@@ -27,6 +27,14 @@ var methodOverride = require( 'method-override' );
 
 var cors = require( 'cors' );
 
+var mongoose = require( 'mongoose' );
+
+// bootstrap mongoose models
+require( './mongoose/models' );
+
+var passport = require( 'passport' ),
+    LocalStrategy = require( 'passport-local' ).Strategy;
+
 
 
 switch (config.sessionStore()) {
@@ -47,6 +55,10 @@ switch (config.sessionStore()) {
         console.log( 'Using cookie session store' );
         break;
 }
+
+
+app.use( passport.initialize() );
+app.use( passport.session() );
 
 app.use( bodyParser.urlencoded( {
     extended: true

@@ -3,7 +3,7 @@ var paramTypes = sw.paramTypes;
 var url = require( 'url' );
 var swe = sw.errors;
 
-var models = require( '../mongoose/models' );
+// var models = require( '../mongoose/models' );
 
 var _ = require( 'lodash' );
 
