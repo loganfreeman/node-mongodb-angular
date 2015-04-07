@@ -73,6 +73,16 @@ UserSchema
         return this._password;
     } );
 
+UserSchema
+    .virtual( 'user_info' )
+    .get( function() {
+        return {
+            '_id': this._id,
+            'username': this.username,
+            'email': this.email
+        };
+    } );
+
 /**
  * Validations
  */

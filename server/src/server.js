@@ -32,6 +32,9 @@ var mongoose = require( 'mongoose' );
 // bootstrap mongoose models
 require( './mongoose/models' );
 
+// set up passport local Strategy
+require( './config/pass.js' );
+
 var passport = require( 'passport' ),
     LocalStrategy = require( 'passport-local' ).Strategy;
 

@@ -205,6 +205,8 @@ describe( 'user schema', function() {
 
             user.should.have.property( 'username' );
             user.should.have.property( 'email' );
+            user.should.have.property( 'user_info' );
+            user.user_info.username.should.be.eq( 'scheng' );
             done();
         } );
     } );
@@ -222,7 +224,7 @@ describe( 'user schema', function() {
                 return User.create( sample );
             } )
             .catch( function(err) {
-                console.log( err.errors.email );
+                //console.log( err.errors.email );
                 err.errors.should.have.property( 'email' );
                 err.errors.should.have.property( 'username' );
                 err.errors.email.properties.message.should.be.eq( 'The specified email is invalid.' );
