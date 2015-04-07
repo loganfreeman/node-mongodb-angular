@@ -145,6 +145,7 @@ require( './resources/devops.js' )( swagger );
 
 
 
+
 /*swagger.configureDeclaration( 'zabbix', {
     description: 'Operations about zabbix',
     // authorizations: ['oauth2'],
