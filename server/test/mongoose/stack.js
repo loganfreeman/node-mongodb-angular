@@ -22,5 +22,19 @@ describe( 'stack', function() {
 
         var db = connect( 'devops' );
         var Stack = db.model( 'Stack' );
+
+        Promise.resolve()
+            .then( function() {
+                return Stack.find( {
+                    environment: '5524074382e2147f53ab703c'
+                } ).exec();
+            } )
+            .then( function(stacks) {
+                stacks.length.should.be.gt( 0 );
+                _.each( stacks, function(stack) {
+                    stack.environment.toString().should.be.eq( '5524074382e2147f53ab703c' );
+                } );
+                done();
+            } );
     } );
 } );

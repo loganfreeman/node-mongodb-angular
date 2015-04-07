@@ -174,21 +174,21 @@ var createStack = {
 
 var addInstanceToStack = {
     spec: {
-        path: '/devops/group/user',
+        path: '/devops/stack/{stackId}/instance',
         method: 'POST',
-        notes: 'The method allows to add a user to a group',
-        nickname: 'addUserToGroupByName',
+        notes: 'The method allows to add a instance to a stack',
+        nickname: 'addInstanceToStack',
         consumes: [
             'application/x-www-form-urlencoded'
         ],
         produces: ['application/json'],
         parameters: [
             {
-                'name': 'groupName',
-                'description': 'name of the group',
+                'name': 'stackId',
+                'description': 'stack ID',
                 'required': true,
                 'type': 'string',
-                'paramType': 'query'
+                'paramType': 'path'
             },
             {
                 'name': 'userName',
@@ -236,7 +236,14 @@ var getInstanceByStackId = {
         //summary: 'return items for the given criteria',
         //type: 'Category',
         nickname: 'getInstanceByStackId',
-        produces: ['application/json']
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'stackId',
+            'description': 'stack ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+        }]
     },
     action: function(req, res) {
         Instance.find( {
