@@ -100,6 +100,14 @@ var getStackByEnvironmentId = {
         //summary: 'return items for the given criteria',
         //type: 'Category',
         nickname: 'getStackByEnvironmentId',
+        parameters: [{
+            'name': 'environmentId',
+            'in': 'path',
+            'description': 'environment ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+        }],
         produces: ['application/json']
     },
     action: function(req, res) {
@@ -129,7 +137,7 @@ var createStack = {
         parameters: [{
             'name': 'name',
             'in': 'formData',
-            'description': 'group name should be unique',
+            'description': 'stack name should be unique',
             'required': true,
             'type': 'string',
             'paramType': 'form'
@@ -137,13 +145,13 @@ var createStack = {
             {
                 'name': 'description',
                 'in': 'formData',
-                'description': 'group description',
+                'description': 'stack description',
                 'type': 'string',
                 'paramType': 'form'
             }, {
             'name': 'environment',
             'in': 'formData',
-            'description': 'environment',
+            'description': 'environment ID',
             'type': 'string',
             'paramType': 'form'
         }],
@@ -680,7 +688,8 @@ var register = {
     }
 };
 
-var methods = [login, register, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment];
+var methods = [login, register, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
+getStackByEnvironmentId, createStack];
 
 module.exports = function(swagger) {
     _.each( methods, function(method) {
