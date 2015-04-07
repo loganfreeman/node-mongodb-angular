@@ -84,6 +84,11 @@ UserSchema.path( 'email' ).validate( function(email) {
     return email.length;
 }, 'Email cannot be blank' );
 
+UserSchema.path( 'email' ).validate( function(email) {
+    var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    return emailRegex.test( email );
+}, 'The specified email is invalid.' );
+
 UserSchema.path( 'username' ).validate( function(username) {
     return username.length;
 }, 'Username cannot be blank' );

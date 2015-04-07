@@ -209,6 +209,29 @@ describe( 'user schema', function() {
         } );
     } );
 
+    it( 'should validate user email', function(done) {
+        var sample = {
+            firstname: 'Roland',
+            lastname: 'black',
+            password: 'electronic',
+            username: 'test',
+            email: 'barraycctv.com'
+        };
+        Promise.resolve()
+            .then( function() {
+                return User.create( sample );
+            } )
+            .catch( function(err) {
+                console.log( err.errors.email );
+                err.errors.should.have.property( 'email' );
+                err.errors.should.have.property( 'username' );
+                err.errors.email.properties.message.should.be.eq( 'The specified email is invalid.' );
+                err.errors.email.properties.value.should.be.eq( 'barraycctv.com' );
+
+                done();
+            } );
+    } );
+
 
 
 } );
