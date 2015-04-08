@@ -4,69 +4,71 @@
  * @module
  */
 
-var config = require( './config/config.js' );
+var config = require('./config/config.js');
 
-var express = require( 'express' );
+var express = require('express');
 
 var app = express();
 
 module.exports = app;
 
-var favicon = require( 'serve-favicon' );
+var favicon = require('serve-favicon');
 
-var logger = require( 'morgan' );
+var logger = require('morgan');
 
-var session = require( 'express-session' );
+var session = require('express-session');
 
-var bodyParser = require( 'body-parser' );
+var bodyParser = require('body-parser');
 
-var winston = require( 'winston' ),
-    expressWinston = require( 'express-winston' );
+var winston = require('winston'),
+    expressWinston = require('express-winston');
 
-var methodOverride = require( 'method-override' );
+var methodOverride = require('method-override');
 
-var cors = require( 'cors' );
+var cors = require('cors');
 
-var mongoose = require( 'mongoose' );
+var mongoose = require('mongoose');
+
+var auth = require('./auth.js');
 
 // bootstrap mongoose models
-require( './mongoose/models' );
+require('./mongoose/models');
 
 // set up passport local Strategy
-require( './config/pass.js' );
+require('./config/pass.js');
 
-var passport = require( 'passport' ),
-    LocalStrategy = require( 'passport-local' ).Strategy;
+var passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
 
 
 
 switch (config.sessionStore()) {
     case 'redis':
-        var RedisStore = require( 'connect-redis' )( session );
+        var RedisStore = require('connect-redis')(session);
 
-        app.use( session( {
-            store: new RedisStore( config.redis ),
+        app.use(session({
+            store: new RedisStore(config.redis),
             secret: 'sessionsecret'
-        } ) );
-        console.log( 'Using redis session store' );
+        }));
+        console.log('Using redis session store');
         break;
     default:
         // cookie session
-        app.use( session( {
+        app.use(session({
             secret: 'sessionsecret'
-        } ) );
-        console.log( 'Using cookie session store' );
+        }));
+        console.log('Using cookie session store');
         break;
 }
 
 
-app.use( passport.initialize() );
-app.use( passport.session() );
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.use( bodyParser.urlencoded( {
+app.use(bodyParser.urlencoded({
     extended: true
-} ) );
-app.use( bodyParser.json() );
+}));
+app.use(bodyParser.json());
 
 // enable all cors requests
 var corsOptions = {
@@ -74,20 +76,20 @@ var corsOptions = {
     origin: true,
     methods: ['GET', 'POST', 'OPTIONS', 'PUT']
 };
-app.use( cors( corsOptions ) );
+app.use(cors(corsOptions));
 
 // override with the X-HTTP-Method-Override header in the request
-app.use( methodOverride( 'X-HTTP-Method-Override' ) );
+app.use(methodOverride('X-HTTP-Method-Override'));
 
-app.use( favicon( __dirname + '/public/images/favicon.ico' ) );
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
-app.use( '/', express.static( __dirname + '/public' ) );
+app.use('/', express.static(__dirname + '/public'));
 
-app.use( '/dashboard', express.static( __dirname + '../../../dashboard/build' ) );
+app.use('/dashboard', express.static(__dirname + '../../../dashboard/build'));
 
-app.use( '/', express.static( __dirname + '../../../forza/dist' ) );
+app.use('/', express.static(__dirname + '../../../forza/dist'));
 
-app.use( '/docs', express.static( __dirname + '/../swagger-ui/' ) );
+app.use('/docs', express.static(__dirname + '/../swagger-ui/'));
 
 
 //Register ejs as .html. If we did
@@ -101,50 +103,53 @@ app.use( '/docs', express.static( __dirname + '/../swagger-ui/' ) );
 //we simply pass _any_ function, in this
 //case `ejs.__express`.
 
-app.engine( '.html', require( 'ejs' ).__express );
+app.engine('.html', require('ejs').__express);
 
 //Optional since express defaults to CWD/views
 
-app.set( 'views', __dirname + '/views' );
+app.set('views', __dirname + '/views');
 
 //Without this you would need to
 //supply the extension to res.render()
 //ex: res.render('users.html').
-app.set( 'view engine', 'html' );
+app.set('view engine', 'html');
 
 // http logger needs be added BEFORE routers
-app.use( logger( 'dev' ) );
+app.use(logger('dev'));
 
 // load all routes in the routes directory
-require( './routes' )( app );
+require('./routes')(app);
 
 // swagger config
-var swagger = require( 'swagger-node-express' ).createNew( app );
+var swagger = require('swagger-node-express').createNew(app);
 
-var zabbixModels = require( './swagger/models.js' );
+var zabbixModels = require('./swagger/models.js');
 
-swagger.addModels( zabbixModels );
+swagger.addModels(zabbixModels);
 
-require( './swagger/resources.js' )( swagger );
-
-
-var chargifyModels = require( './chargify/models.js' );
-
-swagger.addModels( chargifyModels );
-
-require( './chargify/resources.js' )( swagger );
+require('./swagger/resources.js')(swagger);
 
 
-var zuoraModels = require( './zuora/models.js' );
+var chargifyModels = require('./chargify/models.js');
 
-swagger.addModels( zuoraModels );
+swagger.addModels(chargifyModels);
 
-require( './zuora/resources.js' )( swagger );
-
-require( './resources/devops.js' )( swagger );
+require('./chargify/resources.js')(swagger);
 
 
+var zuoraModels = require('./zuora/models.js');
 
+swagger.addModels(zuoraModels);
+
+require('./zuora/resources.js')(swagger);
+
+require('./resources/devops.js')(swagger);
+
+swagger.configureDeclaration('devops', {
+    description: 'Operations about devops',
+    protocols: ["http"],
+    produces: ['application/json']
+});
 
 /*swagger.configureDeclaration( 'zabbix', {
     description: 'Operations about zabbix',
@@ -155,9 +160,9 @@ require( './resources/devops.js' )( swagger );
 
 
 // set api info
-swagger.setApiInfo( {
+swagger.setApiInfo({
     title: 'Devops Restful API'
-} );
+});
 
 /*swagger.setAuthorizations( {
     apiKey: {
@@ -169,10 +174,10 @@ swagger.setApiInfo( {
 // Configures the app's base path and api version.
 // swagger.configureSwaggerPaths( '', 'api-docs', '' );
 var swaggerBaseUrl = config.getPublicUrl();
-if (app.get( 'env' ) === 'development') {
+if (app.get('env') === 'development') {
     swaggerBaseUrl = config.getBaseUrl();
 }
-swagger.configure( swaggerBaseUrl, '1.0.0' );
+swagger.configure(swaggerBaseUrl, '1.0.0');
 
 /*// Serve up swagger ui at /docs via static route
 var docs_handler = express.static( __dirname + '/../swagger-ui/' );
@@ -192,21 +197,21 @@ app.get( /^\/docs(\/.*)?$/, function(req, res, next) {
 
 
 // winston error logging, needs to be added AFTER the router and BEFORE custom errror handlers
-app.use( expressWinston.errorLogger( {
+app.use(expressWinston.errorLogger({
     transports: [
-        new winston.transports.Console( {
+        new winston.transports.Console({
             json: true,
             colorize: true
-        } )
+        })
     ]
-} ) );
+}));
 
 
 function start() {
     // require( './waterline/waterline-init.js' )( app );
     var port = config.getPort();
-    app.listen( port );
-    console.log( 'Express started on port ' + port );
+    app.listen(port);
+    console.log('Express started on port ' + port);
 }
 
 /* istanbul ignore next */
