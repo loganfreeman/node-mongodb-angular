@@ -131,6 +131,11 @@
     .close-thik:after {
       content: '✖'; /* UTF-8 symbol */
     }
+
+    .form-error {
+      border-color: #bf1c1c;
+      color: #bf1c1c;
+    }
   </style>
 
   <script type="text/javascript">
@@ -248,6 +253,12 @@
                  {
                      //alert(JSON.stringify(data)); // show response from the php script.
                      $('#sign_up').trigger('close');
+                 },
+                 error: function(xhr, ajaxOptions, throwError){
+                  //alert(xhr.responseText);
+                  for(var field in JSON.parse(xhr.responseText).errors){
+                    $("#sign_up_form input[name=" + field +  "]").addClass('form-error');
+                  }
                  }
                });
 
@@ -294,16 +305,18 @@
 <div id="sign_up">
     <h1>Please sign up using the form below</h1>
     <form id="sign_up_form">
-        <label><strong>First Name:</strong> <input name='firstname'/></label>
-        <label><strong>Last Name:</strong> <input name='lastname'/></label>
-        <label><strong>Email:</strong> <input name='email'/></label>
-        <label><strong>User Name:</strong> <input name='username'/></label>
-        <label><strong>Password:</strong> <input name='password' type='password' id='password'/></label>
-        <label><strong>Password Again:</strong> <input name='password_again' type='password' id='password_again'/></label>
+        <label><strong>First Name:</strong> <input name='firstname'/><strong class='error'></strong></label>
+        <label><strong>Last Name:</strong> <input name='lastname'/><strong class='error'></strong></label>
+        <label><strong>Email:</strong> <input name='email'/><strong class='error'></strong></label>
+        <label><strong>User Name:</strong> <input name='username'/><strong class='error'></strong></label>
+        <label><strong>Password:</strong> <input name='password' type='password' id='password'/><strong class='error'></strong></label>
+        <label><strong>Password Again:</strong> <input name='password_again' type='password' id='password_again'/><strong class='error'></strong></label>
         <div id="actions">
             <button class="close btn btn-default" id="cancel" href="#">Cancel</button>
             <button class="btn btn-default" id="log_in" type='submit'>Sign up</button>
         </div>
+        <table id='info'>
+        </table>
     </form>
     <a id="close_x" class="close close-classic" href="#"></a>
 </div>
