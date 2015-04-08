@@ -25,14 +25,14 @@ describe( 'user route', function() {
 
     it( 'should not login', function(done) {
         var postData = {
-            username: 'scheng',
+            email: 'scheng@contactpointsolutions.com',
             password: '@xxx'
         };
 
         var body = queryString.stringify( postData );
 
         var options = {
-            url: 'http://localhost:8081/devops/login',
+            url: 'http://localhost:8081/auth/session',
             body: body,
             method: 'POST',
             headers: {
@@ -42,10 +42,13 @@ describe( 'user route', function() {
 
         request( options )
             .spread( function(res, body) {
-                console.log( body );
-                JSON.parse( body ).message.should.be.eq( 'User not found' );
+                //console.log( res );
+                //body.errors.password.type.should.be.eq( 'Password is incorrect.' );
                 //var user = JSON.parse( body );
                 //expect( user.email ).to.be.eq( 'scheng@contactpointsolutions.com' );
+                var body = JSON.parse( body );
+                console.log( body.errors );
+                body.errors.password.type.should.be.eq( 'Password is incorrect.' );
                 done();
             } )
             .catch( function(err) {
@@ -57,14 +60,14 @@ describe( 'user route', function() {
 
     it( 'should login', function(done) {
         var postData = {
-            username: 'scheng',
+            email: 'scheng@contactpointsolutions.com',
             password: '@33yyy'
         };
 
         var body = queryString.stringify( postData );
 
         var options = {
-            url: 'http://localhost:8081/devops/login',
+            url: 'http://localhost:8081/auth/session',
             body: body,
             method: 'POST',
             headers: {
