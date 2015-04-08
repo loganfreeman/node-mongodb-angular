@@ -94,5 +94,5 @@ module.exports = function(app) {
   app.post('/api/blogs', auth.ensureAuthenticated, blogs.create);
   app.get('/api/blogs/:blogId', blogs.show);
   app.put('/api/blogs/:blogId', auth.ensureAuthenticated, auth.blog.hasAuthorization, blogs.update);
-  app.del('/api/blogs/:blogId', auth.ensureAuthenticated, auth.blog.hasAuthorization, blogs.destroy);
+  app.delete('/api/blogs/:blogId', auth.ensureAuthenticated, auth.blog.hasAuthorization, blogs.destroy);
 }

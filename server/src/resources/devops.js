@@ -718,7 +718,7 @@ var register = {
     }
 };
 
-var methods = [login, register, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
+var methods = [listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
     getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId, getDeployByInstance, createDeploy
 ];
 

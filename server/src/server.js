@@ -55,7 +55,9 @@ switch (config.sessionStore()) {
     default:
         // cookie session
         app.use(session({
-            secret: 'sessionsecret'
+            secret: 'sessionsecret',
+            resave: true,
+            saveUninitialized: true
         }));
         console.log('Using cookie session store');
         break;
