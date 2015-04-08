@@ -143,6 +143,8 @@ swagger.addModels(zuoraModels);
 
 require('./zuora/resources.js')(swagger);
 
+app.use('/devops', auth.ensureAuthenticated);
+
 require('./resources/devops.js')(swagger);
 
 swagger.configureDeclaration('devops', {
