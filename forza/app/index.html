@@ -238,61 +238,6 @@
               <li><a href="" class="text-right" ng-click="logOut()">Sign Out</a></li>
             </ul>
           </li>
-          <!-- color picker -->
-            <li class="dropdown demodrop" ng-controller="ColorPickerController" data-pulsate="{glow:false, repeat: 3}">
-                <a href="#" class="dropdown-toggle tooltips"><i class="fa fa-cog"></i></a>
-
-                <ul class="dropdown-menu arrow dropdown-menu-form" id="demo-dropdown">
-                    <li>
-                        <label for="demo-header-variations" class="control-label">Header Colors</label>
-
-                        <ul class="list-inline demo-color-variation" id="demo-header-variations">
-                            <li><a class="color-dark"       href="javascript:;" ng-click="setHeaderStyle('default.css', $event)"></a></li>
-                            <li><a class="color-black"      href="javascript:;" ng-click="setHeaderStyle('header-black.css', $event)"></a></li>
-                            <li><a class="color-inverse"    href="javascript:;" ng-click="setHeaderStyle('header-inverse.css', $event)"></a></li>
-                            <li><a class="color-default"    href="javascript:;" ng-click="setHeaderStyle('header-midnightblue.css', $event)"></a></li>
-                            <li><a class="color-dangerdark" href="javascript:;" ng-click="setHeaderStyle('header-dangerdark.css', $event)"></a></li>
-                        </ul>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <label for="demo-color-variations" class="control-label">Sidebar Colors</label>
-                        <ul class="list-inline demo-color-variation">
-                            <li><a class="color-default"    href="javascript:;" ng-click="setSidebarStyle('default.css', $event)"></a></li>
-                            <li><a class="color-inverse"    href="javascript:;" ng-click="setSidebarStyle('sidebar-inverse.css', $event)"></a></li>
-                            <li><a class="color-primary"    href="javascript:;" ng-click="setSidebarStyle('sidebar-primary.css', $event)"></a></li>
-                            <li><a class="color-gray"       href="javascript:;" ng-click="setSidebarStyle('sidebar-gray.css', $event)"></a></li>
-                            <li><a class="color-indigo"     href="javascript:;" ng-click="setSidebarStyle('sidebar-indigo.css', $event)"></a></li>
-                            <li><a class="color-dangerdark" href="javascript:;" ng-click="setSidebarStyle('sidebar-dangerdark.css', $event)"></a></li>
-                        </ul>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <label for="fixedheader">Fixed Header</label>
-                        <div ng-click="$event.stopPropagation()">
-                          <toggle-switch model="headerFixed" class="success"></toggle-switch>
-                        </div>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <label for="boxedlayout"><a href="#/layout-fixed">Boxed Layout</a></label>
-                        <div ng-click="$event.stopPropagation()">
-                          <toggle-switch model="layoutFixed" class="success"></toggle-switch>
-                        </div>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <label for="layoutHorizontal">Horizontal Nav</label>
-                        <div ng-click="$event.stopPropagation()">
-                          <toggle-switch model="layoutHorizontal" class="success"></toggle-switch>
-                        </div>
-                    </li>
-                </ul>
-                <link rel="stylesheet" type="text/css" ng-href="assets/demo/variations/{{headerStylesheet}}">
-                <link rel="stylesheet" type="text/css" ng-href="assets/demo/variations/{{sidebarStylesheet}}">
-            </li>
-
-          <!-- END color picker -->
         </ul>
       </li>
     </ul>
