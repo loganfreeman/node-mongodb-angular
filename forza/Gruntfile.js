@@ -7,7 +7,7 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
@@ -76,12 +76,12 @@ module.exports = function (grunt) {
       // courtesy of Phubase Tiewthanom
       livereload: {
         options: {
-          middleware: function (connect) {
+          middleware: function(connect) {
             return [
               connect.static('.tmp'),
               connect().use(
                 '/bower_components',
-                 connect.static('./bower_components')
+                connect.static('./bower_components')
               ),
               connect.static(require('./bower.json').appPath || 'app')
             ];
@@ -159,16 +159,16 @@ module.exports = function (grunt) {
         src: ['<%= yeoman.app %>/index.html'],
         ignorePath: '<%= yeoman.app %>/',
         exclude: ['requirejs',
-                  'mocha',
-                  'jquery.vmap.europe.js',
-                  'jquery.vmap.usa.js',
-                  'Chart.min.js',
-                  'raphael',
-                  'morris',
-                  'jquery.inputmask',
-                  'jquery.validate.js',
-                  'jquery.stepy.js'
-                  ]
+          'mocha',
+          'jquery.vmap.europe.js',
+          'jquery.vmap.usa.js',
+          'Chart.min.js',
+          'raphael',
+          'morris',
+          'jquery.inputmask',
+          'jquery.validate.js',
+          'jquery.stepy.js'
+        ]
       }
     },
 
@@ -338,14 +338,16 @@ module.exports = function (grunt) {
         'svgmin'
       ]
     },
-    ngtemplates:  {
+    ngtemplates: {
       app: {
-        src:      'app/views/templates/**.html',
-        dest:     'app/scripts/templates/templates.js',
-        options:  {
-          url:    function(url) { return url.replace('app/views/', ''); },
+        src: 'app/views/templates/**.html',
+        dest: 'app/scripts/templates/templates.js',
+        options: {
+          url: function(url) {
+            return url.replace('app/views/', '');
+          },
           bootstrap: function(module, script) {
-            return "angular.module('theme.templates', []).run(['$templateCache', function ($templateCache) {\n"+script+"}])";
+            return "angular.module('theme.templates', []).run(['$templateCache', function ($templateCache) {\n" + script + "}])";
           }
         },
       }
@@ -360,30 +362,26 @@ module.exports = function (grunt) {
           sourceMapRootpath: "",
           outputSourceFiles: true
         },
-        files: [
-          {
-            expand: true,
-            cwd: "<%= yeoman.app %>/assets/less",
-            src: "styles.less",
-            dest: ".tmp/assets/css",
-            ext: ".css"
-          }
-        ]
+        files: [{
+          expand: true,
+          cwd: "<%= yeoman.app %>/assets/less",
+          src: "styles.less",
+          dest: ".tmp/assets/css",
+          ext: ".css"
+        }]
       },
       dist: {
         options: {
           cleancss: true,
           report: 'min'
         },
-        files: [
-          {
-            expand: true,
-            cwd: "<%= yeoman.app %>/assets/less",
-            src: "styles.less",
-            dest: ".tmp/assets/css",
-            ext: ".css"
-          }
-        ]
+        files: [{
+          expand: true,
+          cwd: "<%= yeoman.app %>/assets/less",
+          src: "styles.less",
+          dest: ".tmp/assets/css",
+          ext: ".css"
+        }]
       }
     },
 
@@ -439,7 +437,7 @@ module.exports = function (grunt) {
   });
 
 
-  grunt.registerTask('serve', function (target) {
+  grunt.registerTask('serve', function(target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
@@ -454,7 +452,7 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('server', function (target) {
+  grunt.registerTask('server', function(target) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve:' + target]);
   });

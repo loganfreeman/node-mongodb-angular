@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-    .module( 'themesApp', [
+    .module('themesApp', [
         'easypiechart',
         'toggle-switch',
         'ui.bootstrap',
@@ -57,191 +57,211 @@ angular
         'ngRoute',
         'ngAnimate',
         /** devops module */
-        'devops'
-        ] )
-    .controller( 'MainController', ['$scope', '$global', '$timeout', 'progressLoader', '$location', function($scope, $global, $timeout, progressLoader, $location) {
-            $scope.style_fixedHeader = $global.get( 'fixedHeader' );
-            $scope.style_headerBarHidden = $global.get( 'headerBarHidden' );
-            $scope.style_layoutBoxed = $global.get( 'layoutBoxed' );
-            $scope.style_fullscreen = $global.get( 'fullscreen' );
-            $scope.style_leftbarCollapsed = $global.get( 'leftbarCollapsed' );
-            $scope.style_leftbarShown = $global.get( 'leftbarShown' );
-            $scope.style_rightbarCollapsed = $global.get( 'rightbarCollapsed' );
-            $scope.style_isSmallScreen = false;
-            $scope.style_showSearchCollapsed = $global.get( 'showSearchCollapsed' );
-            $scope.style_layoutHorizontal = $global.get( 'layoutHorizontal' );
+        'devops',
+        'http-auth-interceptor',
+        'angularPassportService'
 
-            $scope.hideSearchBar = function() {
-                $global.set( 'showSearchCollapsed', false );
-            };
+    ])
+    .controller('MainController', ['$scope', '$global', '$timeout', 'progressLoader', '$location', function($scope, $global, $timeout, progressLoader, $location) {
+        $scope.style_fixedHeader = $global.get('fixedHeader');
+        $scope.style_headerBarHidden = $global.get('headerBarHidden');
+        $scope.style_layoutBoxed = $global.get('layoutBoxed');
+        $scope.style_fullscreen = $global.get('fullscreen');
+        $scope.style_leftbarCollapsed = $global.get('leftbarCollapsed');
+        $scope.style_leftbarShown = $global.get('leftbarShown');
+        $scope.style_rightbarCollapsed = $global.get('rightbarCollapsed');
+        $scope.style_isSmallScreen = false;
+        $scope.style_showSearchCollapsed = $global.get('showSearchCollapsed');
+        $scope.style_layoutHorizontal = $global.get('layoutHorizontal');
 
-            $scope.hideHeaderBar = function() {
-                $global.set( 'headerBarHidden', true );
-            };
+        $scope.hideSearchBar = function() {
+            $global.set('showSearchCollapsed', false);
+        };
 
-            $scope.showHeaderBar = function($event) {
-                $event.stopPropagation();
-                $global.set( 'headerBarHidden', false );
-            };
+        $scope.hideHeaderBar = function() {
+            $global.set('headerBarHidden', true);
+        };
 
-            $scope.toggleLeftBar = function() {
-                if ($scope.style_isSmallScreen) {
-                    return $global.set( 'leftbarShown', !$scope.style_leftbarShown );
+        $scope.showHeaderBar = function($event) {
+            $event.stopPropagation();
+            $global.set('headerBarHidden', false);
+        };
+
+        $scope.toggleLeftBar = function() {
+            if ($scope.style_isSmallScreen) {
+                return $global.set('leftbarShown', !$scope.style_leftbarShown);
+            }
+            $global.set('leftbarCollapsed', !$scope.style_leftbarCollapsed);
+        };
+
+        $scope.toggleRightBar = function() {
+            $global.set('rightbarCollapsed', !$scope.style_rightbarCollapsed);
+        };
+
+        $scope.$on('globalStyles:changed', function(event, newVal) {
+            $scope['style_' + newVal.key] = newVal.value;
+        });
+        $scope.$on('globalStyles:maxWidth767', function(event, newVal) {
+            $timeout(function() {
+                $scope.style_isSmallScreen = newVal;
+                if (!newVal) {
+                    $global.set('leftbarShown', false);
+                } else {
+                    $global.set('leftbarCollapsed', false);
                 }
-                $global.set( 'leftbarCollapsed', !$scope.style_leftbarCollapsed );
-            };
+            });
+        });
 
-            $scope.toggleRightBar = function() {
-                $global.set( 'rightbarCollapsed', !$scope.style_rightbarCollapsed );
-            };
+        // there are better ways to do this, e.g. using a dedicated service
+        // but for the purposes of this demo this will do :P
+        // $scope.isLoggedIn = true;
+        $scope.logOut = function() {
+            $scope.isLoggedIn = false;
+        };
+        $scope.logIn = function() {
+            $scope.isLoggedIn = true;
+        };
 
-            $scope.$on( 'globalStyles:changed', function(event, newVal) {
-                $scope['style_' + newVal.key] = newVal.value;
-            } );
-            $scope.$on( 'globalStyles:maxWidth767', function(event, newVal) {
-                $timeout( function() {
-                    $scope.style_isSmallScreen = newVal;
-                    if (!newVal) {
-                        $global.set( 'leftbarShown', false );
-                    } else {
-                        $global.set( 'leftbarCollapsed', false );
-                    }
-                } );
-            } );
+        $scope.rightbarAccordionsShowOne = false;
+        $scope.rightbarAccordions = [{
+            open: true
+        }, {
+            open: true
+        }, {
+            open: true
+        }, {
+            open: true
+        }, {
+            open: true
+        }, {
+            open: true
+        }, {
+            open: true
+        }];
 
-            // there are better ways to do this, e.g. using a dedicated service
-            // but for the purposes of this demo this will do :P
-            // $scope.isLoggedIn = true;
-            $scope.logOut = function() {
-                $scope.isLoggedIn = false;
-            };
-            $scope.logIn = function() {
-                $scope.isLoggedIn = true;
-            };
+        $scope.$on('$routeChangeStart', function(e) {
+            // console.log('start: ', $location.path());
+            progressLoader.start();
+            progressLoader.set(50);
+        });
+        $scope.$on('$routeChangeSuccess', function(e) {
+            // console.log('success: ', $location.path());
+            progressLoader.end();
+        });
+    }])
+    .config(['$provide', '$routeProvider', '$locationProvider', function($provide, $routeProvider, $locationProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'views/index.html'
+            })
+            .when('/calendar', {
+                templateUrl: 'views/calendar.html',
+                resolve: {
+                    lazyLoad: ['lazyLoad', function(lazyLoad) {
+                        return lazyLoad.load([
+                            'assets/plugins/fullcalendar/fullcalendar.js'
+                        ]);
+                    }]
+                }
+            })
+            .when('/form-ckeditor', {
+                templateUrl: 'views/form-ckeditor.html',
+                resolve: {
+                    lazyLoad: ['lazyLoad', function(lazyLoad) {
+                        return lazyLoad.load([
+                            'assets/plugins/form-ckeditor/ckeditor.js',
+                            'assets/plugins/form-ckeditor/lang/en.js'
+                        ]);
+                    }]
+                }
+            })
+            .when('/form-imagecrop', {
+                templateUrl: 'views/form-imagecrop.html',
+                resolve: {
+                    lazyLoad: ['lazyLoad', function(lazyLoad) {
+                        return lazyLoad.load([
+                            'assets/plugins/jcrop/js/jquery.Jcrop.js'
+                        ]);
+                    }]
+                }
+            })
+            .when('/form-wizard', {
+                templateUrl: 'views/form-wizard.html',
+                resolve: {
+                    lazyLoad: ['lazyLoad', function(lazyLoad) {
+                        return lazyLoad.load([
+                            'bower_components/jquery-validation/dist/jquery.validate.js',
+                            'bower_components/stepy/lib/jquery.stepy.js'
+                        ]);
+                    }]
+                }
+            })
+            .when('/form-masks', {
+                templateUrl: 'views/form-masks.html',
+                resolve: {
+                    lazyLoad: ['lazyLoad', function(lazyLoad) {
+                        return lazyLoad.load([
+                            'bower_components/jquery.inputmask/dist/jquery.inputmask.bundle.js'
+                        ]);
+                    }]
+                }
+            })
+            .when('/maps-vector', {
+                templateUrl: 'views/maps-vector.html',
+                resolve: {
+                    lazyLoad: ['lazyLoad', function(lazyLoad) {
+                        return lazyLoad.load([
+                            'bower_components/jqvmap/jqvmap/maps/jquery.vmap.europe.js',
+                            'bower_components/jqvmap/jqvmap/maps/jquery.vmap.usa.js'
+                        ]);
+                    }]
+                }
+            })
+            .when('/charts-canvas', {
+                templateUrl: 'views/charts-canvas.html',
+                resolve: {
+                    lazyLoad: ['lazyLoad', function(lazyLoad) {
+                        return lazyLoad.load([
+                            'bower_components/Chart.js/Chart.min.js'
+                        ]);
+                    }]
+                }
+            })
+            .when('/charts-svg', {
+                templateUrl: 'views/charts-svg.html',
+                resolve: {
+                    lazyLoad: ['lazyLoad', function(lazyLoad) {
+                        return lazyLoad.load([
+                            'bower_components/raphael/raphael.js',
+                            'bower_components/morris.js/morris.js'
+                        ]);
+                    }]
+                }
+            })
+            .when('/:templateFile', {
+                templateUrl: function(param) {
+                    return 'views/' + param.templateFile + '.html';
+                }
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+        $locationProvider.html5Mode(true);
+    }])
+    .run(function($rootScope, $location, Auth) {
 
-            $scope.rightbarAccordionsShowOne = false;
-            $scope.rightbarAccordions = [{
-                open: true
-                }, {
-                open: true
-                }, {
-                open: true
-                }, {
-                open: true
-                }, {
-                open: true
-                }, {
-                open: true
-                }, {
-                open: true
-            }];
+        //watching the value of the currentUser variable.
+        $rootScope.$watch('currentUser', function(currentUser) {
+            // if no currentUser and on a page that requires authorization then try to update it
+            // will trigger 401s if user does not have a valid session
+            if (!currentUser && (['/', '/login', '/logout', '/signup'].indexOf($location.path()) == -1)) {
+                Auth.currentUser();
+            }
+        });
 
-            $scope.$on( '$routeChangeStart', function(e) {
-                // console.log('start: ', $location.path());
-                progressLoader.start();
-                progressLoader.set( 50 );
-            } );
-            $scope.$on( '$routeChangeSuccess', function(e) {
-                // console.log('success: ', $location.path());
-                progressLoader.end();
-            } );
-    }] )
-    .config( ['$provide', '$routeProvider', '$locationProvider', function($provide, $routeProvider, $locationProvider) {
-            $routeProvider
-                .when( '/', {
-                    templateUrl: 'views/index.html'
-                } )
-                .when( '/calendar', {
-                    templateUrl: 'views/calendar.html',
-                    resolve: {
-                        lazyLoad: ['lazyLoad', function(lazyLoad) {
-                                return lazyLoad.load( [
-                                    'assets/plugins/fullcalendar/fullcalendar.js'
-                                ] );
-                        }]
-                    }
-                } )
-                .when( '/form-ckeditor', {
-                    templateUrl: 'views/form-ckeditor.html',
-                    resolve: {
-                        lazyLoad: ['lazyLoad', function(lazyLoad) {
-                                return lazyLoad.load( [
-                                    'assets/plugins/form-ckeditor/ckeditor.js',
-                                    'assets/plugins/form-ckeditor/lang/en.js'
-                                ] );
-                        }]
-                    }
-                } )
-                .when( '/form-imagecrop', {
-                    templateUrl: 'views/form-imagecrop.html',
-                    resolve: {
-                        lazyLoad: ['lazyLoad', function(lazyLoad) {
-                                return lazyLoad.load( [
-                                    'assets/plugins/jcrop/js/jquery.Jcrop.js'
-                                ] );
-                        }]
-                    }
-                } )
-                .when( '/form-wizard', {
-                    templateUrl: 'views/form-wizard.html',
-                    resolve: {
-                        lazyLoad: ['lazyLoad', function(lazyLoad) {
-                                return lazyLoad.load( [
-                                    'bower_components/jquery-validation/dist/jquery.validate.js',
-                                    'bower_components/stepy/lib/jquery.stepy.js'
-                                ] );
-                        }]
-                    }
-                } )
-                .when( '/form-masks', {
-                    templateUrl: 'views/form-masks.html',
-                    resolve: {
-                        lazyLoad: ['lazyLoad', function(lazyLoad) {
-                                return lazyLoad.load( [
-                                    'bower_components/jquery.inputmask/dist/jquery.inputmask.bundle.js'
-                                ] );
-                        }]
-                    }
-                } )
-                .when( '/maps-vector', {
-                    templateUrl: 'views/maps-vector.html',
-                    resolve: {
-                        lazyLoad: ['lazyLoad', function(lazyLoad) {
-                                return lazyLoad.load( [
-                                    'bower_components/jqvmap/jqvmap/maps/jquery.vmap.europe.js',
-                                    'bower_components/jqvmap/jqvmap/maps/jquery.vmap.usa.js'
-                                ] );
-                        }]
-                    }
-                } )
-                .when( '/charts-canvas', {
-                    templateUrl: 'views/charts-canvas.html',
-                    resolve: {
-                        lazyLoad: ['lazyLoad', function(lazyLoad) {
-                                return lazyLoad.load( [
-                                    'bower_components/Chart.js/Chart.min.js'
-                                ] );
-                        }]
-                    }
-                } )
-                .when( '/charts-svg', {
-                    templateUrl: 'views/charts-svg.html',
-                    resolve: {
-                        lazyLoad: ['lazyLoad', function(lazyLoad) {
-                                return lazyLoad.load( [
-                                    'bower_components/raphael/raphael.js',
-                                    'bower_components/morris.js/morris.js'
-                                ] );
-                        }]
-                    }
-                } )
-                .when( '/:templateFile', {
-                    templateUrl: function(param) {
-                        return 'views/' + param.templateFile + '.html';
-                    }
-                } )
-                .otherwise( {
-                    redirectTo: '/'
-                } );
-            $locationProvider.html5Mode( true );
-    }] );
+        // On catching 401 errors, redirect to the login page.
+        $rootScope.$on('event:auth-loginRequired', function() {
+            $location.path('/login');
+            return false;
+        });
+    });
