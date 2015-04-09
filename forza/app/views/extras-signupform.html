@@ -3,14 +3,14 @@
 	<div class="panel panel-primary">
 		<div class="panel-body">
 			<h4 class="text-center" style="margin-bottom: 25px;">Sign Up</h4>
-				<form name="signUpform" ng-submit="signUp(signUpform)" novalidate
+				<form name="signUpform" ng-submit="signUp(signUpform)" 
 					class="form-horizontal" style="margin-bottom: 0px !important;">
 						<div class="form-group">
 							<div class="col-sm-12">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
 									<input type="text" class="form-control" id="email" placeholder="Email"
-									ng-model="user.email" mongoose-error>
+									ng-model="user.email" mongoose-error required>
 								</div>
 							</div>
 						</div>
@@ -19,7 +19,7 @@
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user"></i></span>
 									<input type="text" class="form-control" id="username" placeholder="Username" 
-									ng-model="user.username" mongoose-error>
+									ng-model="user.username" mongoose-error required>
 								</div>
 							</div>
 						</div>
@@ -28,7 +28,7 @@
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user"></i></span>
 									<input type="text" class="form-control" id="firstname" placeholder="First Name" 
-									ng-model="user.firstname" mongoose-error>
+									ng-model="user.firstname" mongoose-error required>
 								</div>
 							</div>
 						</div>
@@ -37,7 +37,7 @@
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user"></i></span>
 									<input type="text" class="form-control" id="lastname" placeholder="Last Name"
-									ng-model="user.lastname" mongoose-error>
+									ng-model="user.lastname" mongoose-error required>
 								</div>
 							</div>
 						</div>
@@ -46,7 +46,7 @@
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock"></i></span>
 									<input type="password" class="form-control" id="password" placeholder="Password"
-									ng-model="user.password" mongoose-error>
+									ng-model="user.password" mongoose-error required>
 								</div>
 							</div>
 						</div>
@@ -70,7 +70,7 @@
 
 						<div class="panel-footer">
 							<div class="pull-left">
-								<button class="btn btn-default">Cancel</button>
+								<a href="#/" class="btn btn-default">Cancel</a>
 							</div>
 							<div class="pull-right">
 								<button type='submit' class="btn btn-success">Sign up</button>

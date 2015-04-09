@@ -214,14 +214,15 @@ angular
                 .when( '/:templateFile', {
                     templateUrl: function(param) {
                         return 'views/' + param.templateFile + '.html';
-                    }
+                    },
+                    accessLevel: 'public'
                 } )
                 .otherwise( {
                     redirectTo: '/'
                 } );
             //$locationProvider.html5Mode(true);
     }] )
-    .run( function($rootScope, $location, Auth) {
+    .run( function($rootScope, $location, Auth, $route) {
 
         Auth.currentUser();
 
@@ -230,4 +231,23 @@ angular
             $location.path( '/extras-login2' );
             return false;
         } );
+
+        $rootScope.$on( '$locationChangeStart', function(event, next, current) {
+            var nextRoute = $route.routes[$location.path()];
+            if (!nextRoute) {
+                nextRoute = $route.routes['/:templateFile'];
+            }
+            var currentPath = current.split( '#' )[1];
+            var nextPath = next.split( '#' )[1];
+
+            if (currentPath === '/extras-login2') {
+                return;
+            }
+            //console.log( event );
+            if (!$rootScope.currentUser) {
+                $location.path( '/extras-login2' );
+                return false;
+            }
+        } );
+
     } );
