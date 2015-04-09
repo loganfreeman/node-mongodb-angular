@@ -8766,9 +8766,9 @@ body.static-header {
   text-shadow: none !important;
   background-color: transparent !important;
   border: 0 !important;
-  background: url("../img/logo.png") no-repeat center center;
+  background: url("../img/mylogo-small.png") no-repeat center center;
   height: 40px;
-  width: 106px;
+  width: 150px;
 }
 @media (max-width: 480px) {
   ul.toolbar {
@@ -8780,7 +8780,7 @@ body.static-header {
   .navbar-header {
     margin: 0 auto;
     float: none !important;
-    width: 106px;
+    width: 150px;
   }
   body {
     padding-top: 80px;

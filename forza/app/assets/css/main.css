@@ -18,3 +18,8 @@ div.fixed-line-height {
 	line-height: 40px;
     text-align: center;
 }
+
+
+span.clock {
+	margin-left: 10px
+}
