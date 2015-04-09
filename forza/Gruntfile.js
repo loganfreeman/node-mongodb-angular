@@ -7,21 +7,25 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
+var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
+
+
 module.exports = function(grunt) {
 
     // Load grunt tasks automatically
-    require( 'load-grunt-tasks' )( grunt );
+    require('load-grunt-tasks')(grunt);
 
     // Time how long tasks take. Can help when optimizing build times
-    require( 'time-grunt' )( grunt );
+    require('time-grunt')(grunt);
 
     // Define the configuration for all the tasks
-    grunt.initConfig( {
+    grunt.initConfig({
 
         // Project settings
         yeoman: {
             // configurable paths
-            app: require( './bower.json' ).appPath || 'app',
+            app: require('./bower.json').appPath || 'app',
             dist: 'dist'
         },
 
@@ -68,7 +72,7 @@ module.exports = function(grunt) {
         // The actual grunt server settings
         connect: {
             options: {
-                port: 8081,
+                port: 9000,
                 // Change this to '0.0.0.0' to access the server from outside.
                 hostname: 'localhost',
                 livereload: 35729
@@ -78,15 +82,23 @@ module.exports = function(grunt) {
                 options: {
                     middleware: function(connect) {
                         return [
-                            connect.static( '.tmp' ),
+                            lrSnippet,
+                            connect.static('.tmp'),
                             connect().use(
                                 '/bower_components',
-                                connect.static( './bower_components' )
+                                connect.static('./bower_components')
                             ),
-                            connect.static( require( './bower.json' ).appPath || 'app' )
+                            connect.static(require('./bower.json').appPath || 'app'),
+                            proxySnippet
+
                         ];
                     }
-                }
+                },
+                proxies: [{
+                    context: '/auth',
+                    host: 'localhost',
+                    port: 8081
+                }]
             },
             test: {
                 options: {
@@ -109,7 +121,7 @@ module.exports = function(grunt) {
         jshint: {
             options: {
                 jshintrc: '.jshintrc',
-                reporter: require( 'jshint-stylish' )
+                reporter: require('jshint-stylish')
             },
             all: [
                 'Gruntfile.js',
@@ -309,7 +321,7 @@ module.exports = function(grunt) {
                         'bower_components/raphael/raphael.js',
                         'bower_components/morris.js/morris.js'
                     ]
-                    }, {
+                }, {
                     expand: true,
                     cwd: '.tmp/images',
                     dest: '<%= yeoman.dist %>/images',
@@ -344,7 +356,7 @@ module.exports = function(grunt) {
                 dest: 'app/scripts/templates/templates.js',
                 options: {
                     url: function(url) {
-                        return url.replace( 'app/views/', '' );
+                        return url.replace('app/views/', '');
                     },
                     bootstrap: function(module, script) {
                         return 'angular.module(\'theme.templates\', []).run([\'$templateCache\', function ($templateCache) {\n' + script + '}])';
@@ -434,38 +446,39 @@ module.exports = function(grunt) {
                 mangle: false
             }
         }
-    } );
+    });
 
 
-    grunt.registerTask( 'serve', function(target) {
+    grunt.registerTask('serve', function(target) {
         if (target === 'dist') {
-            return grunt.task.run( ['build', 'connect:dist:keepalive'] );
+            return grunt.task.run(['build', 'connect:dist:keepalive']);
         }
 
-        grunt.task.run( [
+        grunt.task.run([
             'clean:server',
             'bowerInstall',
             'concurrent:server',
             'autoprefixer',
+            'configureProxies:livereload',
             'connect:livereload',
             'watch'
-        ] );
-    } );
+        ]);
+    });
 
-    grunt.registerTask( 'server', function(target) {
-        grunt.log.warn( 'The `server` task has been deprecated. Use `grunt serve` to start a server.' );
-        grunt.task.run( ['serve:' + target] );
-    } );
+    grunt.registerTask('server', function(target) {
+        grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
+        grunt.task.run(['serve:' + target]);
+    });
 
-    grunt.registerTask( 'test', [
+    grunt.registerTask('test', [
         'clean:server',
         'concurrent:test',
         'autoprefixer',
         'connect:test',
         'karma'
-    ] );
+    ]);
 
-    grunt.registerTask( 'build', [
+    grunt.registerTask('build', [
         'clean:dist',
         'bowerInstall',
         'ngtemplates',
@@ -483,11 +496,11 @@ module.exports = function(grunt) {
         'usemin',
         'processhtml:dist',
         // 'htmlmin'
-    ] );
+    ]);
 
-    grunt.registerTask( 'default', [
+    grunt.registerTask('default', [
         // 'newer:jshint',
         // 'test',
         'build'
-    ] );
+    ]);
 };
