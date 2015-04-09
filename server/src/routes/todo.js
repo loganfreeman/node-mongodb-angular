@@ -9,18 +9,18 @@ var config = require( '../config/config.js' );
 module.exports = function(app) {
 
 
-    /*    app.get( '/server/log', function(req, res) {
-            readFile( config.server.log )
-                .then( function(contents) {
-                    //res.send( contents );
-                    res.render( 'server-log', {
-                        contents: contents
-                    } );
-                } )
-                .catch( function(e) {
-                    res.status( 500 ).send( e );
+    app.get( '/server/log', function(req, res) {
+        readFile( config.server.log )
+            .then( function(contents) {
+                //res.send( contents );
+                res.render( 'server-log', {
+                    contents: contents
                 } );
-        } );*/
+            } )
+            .catch( function(e) {
+                res.status( 500 ).send( e );
+            } );
+    } );
 
     app.get( '/todos', function(req, res) {
         db.Todo.findAll().success( function(todos) {

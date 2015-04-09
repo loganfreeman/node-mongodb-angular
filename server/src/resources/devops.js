@@ -30,7 +30,7 @@ var readFile = Promise.promisify( require( 'fs' ).readFile );
 var config = require( '../config/config.js' );
 
 
-var getLog = {
+/*var getLog = {
     spec: {
         path: '/server/log',
         method: 'GET',
@@ -52,7 +52,7 @@ var getLog = {
                 res.status( 500 ).send( e );
             } );
     }
-};
+};*/
 
 
 
@@ -747,7 +747,7 @@ var register = {
     }
 };
 
-var methods = [getLog, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
+var methods = [listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
     getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId, getDeployByInstance, createDeploy
 ];
 
