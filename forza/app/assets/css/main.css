@@ -4,3 +4,17 @@
 *
 */
 
+/**
+ *
+ * center span inside a div
+ */
+div.fixed-line-height > span {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;      
+}
+
+div.fixed-line-height {
+	line-height: 40px;
+    text-align: center;
+}

@@ -222,7 +222,12 @@
     <header class="navbar navbar-inverse" ng-class="{'navbar-fixed-top': style_fixedHeader, 'navbar-static-top': !style_fixedHeader}" role="banner">
       <a id="leftmenu-trigger" tooltip-placement="right" tooltip="Toggle Sidebar" ng-click="toggleLeftBar()"></a>
       <div class="navbar-header pull-left">
-        <a class="navbar-brand" href="#/">Forza</a>
+            <a class="navbar-brand" href="#/">
+            </a>
+      </div>
+
+      <div class='nav navbar-nav pull-left toolbar fixed-line-height'>
+        <span class='clock'><strong ng-controller='TimeCtrl'>{{ clock  | date:'medium'}}</strong></span>
       </div>
       <ul class="nav navbar-nav pull-right toolbar">
           <li>
