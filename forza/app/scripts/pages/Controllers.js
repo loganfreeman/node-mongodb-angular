@@ -6,6 +6,9 @@ angular
 
             $scope.user = {};
 
+            $scope.user.password = '';
+            $scope.user.passwordConfirm = '';
+
             $global.set( 'fullscreen', true );
 
             $scope.$on( '$destroy', function() {
@@ -28,6 +31,10 @@ angular
                             } );
                         }
                     } );
+            };
+
+            $scope.signUp = function(form) {
+                console.log( form );
             };
     }] )
     .controller( 'RegistrationPageController', ['$scope', '$timeout', function($scope, $timeout) {
