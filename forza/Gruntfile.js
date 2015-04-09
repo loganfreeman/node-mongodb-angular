@@ -495,7 +495,7 @@ module.exports = function(grunt) {
         'rev',
         'usemin',
         'processhtml:dist',
-        'htmlmin'
+        // 'htmlmin' // unresolved htmlmin parse error
     ] );
 
     grunt.registerTask( 'fastbuild', [
@@ -507,15 +507,15 @@ module.exports = function(grunt) {
         'less:dist',
         'autoprefixer',
         'concat',
-        // 'ngmin',
+        // 'ngmin', ngmin takes very long time
         'copy:dist',
         'cdnify',
         'cssmin',
         'uglify',
-        //'rev',
+        'rev',
         'usemin',
         'processhtml:dist',
-        'htmlmin'
+        // 'htmlmin'
     ] );
 
     grunt.registerTask( 'default', [
