@@ -53,7 +53,7 @@ angular
          */
         $scope.logOut = function() {
             Auth.logout(function() {
-                $location.path('/');
+                $location.path('/extras-login2');
             });
         };
 
