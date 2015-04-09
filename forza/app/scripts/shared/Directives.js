@@ -2,6 +2,9 @@
 
 angular
     .module( 'theme.directives', [] )
+    .constant( 'REGEXP', {
+        INTEGER_REGEXP: /^\-?\d+$/
+    } )
     .directive( 'disableAnimation', ['$animate', function($animate) {
             return {
                 restrict: 'A',
@@ -418,6 +421,59 @@ angular
                 element.on( 'keydown', function() {
                     return ngModel.$setValidity( 'mongoose', true );
                 } );
+            }
+        };
+    } )
+    .directive( 'match', function match($parse) {
+        return {
+            require: '?ngModel',
+            restrict: 'A',
+            link: function(scope, elem, attrs, ctrl) {
+                if (!ctrl) {
+                    if (console && console.warn) {
+                        console.warn( 'Match validation requires ngModel to be on the element' );
+                    }
+                    return;
+                }
+
+                var matchGetter = $parse( attrs.match );
+
+                scope.$watch( getMatchValue, function() {
+                    ctrl.$$parseAndValidate();
+                } );
+
+                ctrl.$validators.match = function() {
+                    return ctrl.$viewValue === getMatchValue();
+                };
+
+                function getMatchValue() {
+                    var match = matchGetter( scope );
+                    if (angular.isObject( match ) && match.hasOwnProperty( '$viewValue' )) {
+                        match = match.$viewValue;
+                    }
+                    return match;
+                }
+            }
+        };
+    } )
+    .directive( 'integer', function(REGEXP) {
+        return {
+            require: 'ngModel',
+            link: function(scope, elm, attrs, ctrl) {
+                ctrl.$validators.integer = function(modelValue, viewValue) {
+                    if (ctrl.$isEmpty( modelValue )) {
+                        // consider empty models to be valid
+                        return true;
+                    }
+
+                    if (REGEXP.INTEGER_REGEXP.test( viewValue )) {
+                        // it is valid
+                        return true;
+                    }
+
+                    // it is invalid
+                    return false;
+                };
             }
         };
     } );
