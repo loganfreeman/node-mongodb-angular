@@ -98,6 +98,10 @@ module.exports = function(grunt) {
                     context: '/auth',
                     host: 'localhost',
                     port: 8081
+                },{
+                    context: '/dev',
+                    host: 'localhost',
+                    port: 8081
                 }]
             },
             test: {
