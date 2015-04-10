@@ -7,26 +7,26 @@ angular
                 {
                     label: 'Instances',
                     iconClasses: 'fa fa-laptop',
-                    url: '#/',
+                    url: '#/instances',
                     restricted: 'User'
                 },
                 {
                     label: 'Stack',
                     iconClasses: 'fa fa-cloud',
-                    url: '#/',
+                    url: '#/stacks',
                     restricted: 'Administrator'
                 },
                 {
                     label: 'User',
                     iconClasses: 'fa fa-user',
-                    url: '#/',
+                    url: '#/users',
                     restricted: 'Administrator'
                 }
             ];
 
             $scope.checkAccess = function(item) {
                 if (item.restricted === 'Administrator') {
-                    return $rootScope.currentUser.type === 'Administrator';
+                    return $rootScope.currentUser && $rootScope.currentUser.type === 'Administrator';
                 }
                 return true;
             };
