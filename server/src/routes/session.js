@@ -60,6 +60,15 @@ session.login = function(req, res, next) {
     } )( req, res, next );
 };
 
+session.remove = function(req, res, next) {
+    User.remove( {
+        _id: req.params.userid
+    } ).then( function() {
+        return res.send( 'User deleted' );
+    } ).catch( function(err) {
+        return res.status( 400 ).send( 'Encountered unexpected error' );
+    } );
+};
 
 session.create = function(req, res, next) {
     var newUser = new User( req.body );
@@ -152,6 +161,7 @@ module.exports = function(app) {
     app.get( '/auth/session', auth.ensureAuthenticated, session.session );
     app.post( '/auth/session', session.login );
     app.delete( '/auth/session', session.logout );
+    app.delete( '/auth/user/:userid', session.remove );
     app.post( '/auth/users', session.create );
     app.post( '/auth/admin/users', session.createAdmin );
     app.get( '/auth/users/:userId', session.show );

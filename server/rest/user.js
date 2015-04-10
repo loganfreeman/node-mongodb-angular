@@ -97,12 +97,13 @@ describe( 'user route', function() {
                 user.should.have.property( '_id' );
                 user.email.should.be.eq( 'test@fox.com' );
                 var options = {
-                    url: 'http://localhost:8081/user/' + user.id,
+                    url: 'http://localhost:8081/auth/user/' + user._id,
                     method: 'DELETE'
                 };
 
                 request( options )
                     .spread( function(res, body) {
+                        console.log( body );
                         done();
                     } );
             } )
