@@ -224,7 +224,7 @@ angular
     }] )
     .run( function($rootScope, $location, Auth, $route) {
 
-        var excludePath = ['/admin-signup', '/extras-login2', 'extras-signupform'];
+        var excludePath = ['/admin-signup', '/extras-login2', '/extras-signupform'];
 
         if (_.indexOf( excludePath, $location.path() ) === -1) {
             Auth.currentUser();
