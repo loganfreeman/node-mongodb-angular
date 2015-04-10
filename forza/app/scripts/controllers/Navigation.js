@@ -2,24 +2,34 @@
 
 angular
     .module( 'theme.navigation-controller', [] )
-    .controller( 'NavigationController', ['$scope', '$location', '$timeout', '$global', function($scope, $location, $timeout, $global) {
+    .controller( 'NavigationController', ['$scope', '$location', '$timeout', '$global', '$rootScope', function($scope, $location, $timeout, $global, $rootScope) {
             $scope.menu = [
                 {
                     label: 'Instances',
                     iconClasses: 'fa fa-laptop',
-                    url: '#/'
+                    url: '#/',
+                    restricted: 'User'
                 },
                 {
                     label: 'Stack',
                     iconClasses: 'fa fa-cloud',
-                    url: '#/'
+                    url: '#/',
+                    restricted: 'Administrator'
                 },
                 {
                     label: 'User',
                     iconClasses: 'fa fa-user',
-                    url: '#/'
+                    url: '#/',
+                    restricted: 'Administrator'
                 }
             ];
+
+            $scope.checkAccess = function(item) {
+                if (item.restricted === 'Administrator') {
+                    return $rootScope.type === 'Administrator';
+                }
+                return true;
+            };
 
             var setParent = function(children, parent) {
                 angular.forEach( children, function(child) {
