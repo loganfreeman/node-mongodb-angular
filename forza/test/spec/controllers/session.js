@@ -1,4 +1,9 @@
-describe( 'sorting the list of users', function() {
+describe( 'Session', function() {
+
+    // First, we load the app's module
+    beforeEach( module( 'angularPassportService' ) );
+
+
     it( 'should run', function() {
         console.log( 'test run' );
     } );
