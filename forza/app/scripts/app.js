@@ -224,7 +224,11 @@ angular
     }] )
     .run( function($rootScope, $location, Auth, $route) {
 
-        Auth.currentUser();
+        var excludePath = ['/admin-signup', '/extras-login2', '/extras-signupform'];
+
+        if (_.indexOf( excludePath, $location.path() ) === -1) {
+            Auth.currentUser();
+        }
 
         // On catching 401 errors, redirect to the login page.
         $rootScope.$on( 'event:auth-loginRequired', function() {
@@ -234,13 +238,8 @@ angular
 
         $rootScope.$on( '$locationChangeStart', function(event, next, current) {
             var nextRoute = $route.routes[$location.path()];
-            if (!nextRoute) {
-                nextRoute = $route.routes['/:templateFile'];
-            }
-            var currentPath = current.split( '#' )[1];
-            var nextPath = next.split( '#' )[1];
 
-            if (currentPath === '/extras-login2') {
+            if (_.indexOf( excludePath, $location.path() ) !== -1) {
                 return;
             }
             //console.log( event );

@@ -106,7 +106,7 @@ module.exports = function(grunt) {
             },
             test: {
                 options: {
-                    port: 9001,
+                    port: 9002,
                     base: [
                         '.tmp',
                         'test',
@@ -475,9 +475,9 @@ module.exports = function(grunt) {
     } );
 
     grunt.registerTask( 'test', [
-        'clean:server',
-        'concurrent:test',
-        'autoprefixer',
+        //'clean:server',
+        //'concurrent:test',
+        //'autoprefixer',
         'connect:test',
         'karma'
     ] );
