@@ -26,7 +26,7 @@ angular
 
             $scope.checkAccess = function(item) {
                 if (item.restricted === 'Administrator') {
-                    return $rootScope.type === 'Administrator';
+                    return $rootScope.currentUser.type === 'Administrator';
                 }
                 return true;
             };
