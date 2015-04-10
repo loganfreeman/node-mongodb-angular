@@ -41,6 +41,17 @@ angular
                 } );
             };
 
+            $scope.adminSignUp = function(form) {
+                //console.log( $scope.user );
+                Auth.createAdminUser( $scope.user, function(err) {
+                    if (!err) {
+                        $location.path( '/' );
+                    } else {
+                        alert( err );
+                    }
+                } );
+            };
+
             $scope.signUpBtnClicked = function() {
                 $location.path( '/extras-signupform' );
             };

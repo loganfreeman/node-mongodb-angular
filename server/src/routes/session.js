@@ -89,6 +89,8 @@ session.createAdmin = function(req, res, next) {
 
     var secret = req.body.secret;
 
+    delete req.body.secret;
+
     if (adminSecret !== secret) {
         return res.status( 401 ).json( {
             message: 'Not Authorized'

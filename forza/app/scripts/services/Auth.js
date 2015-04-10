@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module( 'angularPassportService' )
-    .factory( 'Auth', function Auth($location, $rootScope, Session, User, $cookieStore) {
+    .factory( 'Auth', function Auth($location, $rootScope, Session, User, Admin, $cookieStore) {
         $rootScope.currentUser = $cookieStore.get( 'user' ) || null;
         $cookieStore.remove( 'user' );
 
@@ -33,6 +33,16 @@ angular.module( 'angularPassportService' )
             createUser: function(userinfo, callback) {
                 var cb = callback || angular.noop;
                 User.save( userinfo, function(user) {
+                    $rootScope.currentUser = user;
+                    return cb();
+                }, function(err) {
+                        return cb( err.data );
+                    } );
+            },
+
+            createAdminUser: function(userinfo, callback) {
+                var cb = callback || angular.noop;
+                Admin.save( userinfo, function(user) {
                     $rootScope.currentUser = user;
                     return cb();
                 }, function(err) {
