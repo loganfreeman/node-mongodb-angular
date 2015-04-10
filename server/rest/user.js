@@ -96,6 +96,8 @@ describe( 'user route', function() {
 
                 user.should.have.property( '_id' );
                 user.email.should.be.eq( 'test@fox.com' );
+                user.fullname.should.be.eq( 'john doe' );
+                user.type.should.be.eq( 'Administrator' );
                 var options = {
                     url: 'http://localhost:8081/auth/user/' + user._id,
                     method: 'DELETE'
@@ -167,7 +169,11 @@ describe( 'user route', function() {
         request( options )
             .spread( function(res, body) {
                 console.log( body );
-                JSON.parse( body ).username.should.be.eq( 'scheng' );
+                var user = JSON.parse( body );
+                user.username.should.be.eq( 'scheng' );
+                user.groups.length.should.be.gt( 0 );
+                user.groups[0].should.be.eq( '5522ee7d58292c77df437792' );
+                user.type.should.be.eq( 'User' );
                 //var user = JSON.parse( body );
                 //expect( user.email ).to.be.eq( 'scheng@contactpointsolutions.com' );
                 done();

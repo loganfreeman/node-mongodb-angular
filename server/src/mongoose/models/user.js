@@ -78,12 +78,21 @@ UserSchema
     } );
 
 UserSchema
+    .virtual( 'fullname' )
+    .get( function() {
+        return this.firstname + ' ' + this.lastname;
+    } );
+
+UserSchema
     .virtual( 'user_info' )
     .get( function() {
         return {
             '_id': this._id,
             'username': this.username,
-            'email': this.email
+            'fullname': this.fullname,
+            'email': this.email,
+            'type': this.type,
+            'groups': this.groups
         };
     } );
 
