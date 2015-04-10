@@ -44,7 +44,8 @@
     "shufflejs": "2.1.1",
     "pnotify": "sciactive/pnotify#~2.0.1",
     "chance": "~0.7.3",
-    "angular-http-auth": "~1.2.2"
+    "angular-http-auth": "~1.2.2",
+    "angular-promise-tracker": "~2.1.0"
   },
   "resolutions": {
     "jquery": "~1.11.0"
