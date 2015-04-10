@@ -1,4 +1,7 @@
 
 <div ng-controller='userManagementController'>
 <h1>This is the user management page</h1>
+ <ul class="list-user">
+    <li ng-repeat="user in users"> {{ fullname }} </li>
+  </ul>
 </div>
