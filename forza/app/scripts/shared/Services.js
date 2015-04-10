@@ -99,6 +99,17 @@ angular
   .factory('EnquireService', ['$window', function ($window) {
     return $window.enquire;
   }])
+  .factory('httpq', function($http, $q) {
+    return {
+      get: function() {
+        var deferred = $q.defer();
+        $http.get.apply(null, arguments)
+        .success(deferred.resolve)
+        .error(deferred.resolve);
+        return deferred.promise;
+      }
+    }
+  })
   .factory('$bootbox', ['$modal', function ($modal) {
     // NOTE: this is a workaround to make BootboxJS somewhat compatible with
     // Angular UI Bootstrap in the absence of regular bootstrap.js
