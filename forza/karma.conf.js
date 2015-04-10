@@ -23,6 +23,7 @@ module.exports = function(config) {
             'app/scripts/services/Blogs.js',
             'app/scripts/services/Session.js',
             'app/scripts/services/User.js',
+            'app/scripts/services/Admin.js',
             'test/mock/**/*.js',
             'test/spec/**/*.js'
         ],
@@ -31,7 +32,7 @@ module.exports = function(config) {
         exclude: [],
 
         // web server port
-        port: 9002,
+        port: 9000,
 
         // level of logging
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
