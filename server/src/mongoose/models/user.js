@@ -51,6 +51,10 @@ var UserSchema = new Schema( {
         type: String,
         default: ''
     },
+    type: {
+        type: String,
+        default: 'User'
+    },
     groups: [{
         type: Schema.ObjectId,
         ref: 'Group',
