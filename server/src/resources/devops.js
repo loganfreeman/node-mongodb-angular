@@ -296,8 +296,29 @@ var listInstances = {
     },
     action: function(req, res) {
         Instance.find().exec()
-            .then(function(groups) {
-                res.json(groups);
+            .then(function(instances) {
+                //res.json(instances);
+                Promise.all(instances).map(function(instance) {
+                        return new Promise(function(resolve, reject) {
+                            Deploy.find({
+                                '_id': {
+                                    $in: instance.deploys
+                                }
+                            }, function(err, deploys) {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    instance = instance.toJSON();
+                                    instnace.deploys = deploys;
+                                    resolve(instance);
+                                }
+
+                            })
+                        })
+                    })
+                    .then(function(instances) {
+                        res.json(instances);
+                    })
 
             });
 
@@ -803,8 +824,74 @@ var register = {
     }
 };
 
+
+var listStacks = {
+    spec: {
+        path: '/devops/stack',
+        method: 'GET',
+        notes: 'The method allows to get all stacks',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'listStacks',
+        produces: ['application/json']
+    },
+    action: function(req, res) {
+        Stack.find().exec()
+            .then(function(stacks) {
+
+                //res.json(stacks);
+                Promise.all(stacks).map(function(stack) {
+                        return new Promise(function(resolve, reject) {
+                            Instance.find({
+                                '_id': {
+                                    $in: stack.instances
+                                }
+                            }, function(err, instances) {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    stack = stack.toJSON();
+                                    stack.instances = instances;
+                                    resolve(stack);
+                                }
+
+                            })
+                        })
+                    })
+                    .then(function(stacks) {
+                        res.json(stacks);
+                    })
+
+            });
+
+    }
+};
+
+
+var listDeploys = {
+    spec: {
+        path: '/devops/deploy',
+        method: 'GET',
+        notes: 'The method allows to get all deploys',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'listDeploys',
+        produces: ['application/json']
+    },
+    action: function(req, res) {
+        Deploy.find().exec()
+            .then(function(deploys) {
+
+                res.json(deploys);
+
+            });
+
+    }
+};
+
 var methods = [getUsersByGroupId, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
-    getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId, getDeployByInstance, createDeploy
+    getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId, getDeployByInstance, createDeploy,
+    listStacks, listDeploys
 ];
 
 module.exports = function(swagger) {
