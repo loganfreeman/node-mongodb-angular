@@ -581,7 +581,28 @@ var listGroup = {
         Group.find().exec()
             .then(function(groups) {
 
-                res.json(groups);
+                //res.json(groups);
+                Promise.all(groups).map(function(group) {
+                    return new Promise(function(resolve, reject) {
+                            User.find({
+                                '_id': {
+                                    $in: group.users
+                                }
+                            }, function(err, users) {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    group = group.toJSON();
+                                    group.users = users;
+                                    resolve(group);
+                                }
+
+                            })
+                        })
+                        .then(function(groups) {
+                            res.json(groups);
+                        })
+                })
 
             });
 
