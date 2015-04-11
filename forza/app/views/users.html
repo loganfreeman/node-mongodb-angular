@@ -12,19 +12,19 @@
 
                             <tab ng-repeat="group in groups" active="group.active" disabled="group.disabled">
                                 <tab-heading><i class="glyphicon tab-heading-icon" ng-class="applyIconClass(group)"></i>{{group.name}}</tab-heading>
-                                <accordion close-others="oneAtATime" class="panel-danger">
+                                    <ul class='user-info-list' ng-repeat="user in group.users">
+                                    	<li class='user-info-item'>
+                                    		<div class="jumbotron">
+                                        		<h1>{{user.firstname + ' ' + user.lastname}}</h1>
+                                        	</div>
 
-                                    <accordion-group heading="{{user.fullname}}" ng-repeat="user in group.users" is-open="group.isOpen">
-                                        {{user}}
-
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default">Run</button>
-                                            <button type="button" class="btn btn-default">Deploy</button>
-                                            <button type="button" class="btn btn-default">Show</button>
-                                        </div>
-                                    </accordion-group>
-
-                                </accordion>
+	                                        <div class="btn-group">
+	                                            <button type="button" class="btn btn-default">Run</button>
+	                                            <button type="button" class="btn btn-default">Deploy</button>
+	                                            <button type="button" class="btn btn-default">Show</button>
+	                                        </div>
+                                    	</li>
+                                    </ul>
                             </tab>
                         </tabset>
 

@@ -23,3 +23,8 @@ div.fixed-line-height {
 span.clock {
 	margin-left: 10px
 }
+
+ul.user-info-list
+{
+    list-style-type: none;
+}
