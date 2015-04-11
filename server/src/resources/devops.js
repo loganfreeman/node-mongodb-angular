@@ -924,7 +924,22 @@ var listDeploys = {
         Deploy.find().exec()
             .then(function(deploys) {
 
-                res.json(deploys);
+                //res.json(deploys);
+                Promise.all(deploys).
+                map(function(deploy) {
+                        var instance = Instance.findById(deploy.instance).exec();
+                        var user = User.findById(deploy.user).exec();
+
+                        return Promise.all([instance, user]).then(function(values) {
+                            deploy = deploy.toJSON();
+                            deploy.instance = values[0];
+                            deploy.user = values[1];
+                            return deploy;
+                        })
+                    })
+                    .then(function(deploys) {
+                        res.json(deploys);
+                    })
 
             });
 

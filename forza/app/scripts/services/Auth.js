@@ -33,6 +33,10 @@ angular.module('angularPassportService')
                 return $http.get('/devops/instance');
             },
 
+            deploys: function() {
+                return $http.get('/devops/deploy');
+            },
+
             logout: function(callback) {
                 var cb = callback || angular.noop;
                 Session.delete(function(res) {
