@@ -276,8 +276,29 @@ var getInstanceByStackId = {
         Instance.find({
                 stack: req.params.stackId
             }).exec()
-            .then(function(groups) {
-                res.json(groups);
+            .then(function(instances) {
+                //res.json(instances);
+                Promise.all(instances).map(function(instance) {
+                        return new Promise(function(resolve, reject) {
+                            Deploy.find({
+                                '_id': {
+                                    $in: instance.deploys
+                                }
+                            }, function(err, deploys) {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    instance = instance.toJSON();
+                                    instance.deploys = deploys;
+                                    resolve(instance);
+                                }
+
+                            })
+                        })
+                    })
+                    .then(function(instances) {
+                        res.json(instances);
+                    })
 
             });
 
@@ -309,7 +330,7 @@ var listInstances = {
                                     reject(err);
                                 } else {
                                     instance = instance.toJSON();
-                                    instnace.deploys = deploys;
+                                    instance.deploys = deploys;
                                     resolve(instance);
                                 }
 
@@ -658,7 +679,28 @@ var getUsersByGroupId = {
                 }).exec();
             })
             .then(function(users) {
-                res.json(users);
+                // res.json(users);
+                Promise.all(users).map(function(user) {
+                        return new Promise(function(resolve, reject) {
+                            Group.find({
+                                '_id': {
+                                    $in: user.groups
+                                }
+                            }, function(err, groups) {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    user = user.toJSON();
+                                    user.groups = groups;
+                                    resolve(user);
+                                }
+
+                            })
+                        })
+                    })
+                    .then(function(users) {
+                        res.json(users);
+                    })
             })
 
     }

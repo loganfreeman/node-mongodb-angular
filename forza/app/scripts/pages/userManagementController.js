@@ -5,24 +5,24 @@ angular.module('theme.pages-controllers').controller('userManagementController',
 		console.log('In User Management Controller');
 		Auth.groups()
 			.then(function(groups) {
+				/*				var promises = [];
+								angular.forEach(groups.data, function(value, key) {
+									var group = value;
+									var promise = $q(function(resolve, reject) {
+										$http.get('/devops/group/{groupId}/users'.replace('{groupId}', group._id)).then(function(users) {
+											group.users = users.data;
+											resolve(group);
+										})
+									});
+									promises.push(promise);
+								});
 
+								$q.all(promises).then(function(groups) {
+									//console.log(groups);
+									$scope.groups = groups;
+								})*/
 
-				var promises = [];
-				angular.forEach(groups.data, function(value, key) {
-					var group = value;
-					var promise = $q(function(resolve, reject) {
-						$http.get('/devops/group/{groupId}/users'.replace('{groupId}', group._id)).then(function(users) {
-							group.users = users.data;
-							resolve(group);
-						})
-					});
-					promises.push(promise);
-				});
-
-				$q.all(promises).then(function(groups) {
-					//console.log(groups);
-					$scope.groups = groups;
-				})
+				$scope.groups = groups.data;
 			});
 
 		$scope.applyIconClass = function(obj) {
