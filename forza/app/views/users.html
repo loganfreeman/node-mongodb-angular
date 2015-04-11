@@ -1,16 +1,4 @@
 
-<div ng-controller='userManagementController'>
-<h1>This is the user management page</h1>
- <ul class="list-user">
-    <li ng-repeat="user in users"> {{ user.fullname }} </li>
-  </ul>
-
-   <ul class="list-group">
-    <li ng-repeat="group in groups"> {{ group.name }} 
-
-    </li>
-  </ul>
-</div>
 
 
 
@@ -24,14 +12,10 @@
 
                             <tab ng-repeat="group in groups" active="group.active" disabled="group.disabled">
                                 <tab-heading><i class="glyphicon tab-heading-icon" ng-class="applyIconClass(group)"></i>{{group.name}}</tab-heading>
-                                <p>{{group.description}}</p>
                                 <accordion close-others="oneAtATime" class="panel-danger">
 
-                                    <accordion-group heading="{{group.name}}" ng-repeat="user in group.users" is-open="group.isOpen">
+                                    <accordion-group heading="{{user.fullname}}" ng-repeat="user in group.users" is-open="group.isOpen">
                                         {{user}}
-
-
-                                        <p>Commands</p>
 
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Run</button>

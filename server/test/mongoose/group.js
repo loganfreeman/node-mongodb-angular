@@ -25,7 +25,7 @@ function connect(database) {
 }
 
 
-describe('user schema', function() {
+describe('groups schema', function() {
 
     this.timeout(5000);
     var db, User, Group;
@@ -116,6 +116,32 @@ describe('user schema', function() {
                         });
                 })
         })
+    });
+
+
+    it('should load users by Ids', function(done) {
+        var groupPromise = Group.findOne({
+            name: 'sample group'
+        }).exec();
+        var groupId;
+        groupPromise.then(function(group) {
+                groupId = group.id;
+                //console.log(group.users);
+                return new Promise(function(resolve, reject) {
+                    User.find({
+                        '_id': {
+                            $in: group.users
+                        }
+                    }, function(err, users) {
+                        group.$users = users;
+                        resolve(group);
+                    })
+                })
+            })
+            .then(function(group) {
+                console.log(group.$users);
+                done();
+            })
     });
 
 });
