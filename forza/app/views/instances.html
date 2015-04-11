@@ -1,3 +1,39 @@
-<div ng-controller='instanceManagementController'>
-<h1>This is the instance management page</h1>
+<div class="container-fluid" ng-controller='instanceManagementController'>
+
+    <div class="row">
+        <div class="col-md-12">
+
+                        <tabset class="tabs-left">
+
+
+                            <tab ng-repeat="instance in instances" active="instance.active" disabled="instance.disabled">
+                                <tab-heading><i class="glyphicon tab-heading-icon" ng-class="applyIconClass(instance)"></i>{{instance.name}}</tab-heading>
+                                    <ul class='user-info-list' ng-repeat="deploy in instance.deploys">
+                                    	<li class='user-info-item'>
+                                    		<div class="jumbotron">
+                                        		<h1>{{deploy.deployDate}}</h1>
+                                        	</div>
+
+	                                        <div class="btn-group">
+	                                            <button type="button" class="btn btn-default">Run</button>
+	                                            <button type="button" class="btn btn-default">Deploy</button>
+	                                            <button type="button" class="btn btn-default">Show</button>
+	                                        </div>
+                                    	</li>
+                                    </ul>
+                            </tab>
+                        </tabset>
+
+
+        </div>
+    </div>
+
+    <div class="row">
+
+
+        <hr />
+
+
+    </div>
+
 </div>

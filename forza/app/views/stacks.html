@@ -1,3 +1,39 @@
-<div ng-controller='stackManagementController'>
-<h1>This is the stack management page</h1>
+<div class="container-fluid" ng-controller='stackManagementController'>
+
+    <div class="row">
+        <div class="col-md-12">
+
+                        <tabset class="tabs-left">
+
+
+                            <tab ng-repeat="stack in stacks" active="stack.active" disabled="stack.disabled">
+                                <tab-heading><i class="glyphicon tab-heading-icon" ng-class="applyIconClass(stack)"></i>{{stack.name}}</tab-heading>
+                                    <ul class='user-info-list' ng-repeat="instance in stack.instances">
+                                    	<li class='user-info-item'>
+                                    		<div class="jumbotron">
+                                        		<h1>{{instance.name}}</h1>
+                                        	</div>
+
+	                                        <div class="btn-group">
+	                                            <button type="button" class="btn btn-default">Run</button>
+	                                            <button type="button" class="btn btn-default">Deploy</button>
+	                                            <button type="button" class="btn btn-default">Show</button>
+	                                        </div>
+                                    	</li>
+                                    </ul>
+                            </tab>
+                        </tabset>
+
+
+        </div>
+    </div>
+
+    <div class="row">
+
+
+        <hr />
+
+
+    </div>
+
 </div>

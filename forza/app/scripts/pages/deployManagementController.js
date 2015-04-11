@@ -1,12 +1,12 @@
-angular.module('theme.pages-controllers').controller('stackManagementController',
+angular.module('theme.pages-controllers').controller('deployManagementController',
 
 	['$q', '$location', '$scope', '$global', '$rootScope', 'Auth', '$http', 'applyIcon',
 		function($q, $location, $scope, $global, $rootScope, Auth, $http, applyIcon) {
 			// TODO: 
-			Auth.stacks()
-				.then(function(stacks) {
+			Auth.deploys()
+				.then(function(deploys) {
 
-					$scope.stacks = stacks.data;
+					$scope.deploys = deploys.data;
 				});
 
 			$scope.applyIconClass = applyIcon;

@@ -1,0 +1,32 @@
+<div class="container-fluid" ng-controller='deployManagementController'>
+
+    <div class="row">
+        <div class="col-md-12">
+
+                        <tabset class="tabs-left">
+
+
+                            <tab ng-repeat="deploy in deploys" active="deploy.active" disabled="deploy.disabled">
+                                <tab-heading><i class="glyphicon tab-heading-icon" ng-class="applyIconClass(deploy)"></i>{{deploy.comments}}</tab-heading>
+                                   <div>
+                                    <strong>{{deploy.user.username}}</strong>
+                                   </div>
+                                   <div>
+                                    <strong>{{deploy.instance.name}}</strong>
+                                   </div>
+                            </tab>
+                        </tabset>
+
+
+        </div>
+    </div>
+
+    <div class="row">
+
+
+        <hr />
+
+
+    </div>
+
+</div>

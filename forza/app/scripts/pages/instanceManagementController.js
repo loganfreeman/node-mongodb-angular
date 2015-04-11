@@ -1,7 +1,15 @@
-angular.module( 'theme.pages-controllers' ).controller( 'instanceManagementController',
+angular.module('theme.pages-controllers').controller('instanceManagementController',
 
-    ['$location', '$scope', '$global', '$rootScope', 'Auth', function($location, $scope, $global, $rootScope, Auth) {
-            // TODO: 
-            console.log( 'In Instance Management Controller' );
-    }]
+	['$q', '$location', '$scope', '$global', '$rootScope', 'Auth', '$http', 'applyIcon',
+		function($q, $location, $scope, $global, $rootScope, Auth, $http, applyIcon) {
+			// TODO: 
+			Auth.instances()
+				.then(function(instances) {
+
+					$scope.instances = instances.data;
+				});
+
+			$scope.applyIconClass = applyIcon;
+		}
+	]
 );
