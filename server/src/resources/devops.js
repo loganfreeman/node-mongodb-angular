@@ -583,7 +583,7 @@ var listGroup = {
 
                 //res.json(groups);
                 Promise.all(groups).map(function(group) {
-                    return new Promise(function(resolve, reject) {
+                        return new Promise(function(resolve, reject) {
                             User.find({
                                 '_id': {
                                     $in: group.users
@@ -599,10 +599,10 @@ var listGroup = {
 
                             })
                         })
-                        .then(function(groups) {
-                            res.json(groups);
-                        })
-                })
+                    })
+                    .then(function(groups) {
+                        res.json(groups);
+                    })
 
             });
 
