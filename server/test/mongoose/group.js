@@ -14,6 +14,8 @@ require('../../src/mongoose/models');
 
 var Promise = require('bluebird');
 
+var R = require('ramda');
+
 
 
 /**
@@ -133,13 +135,14 @@ describe('groups schema', function() {
                             $in: group.users
                         }
                     }, function(err, users) {
-                        group.$users = users;
+                        group = group.toJSON();
+                        group.users = users;
                         resolve(group);
                     })
                 })
             })
             .then(function(group) {
-                console.log(group.$users);
+                console.log(group);
                 done();
             })
     });
