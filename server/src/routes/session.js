@@ -18,7 +18,7 @@ var ObjectId = require( 'mongoose' ).Types.ObjectId;
 var path = require( 'path' );
 
 
-var adminSecret = require( 'fs' ).readFileSync( path.resolve( __dirname, '../../adminSecret' ), 'utf8' );
+var adminSecret = require( 'fs' ).readFileSync( path.resolve( __dirname, '../../adminSecret' ), 'utf8' ).trim();
 
 /**
  * Session
@@ -87,9 +87,12 @@ session.create = function(req, res, next) {
 
 session.createAdmin = function(req, res, next) {
 
-    var secret = req.body.secret;
+    var secret = req.body.secret.trim();
 
     delete req.body.secret;
+
+    //console.log(secret);
+    //console.log(adminSecret);
 
     if (adminSecret !== secret) {
         return res.status( 401 ).json( {
