@@ -5,7 +5,9 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
         /** controller function */
         function($q, $location, $scope, $global, $rootScope, Auth, $http, $modal, $log) {
             // TODO: 
-            console.log( 'In User Management Controller' );
+            //console.log( 'In User Management Controller' );
+            $scope.group = {};
+
             Auth.groups()
                 .then( function(groups) {
 
@@ -55,6 +57,15 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
             $scope.selectUser = function(user, $index) {
                 $scope.activeUser = user;
                 $scope.selectedIndex = $index;
+            };
+
+
+            $scope.addGroup = function(form) {
+                Auth.createGroup( $scope.group )
+                    .then( function(group) {
+                        //alert( JSON.stringify( stack.data ) );
+                        $scope.groups.push( group.data );
+                    } );
             };
 
 
