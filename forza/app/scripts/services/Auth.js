@@ -51,6 +51,14 @@ angular.module( 'angularPassportService' )
                     } );
             },
 
+            createStack: function(stack) {
+                return $http.put( '/devops/stack', stack );
+            },
+
+            createInstance: function(instance) {
+                return $http.put( '/devops/instance', instance );
+            },
+
             createUser: function(userinfo, callback) {
                 var cb = callback || angular.noop;
                 User.save( userinfo, function(user) {

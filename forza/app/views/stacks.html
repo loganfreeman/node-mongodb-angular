@@ -14,11 +14,7 @@
                                         		<h1>{{instance.name}}</h1>
                                         	</div>
 
-	                                        <div class="btn-group">
-	                                            <button type="button" class="btn btn-default">Run</button>
-	                                            <button type="button" class="btn btn-default">Deploy</button>
-	                                            <button type="button" class="btn btn-default">Show</button>
-	                                        </div>
+
                                     	</li>
                                     </ul>
                             </tab>
@@ -30,8 +26,31 @@
 
     <div class="row">
 
+                <form name="form" class="form-horizontal" ng-submit="addStack(form)" >
+                    <div class="form-group">
+                        <label for="name" class="control-label col-sm-4" style="text-align: left;">Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="name" name="name" ng-model="stack.name" placeholder="Name" 
+                            required mongoose-error>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="control-label col-sm-4" style="text-align: left;">Description</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="description" name="description" ng-model="stack.description" placeholder="Description" mongoose-error>
+                        </div>
+                    </div>
 
-        <hr />
+
+                        <div class="panel-footer">
+                            <div class="pull-left">
+                                <a href="#/" class="btn btn-default">Cancel</a>
+                            </div>
+                            <div class="pull-right">
+                                <button type='submit' class="btn btn-success">Create Stack</button>
+                            </div>
+                        </div>
+                </form>
 
 
     </div>
