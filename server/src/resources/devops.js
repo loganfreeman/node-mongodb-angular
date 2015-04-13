@@ -268,8 +268,8 @@ var addInstanceToStack = {
         }]
     },
     action: function(req, res) {
-        var stack = Stack.findOne( req.params.stackId ).exec();
-        var instance = Instance.findOne( req.body.instance ).exec();
+        var stack = Stack.findById( req.params.stackId ).exec();
+        var instance = Instance.findById( req.body.instance ).exec();
         Promise.all( [stack, instance] )
             .then( function(values) {
                 var stack = values[0],
@@ -314,8 +314,8 @@ var addDeployToInstance = {
         }]
     },
     action: function(req, res) {
-        var instance = Instance.findOne( req.params.instanceId ).exec();
-        var deploy = Deploy.findOne( req.body.deploy ).exec();
+        var instance = Instance.findById( req.params.instanceId ).exec();
+        var deploy = Deploy.findById( req.body.deploy ).exec();
         Promise.all( [instance, deploy] )
             .then( function(values) {
                 var instance = values[0],
@@ -356,7 +356,7 @@ var updateUser = {
     },
     action: function(req, res) {
         var promises = [];
-        var user = User.findOne( req.params.userId ).exec();
+        var user = User.findById( req.params.userId ).exec();
         var stacks = Promise.resolve( [] );
         var instances = Promise.resolve( [] );
         if (req.body.stacks) {
@@ -430,8 +430,8 @@ var addInstanceToUser = {
         }]
     },
     action: function(req, res) {
-        var user = User.findOne( req.params.userId ).exec();
-        var instance = Instance.findOne( req.body.instance ).exec();
+        var user = User.findById( req.params.userId ).exec();
+        var instance = Instance.findById( req.body.instance ).exec();
         Promise.all( [user, instance] )
             .then( function(values) {
                 var user = values[0],
@@ -474,8 +474,8 @@ var addStackToUser = {
         }]
     },
     action: function(req, res) {
-        var user = User.findOne( req.params.userId ).exec();
-        var stack = Stack.findOne( req.body.instance ).exec();
+        var user = User.findById( req.params.userId ).exec();
+        var stack = Stack.findById( req.body.instance ).exec();
         Promise.all( [user, stack] )
             .then( function(values) {
                 var user = values[0],

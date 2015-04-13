@@ -76,6 +76,12 @@ angular.module( 'angularPassportService' )
                 } );
             },
 
+            updateUser: function(userId, data) {
+                var url = '/devops/user/{userId}'.replace( '{userId}', userId );
+                return $http.post( url, data );
+
+            },
+
             changePassword: function(email, oldPassword, newPassword, callback) {
                 var cb = callback || angular.noop;
                 User.update( {

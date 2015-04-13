@@ -95,6 +95,14 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
                     //$scope.selected = selectedItem;
                     $scope.activeUser.stacks.push( selectedItem.stack );
                     $scope.activeUser.instances.push( selectedItem.instance );
+                    Auth.updateUser( $scope.activeUser._id,
+                        {
+                            stacks: [selectedItem.stack._id],
+                            instances: [selectedItem.instance._id]
+                        } )
+                        .then( function(res) {
+                            alert( res.data );
+                        } );
 
                 }, function() {
                         $log.info( 'Modal dismissed at: ' + new Date() );
