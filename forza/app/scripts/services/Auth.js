@@ -1,103 +1,107 @@
 'use strict';
 
-angular.module('angularPassportService')
-    .factory('Auth', function Auth($location, $rootScope, Session, User, Admin, $cookieStore, $http) {
-        $rootScope.currentUser = $cookieStore.get('user') || null;
-        $cookieStore.remove('user');
+angular.module( 'angularPassportService' )
+    .factory( 'Auth', function Auth($location, $rootScope, Session, User, Admin, $cookieStore, $http) {
+        $rootScope.currentUser = $cookieStore.get( 'user' ) || null;
+        $cookieStore.remove( 'user' );
 
         return {
 
             login: function(user, callback) {
                 var cb = callback || angular.noop;
-                Session.save({
+                Session.save( {
                     email: user.email,
                     password: user.password
                 }, function(user) {
-                    $rootScope.currentUser = user;
-                    return cb();
-                }, function(err) {
-                    return cb(err.data);
-                });
+                        $rootScope.currentUser = user;
+                        return cb();
+                    }, function(err) {
+                        return cb( err.data );
+                    } );
             },
 
 
             groups: function() {
-                return $http.get('/devops/group');
+                return $http.get( '/devops/group' );
+            },
+
+            users: function() {
+                return $http.get( 'devops/users' );
             },
 
             stacks: function() {
-                return $http.get('/devops/stack');
+                return $http.get( '/devops/stack' );
             },
 
             instances: function() {
-                return $http.get('/devops/instance');
+                return $http.get( '/devops/instance' );
             },
 
             deploys: function() {
-                return $http.get('/devops/deploy');
+                return $http.get( '/devops/deploy' );
             },
 
             logout: function(callback) {
                 var cb = callback || angular.noop;
-                Session.delete(function(res) {
+                Session.delete( function(res) {
                     $rootScope.currentUser = null;
                     return cb();
                 }, function(err) {
-                    return cb(err.data);
-                });
+                        return cb( err.data );
+                    } );
             },
 
             createUser: function(userinfo, callback) {
                 var cb = callback || angular.noop;
-                User.save(userinfo, function(user) {
+                User.save( userinfo, function(user) {
                     $rootScope.currentUser = user;
                     return cb();
                 }, function(err) {
-                    return cb(err.data);
-                });
+                        return cb( err.data );
+                    } );
             },
 
             createAdminUser: function(userinfo, callback) {
                 var cb = callback || angular.noop;
-                Admin.save(userinfo, function(user) {
+                Admin.save( userinfo, function(user) {
                     $rootScope.currentUser = user;
                     return cb();
                 }, function(err) {
-                    return cb(err.data);
-                });
+                        return cb( err.data );
+                    } );
             },
 
             currentUser: function() {
-                Session.get(function(user) {
+                Session.get( function(user) {
                     $rootScope.currentUser = user;
-                });
+                } );
             },
 
             changePassword: function(email, oldPassword, newPassword, callback) {
                 var cb = callback || angular.noop;
-                User.update({
+                User.update( {
                     email: email,
                     oldPassword: oldPassword,
                     newPassword: newPassword
                 }, function(user) {
-                    console.log('password changed');
-                    return cb();
-                }, function(err) {
-                    return cb(err.data);
-                });
+                        console.log( 'password changed' );
+                        return cb();
+                    }, function(err) {
+                        return cb( err.data );
+                    } );
             },
 
             removeUser: function(email, password, callback) {
                 var cb = callback || angular.noop;
-                User.delete({
+                User.delete( {
                     email: email,
                     password: password
                 }, function(user) {
-                    console.log(user + 'removed');
-                    return cb();
-                }, function(err) {
-                    return cb(err.data);
-                });
+                        console.log( user + 'removed' );
+                        return cb();
+                    }, function(err) {
+                        return cb( err.data );
+                    } );
             }
         };
-    });
+    } );

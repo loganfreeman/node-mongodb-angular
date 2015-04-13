@@ -3,26 +3,12 @@
     <div class="row">
         <div class="col-md-12">
 
-                        <tabset class="tabs-left">
-
-
-                            <tab ng-repeat="group in groups" active="group.active" disabled="group.disabled">
-                                <tab-heading><i class="glyphicon tab-heading-icon" ng-class="applyIconClass(group)"></i>{{group.name}}</tab-heading>
-                                    <ul class='user-info-list' ng-repeat="user in group.users">
-                                    	<li class='user-info-item'>
-                                    		<div class="jumbotron">
-                                        		<h1>{{user.firstname + ' ' + user.lastname}}</h1>
-                                        	</div>
-
-	                                        <div class="btn-group">
-	                                            <button type="button" class="btn btn-default">Run</button>
-	                                            <button type="button" class="btn btn-default">Deploy</button>
-	                                            <button type="button" class="btn btn-default">Show</button>
-	                                        </div>
-                                    	</li>
-                                    </ul>
-                            </tab>
-                        </tabset>
+                            <ul>
+                                <li ng-repeat="user in users" active="user.active" disabled="user.disabled">
+                                
+                                    {{user.username}}    
+                                </li>
+                            </ul>
 
 
         </div>
