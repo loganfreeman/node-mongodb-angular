@@ -92,20 +92,52 @@ var listUsers = {
                 //res.json( users );
                 Promise.all( users ).map( function(user) {
                     return new Promise( function(resolve, reject) {
-                            Group.find( {
-                                '_id': {
-                                    $in: user.groups
-                                }
-                            }, function(err, groups) {
-                                    if (err) {
-                                        reject( err );
-                                    } else {
-                                        user = user.toJSON();
-                                        user.groups = groups;
-                                        resolve( user );
-                                    }
 
+                            var groups = Promise.resolve( [] ),
+                                stacks = Promise.resolve( [] ),
+                                instances = Promise.resolve( [] );
+                            if (user.groups) {
+                                groups = Group.find( {
+                                    '_id': {
+                                        $in: user.groups
+                                    }
+                                } ).exec();
+                            }
+
+                            if (user.stacks) {
+                                stacks = Stack.find( {
+                                    '_id': {
+                                        $in: user.stacks
+                                    }
+                                } ).exec();
+                            }
+
+                            if (user.instances) {
+                                instances = Instance.find( {
+                                    '_id': {
+                                        $in: user.instances
+                                    }
+                                } ).exec();
+                            }
+
+                            var userPromise = Promise.resolve( user );
+
+                            Promise.all( [groups, stacks, instances, userPromise] )
+                                .then( function(values) {
+                                    var groups = values[0];
+                                    var stacks = values[1];
+                                    var instances = values[2];
+                                    var user = values[3].toJSON();
+                                    user.groups = groups;
+                                    user.stacks = stacks;
+                                    user.instances = instances;
+                                    return user;
+                                } )
+                                .then( function(user) {
+                                    resolve( user );
                                 } );
+
+
                         } );
                 } )
                     .then( function(users) {
