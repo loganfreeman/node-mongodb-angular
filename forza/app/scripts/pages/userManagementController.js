@@ -17,6 +17,16 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
                     $scope.users = users.data;
                 } );
 
+            Auth.stacks()
+                .then( function(stacks) {
+                    $scope.stacks = stacks.data;
+                } );
+
+            Auth.instances()
+                .then( function(instances) {
+                    $scope.instances = instances.data;
+                } );
+
             $scope.applyIconClass = function(obj) {
                 var cls;
                 switch (obj.disabled) {
@@ -46,19 +56,24 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
                 $scope.activeUser = user;
             };
 
-            $scope.items = ['item1', 'item2', 'item3'];
 
             $scope.modify = function(size) {
+                if (!$scope.activeUser) {
+                    alert( 'You have to select a user first' );
+                    return false;
+                }
                 var modalInstance = $modal.open( {
-                    templateUrl: 'myModalContent.html',
-                    controller: function($scope, $modalInstance, items) {
-                        $scope.items = items;
+                    templateUrl: 'userModification.html',
+                    controller: function($scope, $modalInstance, stacks, instances) {
+                        $scope.stacks = stacks;
+                        $scope.instances = instances;
                         $scope.selected = {
-                            item: $scope.items[0]
+                            stack: $scope.stacks[0],
+                            instance: $scope.instances[0]
                         };
 
                         $scope.ok = function() {
-                            $modalInstance.close( $scope.selected.item );
+                            $modalInstance.close( $scope.selected );
                         };
 
                         $scope.cancel = function() {
@@ -67,14 +82,20 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
                     },
                     size: size,
                     resolve: {
-                        items: function() {
-                            return $scope.items;
+                        stacks: function() {
+                            return $scope.stacks;
+                        },
+                        instances: function() {
+                            return $scope.instances;
                         }
                     }
                 } );
 
                 modalInstance.result.then( function(selectedItem) {
-                    $scope.selected = selectedItem;
+                    //$scope.selected = selectedItem;
+                    $scope.activeUser.stacks.push( selectedItem.stack );
+                    $scope.activeUser.instances.push( selectedItem.instance );
+
                 }, function() {
                         $log.info( 'Modal dismissed at: ' + new Date() );
                     } );

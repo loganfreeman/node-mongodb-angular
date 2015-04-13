@@ -32,7 +32,7 @@ ul.user-info-list
 .pointer         
 { cursor: pointer; }
 
-ul.user-list li.active {
+ul li.active {
 	color: green;
 }
 

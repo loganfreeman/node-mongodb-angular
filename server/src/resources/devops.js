@@ -296,6 +296,50 @@ var addInstanceToStack = {
     }
 };
 
+var addInstanceToUser = {
+    spec: {
+        path: '/devops/user/{userId}/instance',
+        method: 'POST',
+        notes: 'The method allows to add a instance to a user',
+        nickname: 'addInstanceToUser',
+        consumes: [
+            'application/x-www-form-urlencoded'
+        ],
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'userId',
+            'description': 'User ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+            }, {
+            'name': 'instance',
+            'in': 'formData',
+            'description': 'instance ID',
+            'type': 'string',
+            'paramType': 'form',
+            'required': true
+        }]
+    },
+    action: function(req, res) {
+        var user = User.findOne( req.params.userId ).exec();
+        var instance = Instance.findOne( req.body.instance ).exec();
+        Promise.all( [user, instance] )
+            .then( function(values) {
+                var user = values[0],
+                    instance = values[1];
+                user.instances.push( instance );
+                user.instances = _.uniq( user.instances, function(id) {
+                    return id.toString();
+                } );
+                return user.save();
+            } )
+            .then( function(user) {
+                res.json( user );
+            } );
+    }
+};
+
 var getInstanceByStackId = {
     spec: {
         path: '/devops/stack/{stackId}/instannce',
@@ -989,7 +1033,7 @@ var listDeploys = {
 
 var methods = [listUsers, getUsersByGroupId, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
     getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId, getDeployByInstance, createDeploy,
-    listStacks, listDeploys
+    listStacks, listDeploys, addInstanceToUser
 ];
 
 module.exports = function(swagger) {
