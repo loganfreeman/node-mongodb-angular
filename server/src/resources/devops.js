@@ -382,15 +382,13 @@ var updateUser = {
                 var stacks = values[1];
                 var instances = values[2];
                 if (stacks) {
-                    user.stacks.concat( stacks );
-                    user.stacks = _.uniq( user.stacks, function(id) {
+                    user.stacks = _.uniq( user.stacks.concat( stacks ), function(id) {
                         return id.toString();
                     } );
                 }
 
                 if (instances) {
-                    user.instances.concat( instances );
-                    user.instances = _.uniq( user.instances, function(id) {
+                    user.instances = _.uniq( user.instances.concat( instances ), function(id) {
                         return id.toString();
                     } );
                 }
