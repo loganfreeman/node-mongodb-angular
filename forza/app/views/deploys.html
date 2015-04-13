@@ -23,8 +23,51 @@
 
     <div class="row">
 
+                <form name="form" class="form-horizontal" ng-submit="addDeploy(form)" >
+                    <div class="form-group">
+                        <label for="deployDate" class="control-label col-sm-4" style="text-align: left;">Deploy Date</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="deployDate" name="deployDate" ng-model="deploy.deployDate" placeholder="Deploy Date" 
+                            required mongoose-error>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comments" class="control-label col-sm-4" style="text-align: left;">Comments</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="comments" name="comments" 
+                            ng-model="deploy.comments" placeholder="Comments" mongoose-error>
+                        </div>
+                    </div>
 
-        <hr />
+
+                    <div class="form-group">
+                       <label for="instance" class="control-label col-sm-4" style="text-align: left;">Instance</label>
+                            <select ng-model='deploy.instance' name='instance' id='instance'>
+                                <option ng-repeat='instance in instances' value='{{instance._id}}'>
+                                {{instance.name}}
+                                </option>
+                            </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user" class="control-label col-sm-4" style="text-align: left;">User</label>
+                            <select ng-model='deploy.user' name='user' id='user'>
+                                <option ng-repeat='user in users' value='{{user._id}}'>
+                                {{user.username}}
+                                </option>
+                            </select>
+                    </div>
+
+
+                        <div class="panel-footer">
+                            <div class="pull-left">
+                                <a href="#/" class="btn btn-default">Cancel</a>
+                            </div>
+                            <div class="pull-right">
+                                <button type='submit' class="btn btn-success">Create Instance</button>
+                            </div>
+                        </div>
+                </form>
 
 
     </div>

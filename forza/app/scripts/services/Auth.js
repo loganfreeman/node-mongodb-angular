@@ -63,6 +63,10 @@ angular.module( 'angularPassportService' )
                 return $http.put( '/devops/group', group );
             },
 
+            createDeploy: function(deploy) {
+                return $http.put( '/devops/deploy', deploy );
+            },
+
             createUser: function(userinfo, callback) {
                 var cb = callback || angular.noop;
                 User.save( userinfo, function(user) {
