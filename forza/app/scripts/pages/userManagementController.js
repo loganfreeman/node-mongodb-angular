@@ -52,8 +52,9 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
                 } );
             };
 
-            $scope.selectUser = function(user) {
+            $scope.selectUser = function(user, $index) {
                 $scope.activeUser = user;
+                $scope.selectedIndex = $index;
             };
 
 
@@ -68,8 +69,8 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
                         $scope.stacks = stacks;
                         $scope.instances = instances;
                         $scope.selected = {
-                            stack: $scope.stacks[0],
-                            instance: $scope.instances[0]
+                            stacks: [],
+                            instances: []
                         };
 
                         $scope.ok = function() {
@@ -93,15 +94,18 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
 
                 modalInstance.result.then( function(selectedItem) {
                     //$scope.selected = selectedItem;
-                    $scope.activeUser.stacks.push( selectedItem.stack );
-                    $scope.activeUser.instances.push( selectedItem.instance );
+                    //$scope.activeUser.stacks.push( selectedItem.stack );
+                    // $scope.activeUser.instances.push( selectedItem.instance );
                     Auth.updateUser( $scope.activeUser._id,
                         {
-                            stacks: [selectedItem.stack._id],
-                            instances: [selectedItem.instance._id]
+                            stacks: selectedItem.stacks,
+                            instances: selectedItem.instances
                         } )
                         .then( function(res) {
-                            alert( res.data );
+                            //alert( res.data );
+                            //$location.path( '/users' );
+                            $scope.activeUser = res.data;
+                            $scope.users[$scope.selectedIndex] = $scope.activeUser;
                         } );
 
                 }, function() {
