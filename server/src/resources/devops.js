@@ -334,6 +334,76 @@ var addDeployToInstance = {
     }
 };
 
+var updateUser = {
+    spec: {
+        // description: 'The method allows to retrieve items according to the given parameters',
+        path: '/devops/user/{userId}',
+        method: 'POST',
+        notes: 'This method allows to update or modify a user',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'updateUser',
+        consumes: ['application/json'],
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'userId',
+            'description': 'user ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+            },
+        paramTypes.body( 'body', '(object) Modified User Properties', 'UserModification' )],
+    },
+    action: function(req, res) {
+        var promises = [];
+        var user = User.findOne( req.params.userId ).exec();
+        var stacks = Promise.resolve( [] );
+        var instances = Promise.resolve( [] );
+        if (req.body.stacks) {
+            stacks = Stack.find( {
+                '_id': {
+                    $in: req.body.stacks
+                }
+            } ).exec();
+        }
+
+        if (req.body.instances) {
+            instances = Instance.find( {
+                '_id': {
+                    $in: req.body.instances
+                }
+            } ).exec();
+        }
+
+
+        Promise.all( [user, stacks, instances] )
+            .then( function(values) {
+                var user = values[0];
+                var stacks = values[1];
+                var instances = values[2];
+                if (stacks) {
+                    user.stacks.concat( stacks );
+                    user.stacks = _.uniq( user.stacks, function(id) {
+                        return id.toString();
+                    } );
+                }
+
+                if (instances) {
+                    user.instances.concat( instances );
+                    user.instances = _.uniq( user.instances, function(id) {
+                        return id.toString();
+                    } );
+                }
+
+                return user.save();
+            } )
+            .then( function(user) {
+                res.json( user );
+            } );
+
+    }
+};
+
 var addInstanceToUser = {
     spec: {
         path: '/devops/user/{userId}/instance',
@@ -1115,7 +1185,7 @@ var listDeploys = {
 
 var methods = [listUsers, getUsersByGroupId, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
     getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId, getDeployByInstance, createDeploy,
-    listStacks, listDeploys, addInstanceToUser, addStackToUser, addInstanceToStack, addDeployToInstance
+    listStacks, listDeploys, addInstanceToUser, addStackToUser, addInstanceToStack, addDeployToInstance, updateUser
 ];
 
 module.exports = function(swagger) {

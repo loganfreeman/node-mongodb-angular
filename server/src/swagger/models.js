@@ -16,6 +16,27 @@ module.exports.models = {
                 'description': 'Return only items with the given host IDs.'
             }
         }
+    },
+
+    'UserModification': {
+        id: 'UserModification',
+        'properties': {
+            'firstname': {
+                'type': 'string'
+            },
+            'lastname': {
+                'type': 'string'
+            },
+            'password': {
+                'type': 'string'
+            },
+            'stacks': {
+                'type': 'array'
+            },
+            'instances': {
+                'type': 'array'
+            }
+        }
     }
 };
 
