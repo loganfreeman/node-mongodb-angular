@@ -18,10 +18,12 @@ function connect(database) {
 describe( 'stack', function() {
 
 
+    var db = connect( 'devops' );
+    var Stack = db.model( 'Stack' );
+
+
     it( 'should find stack by environment', function(done) {
 
-        var db = connect( 'devops' );
-        var Stack = db.model( 'Stack' );
 
         Promise.resolve()
             .then( function() {
@@ -34,6 +36,19 @@ describe( 'stack', function() {
                 _.each( stacks, function(stack) {
                     stack.environment.toString().should.be.eq( '5524074382e2147f53ab703c' );
                 } );
+                done();
+            } );
+    } );
+
+
+    it( 'should find stacks by Ids', function(done) {
+        Stack.find( {
+            '_id': {
+                $in: ['55240b57bee167e458d8fd17']
+            }
+        } ).exec()
+            .then( function(stacks) {
+                stacks.length.should.be.eq( 1 );
                 done();
             } );
     } );

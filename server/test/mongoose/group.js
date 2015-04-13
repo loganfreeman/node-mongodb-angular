@@ -2,19 +2,19 @@
  * Module dependencies.
  */
 
-var _ = require('lodash');
+var _ = require( 'lodash' );
 
-var expect = require('chai').expect,
-    should = require('chai').should();
+var expect = require( 'chai' ).expect,
+    should = require( 'chai' ).should();
 
-var mongoose = require('mongoose');
+var mongoose = require( 'mongoose' );
 
 
-require('../../src/mongoose/models');
+require( '../../src/mongoose/models' );
 
-var Promise = require('bluebird');
+var Promise = require( 'bluebird' );
 
-var R = require('ramda');
+var R = require( 'ramda' );
 
 
 
@@ -23,14 +23,14 @@ var R = require('ramda');
  */
 
 function connect(database) {
-    return mongoose.createConnection('mongodb://localhost/' + database);
+    return mongoose.createConnection( 'mongodb://localhost/' + database );
 }
 
 
-describe('groups schema', function() {
+describe( 'groups schema', function() {
 
-    this.timeout(5000);
-    var db, User, Group;
+    this.timeout( 5000 );
+    var db, User, Group, Stack, Instance;
 
     var sample = {
         firstname: 'Roland',
@@ -48,103 +48,174 @@ describe('groups schema', function() {
         email: 'barray1@cctv.com'
     };
 
-    before(function(done) {
+    before( function(done) {
         // add dummy data
-        db = connect('test');
-        User = db.model('User');
-        Group = db.model('Group');
+        db = connect( 'test' );
+        User = db.model( 'User' );
+        Group = db.model( 'Group' );
+        Stack = db.model( 'Stack' );
+        Instance = db.model( 'Instance' );
 
-        var group = Group.create({
+        var group = Group.create( {
             name: 'sample group'
-        });
+        } );
 
-        var userPromise = User.create(sample);
+        var userPromise = User.create( sample );
 
-        var userPromise1 = User.create(sample1);
+        var userPromise1 = User.create( sample1 );
 
-        Promise.all([userPromise, userPromise1, group])
-            .then(function(values) {
+        Promise.all( [userPromise, userPromise1, group] )
+            .then( function(values) {
                 var user = values[0],
                     user1 = values[1],
                     group = values[2];
 
-                user.email.should.be.eq('barray@cctv.com');
-                user1.email.should.be.eq('barray1@cctv.com');
-                group.name.should.be.eq('sample group');
+                user.email.should.be.eq( 'barray@cctv.com' );
+                user1.email.should.be.eq( 'barray1@cctv.com' );
+                group.name.should.be.eq( 'sample group' );
 
-                group.users.push(user1);
-                group.users.push(user);
+                group.users.push( user1 );
+                group.users.push( user );
                 // done();
-                group.save(function(err, model) {
-                    if (err) throw err;
+                group.save( function(err, model) {
+                    if (err)
+                        throw err;
                     // console.log(model);
-                    model.users.length.should.be.eq(2);
+                    model.users.length.should.be.eq( 2 );
                     done();
-                });
-            })
-            .catch(function(err) {
-                done(err);
-            })
-    });
+                } );
+            } )
+            .catch( function(err) {
+                done( err );
+            } );
+    } );
 
-    after(function(done) {
+    after( function(done) {
         // clean up the test db
-        db.db.dropDatabase(function() {
+        db.db.dropDatabase( function() {
             db.close();
             done();
-        });
-    });
+        } );
+    } );
+
+
+    it( 'should add instance and stack to user', function(done) {
+
+        var db, User, Group;
+        db = connect( 'devops' );
+        User = db.model( 'User' );
+        Stack = db.model( 'Stack' );
+        Instance = db.model( 'Instance' );
+
+
+        var promises = [];
+        var user = User.findById( '55246784dddb11e7a89c17c7' ).exec();
+        var stacks = Stack.find( {
+            '_id': {
+                $in: ['55240b57bee167e458d8fd17']
+            }
+        } ).exec();
+
+        var instances = Instance.find( {
+            '_id': {
+                $in: ['55241088c8f46e615fe96752']
+            }
+        } ).exec();
+
+        Promise.all( [user, stacks, instances] )
+            .then( function(values) {
+                console.log( values );
+                var user = values[0];
+                var stacks = values[1];
+                var instances = values[2];
+                stacks.length.should.be.eq( 1 );
+                instances.length.should.be.eq( 1 );
+                if (stacks) {
+                    user.stacks = _.uniq( user.stacks.concat( stacks ), function(id) {
+                        return id.toString();
+                    } );
+                }
+
+                if (instances) {
+                    user.instances = _.uniq( user.instances.concat( instances ), function(id) {
+                        return id.toString();
+                    } );
+                }
+
+                return user.save();
+            } )
+            .then( function(user) {
+                var hasStack = false,
+                    hasInstance = false;
+                _.each( user.stacks, function(stack) {
+                    if (stack.toString() === '55240b57bee167e458d8fd17') {
+                        hasStack = true;
+                    }
+                } );
+                _.each( user.instances, function(instance) {
+                    if (instance.toString() === '55241088c8f46e615fe96752') {
+                        hasInstance = true;
+                    }
+                } );
+
+                if (hasStack && hasInstance) {
+                    done();
+                } else {
+                    done( 'Encountered unexpected error' );
+                }
+            } );
+    } );
 
 
 
-    it('should load by Id', function(done) {
-        var groupPromise = Group.findOne({
+    it( 'should load by Id', function(done) {
+        var groupPromise = Group.findOne( {
             name: 'sample group'
-        }).exec();
+        } ).exec();
         var groupId;
-        groupPromise.then(function(group) {
+        groupPromise.then( function(group) {
             groupId = group.id;
-            Promise.resolve(group.users)
-                .map(function(userId) {
-                    return User.findById(userId).exec();
-                })
-                .then(function(userPromises) {
-                    Promise.all(userPromises)
-                        .then(function(users) {
-                            _.each(users, function(user) {
-                                user.groups[0].toString().should.be.eq(groupId);
-                            })
+            Promise.resolve( group.users )
+                .map( function(userId) {
+                    return User.findById( userId ).exec();
+                } )
+                .then( function(userPromises) {
+                    Promise.all( userPromises )
+                        .then( function(users) {
+                            _.each( users, function(user) {
+                                user.groups[0].toString().should.be.eq( groupId );
+                            } );
                             done();
-                        });
-                })
-        })
-    });
+                        } );
+                } );
+        } );
+    } );
 
 
-    it('should load users by Ids', function(done) {
-        var groupPromise = Group.findOne({
+    it( 'should load users by Ids', function(done) {
+        var groupPromise = Group.findOne( {
             name: 'sample group'
-        }).exec();
+        } ).exec();
         var groupId;
-        groupPromise.then(function(group) {
-                groupId = group.id;
-                //console.log(group.users);
-                return new Promise(function(resolve, reject) {
-                    User.find({
+        groupPromise.then( function(group) {
+            groupId = group.id;
+            //console.log(group.users);
+            return new Promise( function(resolve, reject) {
+                    User.find( {
                         '_id': {
                             $in: group.users
                         }
                     }, function(err, users) {
-                        group = group.toJSON();
-                        group.users = users;
-                        resolve(group);
-                    })
-                })
-            })
-            .then(function(group) {
-                console.log(group);
+                            group = group.toJSON();
+                            group.users = users;
+                            resolve( group );
+                        } );
+                } );
+        } )
+            .then( function(group) {
+                console.log( group );
                 done();
-            })
-    });
+            } );
+    } );
 
-});
+} );
