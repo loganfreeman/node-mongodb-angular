@@ -259,39 +259,77 @@ var addInstanceToStack = {
             'type': 'string',
             'paramType': 'path'
             }, {
-            'name': 'userName',
-            'description': 'User Name',
-            'required': true,
+            'name': 'instance',
+            'in': 'formData',
+            'description': 'instance ID',
             'type': 'string',
-            'paramType': 'query'
+            'paramType': 'form',
+            'required': true
         }]
     },
     action: function(req, res) {
-        var group = Group.findOne( req.params.groupName ).exec();
-        var user = User.findOne( req.body.userName ).exec();
-        Promise.all( [group, user] )
+        var stack = Stack.findOne( req.params.stackId ).exec();
+        var instance = Instance.findOne( req.body.instance ).exec();
+        Promise.all( [stack, instance] )
             .then( function(values) {
-                var group = values[0],
-                    user = values[1];
-                group.users.push( user );
-                user.groups.push( group );
+                var stack = values[0],
+                    instance = values[1];
+                stack.instances.push( instance );
                 // make sure the groups and users array are unique
-                group.users = _.uniq( group.users, function(id) {
-                    return id.toString();
-                } );
-                user.groups = _.uniq( user.groups, function(id) {
+                stack.instances = _.uniq( stack.instances, function(id) {
                     return id.toString();
                 } );
 
+                return stack.save();
+            } )
+            .then( function(stack) {
+                res.json( stack );
+            } );
+    }
+};
 
-                Promise.all( [group.save(), user.save()] )
-                    .then( function(values) {
-                        console.log( values );
-                        res.json( values[0] );
-                    } )
-                    .catch( function(err) {
-                        res.status( 500 ).send( err );
-                    } );
+var addDeployToInstance = {
+    spec: {
+        path: '/devops/instance/{instanceId}/deploy',
+        method: 'POST',
+        notes: 'The method allows to add a instance to a stack',
+        nickname: 'addDeployToInstance',
+        consumes: [
+            'application/x-www-form-urlencoded'
+        ],
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'instanceId',
+            'description': 'instance ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+            }, {
+            'name': 'deploy',
+            'in': 'formData',
+            'description': 'deploy ID',
+            'type': 'string',
+            'paramType': 'form',
+            'required': true
+        }]
+    },
+    action: function(req, res) {
+        var instance = Instance.findOne( req.params.instanceId ).exec();
+        var deploy = Deploy.findOne( req.body.deploy ).exec();
+        Promise.all( [instance, deploy] )
+            .then( function(values) {
+                var instance = values[0],
+                    deploy = values[1];
+                instance.deploys.push( deploy );
+                // make sure the groups and users array are unique
+                instance.deploys = _.uniq( instance.deploys, function(id) {
+                    return id.toString();
+                } );
+
+                return instance.save();
+            } )
+            .then( function(instance) {
+                res.json( instance );
             } );
     }
 };
@@ -330,6 +368,50 @@ var addInstanceToUser = {
                     instance = values[1];
                 user.instances.push( instance );
                 user.instances = _.uniq( user.instances, function(id) {
+                    return id.toString();
+                } );
+                return user.save();
+            } )
+            .then( function(user) {
+                res.json( user );
+            } );
+    }
+};
+
+var addStackToUser = {
+    spec: {
+        path: '/devops/user/{userId}/stack',
+        method: 'POST',
+        notes: 'The method allows to add a stack to a user',
+        nickname: 'addStackToUser',
+        consumes: [
+            'application/x-www-form-urlencoded'
+        ],
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'userId',
+            'description': 'User ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+            }, {
+            'name': 'stack',
+            'in': 'formData',
+            'description': 'stack ID',
+            'type': 'string',
+            'paramType': 'form',
+            'required': true
+        }]
+    },
+    action: function(req, res) {
+        var user = User.findOne( req.params.userId ).exec();
+        var stack = Stack.findOne( req.body.instance ).exec();
+        Promise.all( [user, stack] )
+            .then( function(values) {
+                var user = values[0],
+                    stack = values[1];
+                user.stacks.push( stack );
+                user.stacks = _.uniq( user.stacks, function(id) {
                     return id.toString();
                 } );
                 return user.save();
@@ -1033,7 +1115,7 @@ var listDeploys = {
 
 var methods = [listUsers, getUsersByGroupId, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
     getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId, getDeployByInstance, createDeploy,
-    listStacks, listDeploys, addInstanceToUser
+    listStacks, listDeploys, addInstanceToUser, addStackToUser, addInstanceToStack, addDeployToInstance
 ];
 
 module.exports = function(swagger) {
