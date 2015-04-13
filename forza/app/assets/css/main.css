@@ -28,3 +28,11 @@ ul.user-info-list
 {
     list-style-type: none;
 }
+
+.pointer         
+{ cursor: pointer; }
+
+ul.user-list li.active {
+	color: green;
+}
+

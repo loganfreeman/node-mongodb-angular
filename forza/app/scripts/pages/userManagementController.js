@@ -26,5 +26,23 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
                 }
                 return cls;
             };
+
+
+            $scope.signUp = function(form) {
+                //console.log( $scope.user );
+                Auth.createUser( $scope.user, function(err) {
+                    if (!err) {
+                        $location.path( '/' );
+                    } else {
+                        alert( err );
+                    }
+                } );
+            };
+
+            $scope.selectUser = function(user) {
+                $scope.activeUser = user;
+            };
+
+
     }]
 );

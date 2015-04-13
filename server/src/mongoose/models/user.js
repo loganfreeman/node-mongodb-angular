@@ -59,6 +59,15 @@ var UserSchema = new Schema( {
         type: Schema.ObjectId,
         ref: 'Group',
         childPath: 'users'
+    }],
+    stacks: [{
+        type: Schema.ObjectId,
+        ref: 'Stack'
+    }],
+
+    instances: [{
+        type: Schema.ObjectId,
+        ref: 'Instance'
     }]
 } );
 
