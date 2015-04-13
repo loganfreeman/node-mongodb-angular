@@ -230,11 +230,6 @@
         <span class='clock'><strong ng-controller='TimeCtrl'>{{ clock  | date:'medium'}}</strong></span>
       </div>
       <ul class="nav navbar-nav pull-right toolbar">
-          <li>
-            <a class="username"><span class="hidden-xs">Admin Page</span>
-              <img src="assets/demo/avatar/admin.jpg" alt="Dangerfield" />
-            </a>
-          </li>
           <li class="dropdown" ng-show="currentUser != null">
             <a href="#" class="dropdown-toggle username"><span class="hidden-xs" ng-bind="currentUser.username"></span>
               <img src="assets/demo/avatar/people.png" alt="Dangerfield" />
