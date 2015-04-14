@@ -439,6 +439,99 @@ var updateUser = {
     }
 };
 
+
+var updateStack = {
+    spec: {
+        // description: 'The method allows to retrieve items according to the given parameters',
+        path: '/devops/stack/{stackId}',
+        method: 'POST',
+        notes: 'This method allows to update or modify a stack',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'updateStack',
+        consumes: ['application/json'],
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'stackId',
+            'description': 'stack ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+            },
+        paramTypes.body( 'body', '(object) Modified Stack Properties', 'StackModification' )],
+    },
+    action: function(req, res) {
+        var promises = [];
+        var stack = Stack.findById( req.params.stackId ).exec();
+        var instances = Promise.resolve( [] );
+
+        if (req.body.instances) {
+            instances = Instance.find( {
+                '_id': {
+                    $in: req.body.instances
+                }
+            } ).exec();
+        }
+
+
+        Promise.all( [stack, instances] )
+            .then( function(values) {
+                var stack = values[0];
+                var instances = values[1];
+
+                if (instances) {
+                    stack.instances = _.uniq( stack.instances.concat( instances ), function(id) {
+                        return id.toString();
+                    } );
+                }
+
+                return stack.save();
+            } )
+            .then( function(stack) {
+                // res.json( user );
+
+                return resolveStack( stack );
+                // 
+            } ).then( function(stack) {
+            res.json( stack );
+        } );
+
+    }
+};
+
+
+var resolveStack = function(stack) {
+    return new Promise( function(resolve, reject) {
+
+            var instances = Promise.resolve( [] );
+
+
+            if (stack.instances) {
+                instances = Instance.find( {
+                    '_id': {
+                        $in: stack.instances
+                    }
+                } ).exec();
+            }
+
+            var stackPromise = Promise.resolve( stack );
+
+            Promise.all( [instances, stackPromise] )
+                .then( function(values) {
+
+                    var instances = values[0];
+                    var stack = values[1].toJSON();
+                    stack.instances = instances;
+                    return stack;
+                } )
+                .then( function(stack) {
+                    resolve( stack );
+                } );
+
+
+        } );
+};
+
 /**
  * private function
  * 
@@ -1275,7 +1368,7 @@ var listDeploys = {
 
 var methods = [listUsers, getUsersByGroupId, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
     getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId, getDeployByInstance, createDeploy,
-    listStacks, listDeploys, addInstanceToUser, addStackToUser, addInstanceToStack, addDeployToInstance, updateUser
+    listStacks, listDeploys, addInstanceToUser, addStackToUser, addInstanceToStack, addDeployToInstance, updateUser, updateStack
 ];
 
 module.exports = function(swagger) {

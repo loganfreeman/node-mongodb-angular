@@ -36,6 +36,8 @@ angular.module( 'theme.pages-controllers' ).controller( 'stackManagementControll
                         $scope.stack = stack;
                         $scope.instances = instances;
 
+
+
                         $scope.selected = {
                             left_instances: [],
                             right_instances: []
@@ -50,11 +52,19 @@ angular.module( 'theme.pages-controllers' ).controller( 'stackManagementControll
                         };
 
                         $scope.add = function() {
-                            console.log( $scope.selected.left_instances );
+                            // console.log( $scope.selected.left_instances );
+
+
+                            $scope.stack.instances = _.uniq( $scope.stack.instances.concat( $scope.selected.left_instances ), function(inst) {
+                                return inst._id;
+                            } );
+
                         };
                         $scope.remove = function() {
                             console.log( $scope.selected.right_instances );
                         };
+
+
                     },
                     resolve: {
                         instances: function() {
@@ -72,6 +82,8 @@ angular.module( 'theme.pages-controllers' ).controller( 'stackManagementControll
                 $scope.selectedStack = stack;
                 $scope.selectedIndex = $index;
             };
+
+
         }
     ]
 );

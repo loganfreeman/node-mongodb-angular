@@ -19,7 +19,7 @@ module.exports.models = {
     },
 
     'UserModification': {
-        id: 'UserModification',
+        'id': 'UserModification',
         'properties': {
             'firstname': {
                 'type': 'string'
@@ -32,6 +32,21 @@ module.exports.models = {
             },
             'stacks': {
                 'type': 'array'
+            },
+            'instances': {
+                'type': 'array'
+            }
+        }
+    },
+
+    'StackModification': {
+        'id': 'StackModification',
+        'properties': {
+            'name': {
+                'type': 'string'
+            },
+            'description': {
+                'type': 'string'
             },
             'instances': {
                 'type': 'array'

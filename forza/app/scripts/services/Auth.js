@@ -86,6 +86,8 @@ angular.module( 'angularPassportService' )
                     } );
             },
 
+
+
             currentUser: function() {
                 Session.get( function(user) {
                     $rootScope.currentUser = user;
@@ -96,6 +98,11 @@ angular.module( 'angularPassportService' )
                 var url = '/devops/user/{userId}'.replace( '{userId}', userId );
                 return $http.post( url, data );
 
+            },
+
+            updateStack: function(stackId, data) {
+                var url = '/devops/stack/{stackId}'.replace( '{stackId}', stackId );
+                return $http.post( url, data );
             },
 
             changePassword: function(email, oldPassword, newPassword, callback) {
