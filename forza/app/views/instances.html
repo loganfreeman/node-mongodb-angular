@@ -58,11 +58,13 @@
 
                     <div class="form-group">
                         <label for="stack" class="control-label col-sm-4" style="text-align: left;">Stack</label>
-                            <select ng-model='instance.stack' name='stack' id='stack'>
-                                <option ng-repeat='stack in stacks' value='{{stack._id}}'>
-                                {{stack.name}}
-                                </option>
-                            </select>
+                            <div class='col-sm-8'>
+                                <select ng-model='instance.stack' name='stack' id='stack'>
+                                    <option ng-repeat='stack in stacks' value='{{stack._id}}'>
+                                    {{stack.name}}
+                                    </option>
+                                </select>
+                            </div>
                     </div>
 
 

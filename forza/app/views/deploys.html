@@ -28,36 +28,63 @@
                         <label for="deployDate" class="control-label col-sm-4" style="text-align: left;">Deploy Date</label>
                         <div class="col-sm-8">
 
-                            <datepicker ng-model="deploy.deployDate"  id="deployDate" name="deployDate"
-                              placeholder="Deploy Date" required mongoose-error
-                             show-weeks="true" class="datepicker form-control"></datepicker>
+                             <div class="input-group">
+                                <input type="text" class="form-control datepicker" ng-model="deploy.deployDate" is-open="dateDialogOpend" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" datepicker-popup="{{format}}"
+                                    close-text="Close" mongoose-error/>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openDateDialog($event)">
+                                        <i class="fa fa-calendar"></i></button>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deployDate" class="control-label col-sm-4" style="text-align: left;">Format:</label>
+
+                        <div class="col-sm-8">
+                            <select class="form-control" ng-model="format" ng-options="f for f in formats">
+                                <option></option>
+                            </select>
+                            <br>
+                            <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="comments" class="control-label col-sm-4" style="text-align: left;">Comments</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="comments" name="comments" 
-                            ng-model="deploy.comments" placeholder="Comments" mongoose-error>
+
+                            <textarea class="form-control autosize"
+                            id="comments" name="comments" 
+                            ng-model="deploy.comments" placeholder="Comments" mongoose-error></textarea>
                         </div>
                     </div>
 
 
                     <div class="form-group">
                        <label for="instance" class="control-label col-sm-4" style="text-align: left;">Instance</label>
+                        <div class='col-sm-8'>
                             <select ng-model='deploy.instance' name='instance' id='instance'>
                                 <option ng-repeat='instance in instances' value='{{instance._id}}'>
                                 {{instance.name}}
                                 </option>
                             </select>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label for="user" class="control-label col-sm-4" style="text-align: left;">User</label>
-                            <select ng-model='deploy.user' name='user' id='user'>
-                                <option ng-repeat='user in users' value='{{user._id}}'>
-                                {{user.username}}
-                                </option>
-                            </select>
+                            <div class='col-sm-8'>
+                                <select ng-model='deploy.user' name='user' id='user'>
+                                    <option ng-repeat='user in users' value='{{user._id}}'>
+                                    {{user.username}}
+                                    </option>
+                                </select>
+                            </div>
                     </div>
 
 
@@ -72,6 +99,11 @@
                 </form>
 
 
+    </div>
+
+
+    <div class='row'>
+        
     </div>
 
 </div>
