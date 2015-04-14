@@ -53,11 +53,9 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
                     .catch( function(err) {
                         $scope.error = err.data.message;
                         $scope.errors = err.data.errors;
-                        for (var key in $scope.errors) {
-                            if (form[key]) {
-                                form[key].$setValidity( 'mongoose', false );
-                            }
-                        }
+                        angular.forEach( $scope.errors, function(error, field) {
+                            form[field].$setValidity( 'mongoose', false );
+                        } );
                     } );
             };
 
