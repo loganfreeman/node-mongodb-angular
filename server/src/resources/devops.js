@@ -479,13 +479,15 @@ var updateStack = {
                 var stack = values[0];
                 var instances = values[1];
 
-                if (instances) {
-                    stack.instances = _.uniq( stack.instances.concat( instances ), function(id) {
-                        return id.toString();
+                return Promise.all( instances ).map( function(instance) {
+                    instance.stack = stack._id;
+                    return instance.save();
+                } )
+                    .then( function(instances) {
+                        return Stack.findById( req.params.stackId ).exec();
                     } );
-                }
 
-                return stack.save();
+
             } )
             .then( function(stack) {
                 // res.json( user );
