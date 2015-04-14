@@ -30,6 +30,11 @@
 
 
         </div>
+
+        <div class="col-sm-6">
+            <pagination class="mb5" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" 
+            items-per-page='itemPerPage'></pagination>
+        </div>
     </div>
 
     <div class="row">
@@ -88,5 +93,6 @@
                 </form>
 
     </div>
+
 
 </div>

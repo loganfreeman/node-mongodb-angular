@@ -2,10 +2,26 @@ angular.module( 'theme.pages-controllers' ).controller( 'instanceManagementContr
 
     ['$q', '$location', '$scope', '$global', '$rootScope', 'Auth', '$http', 'applyIcon', function($q, $location, $scope, $global, $rootScope, Auth, $http, applyIcon) {
             // TODO: 
+
+            $scope.itemPerPage = 3;
+
+            $scope.pageChanged = function() {
+                console.log( 'Page changed to: ' + $scope.currentPage );
+                var end = $scope.currentPage * $scope.itemPerPage;
+                if (end > $scope.totalItems) {
+                    end = $scope.totalItems;
+                }
+                $scope.instances = $scope.allinstances.slice( ($scope.currentPage - 1) * $scope.itemPerPage, end );
+            };
+
             Auth.instances()
                 .then( function(instances) {
 
-                    $scope.instances = instances.data;
+                    $scope.allinstances = instances.data;
+                    $scope.totalItems = $scope.allinstances.length;
+
+                    $scope.currentPage = 1;
+                    $scope.pageChanged();
                 } );
 
 
@@ -17,6 +33,8 @@ angular.module( 'theme.pages-controllers' ).controller( 'instanceManagementContr
             $scope.applyIconClass = applyIcon;
 
             $scope.instance = {};
+
+
 
 
             $scope.addInstance = function(form) {
