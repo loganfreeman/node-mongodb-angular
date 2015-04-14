@@ -40,11 +40,13 @@ angular.module( 'theme.pages-controllers' ).controller( 'stackManagementControll
 
                         $scope.selected = {
                             left_instances: [],
-                            right_instances: []
+                            right_instances: [],
+                            instances: $scope.stack.instances
                         };
 
                         $scope.ok = function() {
-                            $modalInstance.close();
+                            $scope.stack.instances = $scope.selected.instances;
+                            $modalInstance.close( $scope.stack );
                         };
 
                         $scope.cancel = function() {
@@ -55,13 +57,17 @@ angular.module( 'theme.pages-controllers' ).controller( 'stackManagementControll
                             // console.log( $scope.selected.left_instances );
 
 
-                            $scope.stack.instances = _.uniq( $scope.stack.instances.concat( $scope.selected.left_instances ), function(inst) {
+                            $scope.selected.instances = _.uniq( $scope.selected.instances.concat( $scope.selected.left_instances ), function(inst) {
                                 return inst._id;
                             } );
 
                         };
                         $scope.remove = function() {
-                            console.log( $scope.selected.right_instances );
+                            $scope.selected.instances = _.reject( $scope.selected.instances, function(ins) {
+                                return _.some( $scope.selected.right_instances, function(exc) {
+                                    return exc._id === ins._id;
+                                } );
+                            } );
                         };
 
 
@@ -73,9 +79,18 @@ angular.module( 'theme.pages-controllers' ).controller( 'stackManagementControll
                     }
                 } );
 
-                modalInstance.result.then( function() {}, function() {
-                    $log.info( 'Modal dismissed at: ' + new Date() );
-                } );
+                modalInstance.result.then( function(stack) {
+                    Auth.updateStack( stack._id, {
+                        instances: _.map( stack.instances, function(inst) {
+                            return inst._id;
+                        } )
+                    } )
+                        .then( function(res) {
+                            console.log( res.data );
+                        } );
+                }, function() {
+                        $log.info( 'Modal dismissed at: ' + new Date() );
+                    } );
             };
 
             $scope.selectStack = function(stack, $index) {
