@@ -124,35 +124,35 @@
 
 
         <script type="text/ng-template" id="userModification.html">
-        <div class="modal-header">
-            <h3 class="modal-title">User modification!</h3>
-        </div>
-        <div class="modal-body">
-            <div class='row'>
-                <div class='col-md-6'>
-                        <h3>Pick a stack from the list</h3>
+            <div class="modal-header">
+                <h3 class="modal-title">User modification!</h3>
+            </div>
+            <div class="modal-body">
+                <div class='row'>
+                    <div class='col-md-6'>
+                            <h3>Pick a stack from the list</h3>
 
-                            <select ng-model='selected.stacks' multiple ng-multiple="true" >
-                                <option ng-repeat='stack in stacks' value='{{stack._id}}'>
-                                {{stack.name}}
-                                </option>
-                            </select>
-                </div>
-                <div class='col-md-6'>
-                <h3>Pick an instance from the list</h3>
+                                <select ng-model='selected.stacks' multiple ng-multiple="true" >
+                                    <option ng-repeat='stack in stacks' value='{{stack._id}}'>
+                                    {{stack.name}}
+                                    </option>
+                                </select>
+                    </div>
+                    <div class='col-md-6'>
+                    <h3>Pick an instance from the list</h3>
 
-                            <select ng-model='selected.instances' multiple ng-multiple="true" >
-                                <option ng-repeat='instance in instances' value='{{instance._id}}'>
-                                {{instance.name}}
-                                </option>
-                            </select>
+                                <select ng-model='selected.instances' multiple ng-multiple="true" >
+                                    <option ng-repeat='instance in instances' value='{{instance._id}}'>
+                                    {{instance.name}}
+                                    </option>
+                                </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
-    </script>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="ok()">OK</button>
+                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            </div>
+        </script>
 
 </div>
