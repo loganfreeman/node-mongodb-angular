@@ -18,11 +18,17 @@ angular.module( 'theme.pages-controllers' ).controller( 'instanceManagementContr
 
             $scope.instance = {};
 
+
             $scope.addInstance = function(form) {
                 Auth.createInstance( $scope.instance )
                     .then( function(instance) {
                         // alert( JSON.stringify( instance.data ) );
                         $scope.instances.push( instance.data );
+                        delete $scope.error;
+                    } )
+                    .catch( function(err) {
+                        //alert( JSON.stringify( err ) );
+                        $scope.error = err.data.message;
                     } );
             };
 
