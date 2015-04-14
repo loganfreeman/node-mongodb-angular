@@ -67,26 +67,9 @@ angular.module( 'angularPassportService' )
                 return $http.put( '/devops/deploy', deploy );
             },
 
-            createUser: function(userinfo, callback) {
-                var cb = callback || angular.noop;
-                User.save( userinfo, function(user) {
-                    return cb();
-                }, function(err) {
-                        return cb( err.data );
-                    } );
+            createUser: function(userinfo) {
+                return $http.post( '/auth/users', userinfo );
             },
-
-            createAdminUser: function(userinfo, callback) {
-                var cb = callback || angular.noop;
-                Admin.save( userinfo, function(user) {
-                    $rootScope.currentUser = user;
-                    return cb();
-                }, function(err) {
-                        return cb( err.data );
-                    } );
-            },
-
-
 
             currentUser: function() {
                 Session.get( function(user) {

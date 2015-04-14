@@ -26,6 +26,11 @@ angular.module( 'theme.pages-controllers' ).controller( 'stackManagementControll
                     .then( function(stack) {
                         //alert( JSON.stringify( stack.data ) );
                         $scope.stacks.push( stack.data );
+                        delete $scope.error;
+                    } )
+                    .catch( function(err) {
+                        //alert( JSON.stringify( err ) );
+                        $scope.error = err.data.message;
                     } );
             };
 

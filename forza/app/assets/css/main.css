@@ -68,3 +68,8 @@ padding:12px;
     vertical-align:middle;
 }
 
+
+.ng-invalid-mongoose {
+    border-color: red;
+}
+

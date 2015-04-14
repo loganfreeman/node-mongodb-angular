@@ -56,8 +56,11 @@
                             <div class="col-sm-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                                    <input type="text" class="form-control" id="email" placeholder="Email"
+                                    <input type="text" class="form-control" id="email" 
+                                    name='email'
+                                    placeholder="Email"
                                     ng-model="user.email" mongoose-error required>
+                                    <span ng-show="errors.email">{{errors.email.message}}</span>
                                 </div>
                             </div>
                         </div>
@@ -65,8 +68,10 @@
                             <div class="col-sm-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" id="username" placeholder="Username" 
+                                    <input type="text" class="form-control" id="username" name='username'
+                                    placeholder="Username" 
                                     ng-model="user.username" mongoose-error required>
+                                    <span ng-show="errors.username">{{errors.username.message}}</span>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +79,7 @@
                             <div class="col-sm-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" id="firstname" placeholder="First Name" 
+                                    <input type="text" class="form-control" id="firstname" name='firstname' placeholder="First Name" 
                                     ng-model="user.firstname" mongoose-error required>
                                 </div>
                             </div>
@@ -83,7 +88,7 @@
                             <div class="col-sm-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" id="lastname" placeholder="Last Name"
+                                    <input type="text" class="form-control" id="lastname" name='lastname' placeholder="Last Name"
                                     ng-model="user.lastname" mongoose-error required>
                                 </div>
                             </div>
@@ -92,7 +97,7 @@
                             <div class="col-sm-12">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                    <input type="password" class="form-control" id="password" placeholder="Password"
+                                    <input type="password" class="form-control" id="password" name='password' placeholder="Password"
                                     ng-model="user.password" mongoose-error required>
                                 </div>
                             </div>
@@ -108,6 +113,12 @@
                                 <div ng-show="signUpform.passwordConfirm.$error.match">Password fields do not match!</div>
                             </div>
                         </div>
+
+
+                    <div class="isa_error" ng-show='error'>
+                       <i class="fa fa-times-circle"></i>
+                       {{error}}
+                    </div>
 
                         <div class="panel-footer">
                             <div class="pull-left">

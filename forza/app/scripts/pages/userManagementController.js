@@ -45,13 +45,20 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
 
             $scope.signUp = function(form) {
                 //console.log( $scope.user );
-                Auth.createUser( $scope.user, function(err) {
-                    if (!err) {
-                        $location.path( '/' );
-                    } else {
-                        alert( err );
-                    }
-                } );
+                Auth.createUser( $scope.user )
+                    .then( function(user) {
+                        delete $scope.error;
+                        delete $scope.errors;
+                    } )
+                    .catch( function(err) {
+                        $scope.error = err.data.message;
+                        $scope.errors = err.data.errors;
+                        for (var key in $scope.errors) {
+                            if (form[key]) {
+                                form[key].$setValidity( 'mongoose', false );
+                            }
+                        }
+                    } );
             };
 
             $scope.selectUser = function(user, $index) {
@@ -65,6 +72,11 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
                     .then( function(group) {
                         //alert( JSON.stringify( stack.data ) );
                         $scope.groups.push( group.data );
+                        delete $scope.error;
+                    } )
+                    .catch( function(err) {
+                        //alert( JSON.stringify( err ) );
+                        $scope.error = err.data.message;
                     } );
             };
 
