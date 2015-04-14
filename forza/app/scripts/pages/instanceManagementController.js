@@ -28,7 +28,7 @@ angular.module( 'theme.pages-controllers' ).controller( 'instanceManagementContr
 
             $scope.checkStandalone = function(instance) {
                 if (!instance.stack) {
-                    return 'standalone';
+                    return 'glyphicon-exclamation-sign';
                 }
             };
         }
