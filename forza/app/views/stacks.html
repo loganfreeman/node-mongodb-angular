@@ -6,17 +6,29 @@
                         <tabset class="tabs-left">
 
 
-                            <tab ng-repeat="stack in stacks" active="stack.active" disabled="stack.disabled">
+                            <tab ng-repeat="stack in stacks" active="stack.active" disabled="stack.disabled" 
+                            ng-click='selectStack(stack, $index)'>
                                 <tab-heading><i class="glyphicon tab-heading-icon" ng-class="applyIconClass(stack)"></i>{{stack.name}}</tab-heading>
-                                    <ul class='user-info-list' ng-repeat="instance in stack.instances">
-                                    	<li class='user-info-item'>
-                                    		<div class="jumbotron">
-                                        		<h1>{{instance.name}}</h1>
-                                        	</div>
+                                    <div class='row'>
+                                        <div class='col-md-4'>
+                                            <h3>Instances</h3>
+                                            <ul class='user-info-list' ng-repeat="instance in stack.instances">
+                                                <li class='user-info-item'>
+                                                    {{instance.name}}
 
 
-                                    	</li>
-                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class='col-md-4'>
+                                            <h3>Actions</h3>
+                                             <button class="btn btn-default" ng-click='modify(stack)'>
+                                            Modify Stack
+                                            </button>
+                                            <br class='clearfix'/>
+                                            <button  class='btn btn-default'>Del Stack</button>
+                                        </div>
+                                    </div>
                             </tab>
                         </tabset>
 
@@ -54,5 +66,47 @@
 
 
     </div>
+
+        <script type="text/ng-template" id="stackModification.html">
+            <div class="modal-header">
+                <h3 class="modal-title">Stack modification!</h3>
+            </div>
+            <div class="modal-body">
+                <div class='row'>
+                    
+                    <div class='col-md-4'>
+                        <h3>Pick an instance from the list</h3>
+
+                                <select ng-model='selected.left_instances' multiple ng-multiple="true" >
+                                    <option ng-repeat='instance in instances' value='{{instance._id}}'>
+                                    {{instance.name}}
+                                    </option>
+                                </select>
+                    </div>
+
+                    <div class='col-md-4'>
+                        <h3>Actions</h3>
+                         <button class="btn btn-default" ng-click='add()'>
+                        <i class="fa fa-arrow-right"></i>
+                        </button>
+                        <br class='clearfix'/>
+                        <button  class='btn btn-default' ng-click='remove()'><i class="fa fa-arrow-left"></i></button>
+                    </div>
+
+                    <div class='col-md-4'>
+                                <select  multiple ng-multiple="true" ng-model='selected.right_instances'>
+                                    <option ng-repeat='instance in stack.instances' value='{{instance._id}}'>
+                                    {{instance.name}}
+                                    </option>
+                                </select>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="ok()">OK</button>
+                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            </div>
+        </script>
 
 </div>
