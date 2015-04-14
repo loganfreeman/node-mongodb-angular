@@ -25,6 +25,12 @@ angular.module( 'theme.pages-controllers' ).controller( 'instanceManagementContr
                         $scope.instances.push( instance.data );
                     } );
             };
+
+            $scope.checkStandalone = function(instance) {
+                if (!instance.stack) {
+                    return 'standalone';
+                }
+            };
         }
     ]
 );

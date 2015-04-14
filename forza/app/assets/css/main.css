@@ -36,3 +36,11 @@ ul li.active {
 	color: green;
 }
 
+.standalone {
+	display: block !important;
+}
+
+i.hide {
+	display: none;
+}
+

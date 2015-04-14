@@ -7,7 +7,11 @@
 
 
                             <tab ng-repeat="instance in instances" active="instance.active" disabled="instance.disabled">
-                                <tab-heading><i class="glyphicon tab-heading-icon" ng-class="applyIconClass(instance)"></i>{{instance.name}}</tab-heading>
+                                <tab-heading>
+                                <i class="glyphicon tab-heading-icon" ng-class="applyIconClass(instance)"></i>
+                                   {{instance.name}}
+                                <i class="fa fa-exclamation hide" ng-class='checkStandalone(instance)'></i>
+                                </tab-heading>
                                     <ul class='user-info-list' ng-repeat="deploy in instance.deploys">
                                     	<li class='user-info-item'>
                                     		<div class="jumbotron">
