@@ -12,30 +12,33 @@
                                    {{instance.name}}
                                 <i class="glyphicon" ng-class='checkStandalone(instance)'></i>
                                 </tab-heading>
-                                    <ul class='user-info-list' ng-repeat="deploy in instance.deploys">
-                                    	<li class='user-info-item'>
-                                    		<div >
-                                        		<h1>{{deploy.deployDate}}</h1>
-                                        	</div>
-
-	                                        <div class="btn-group">
-	                                            <button type="button" class="btn btn-default">Run</button>
-	                                            <button type="button" class="btn btn-default">Deploy</button>
-	                                            <button type="button" class="btn btn-default">Show</button>
-	                                        </div>
-                                    	</li>
-                                    </ul>
+                                    
                             </tab>
                         </tabset>
 
 
         </div>
 
-        <div class="col-sm-6">
+
+    </div>
+
+    <div class="row-fluid">
+        <div class="col-md-6 col-md-offset-3">
             <pagination class="mb5" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" 
             items-per-page='itemPerPage'></pagination>
         </div>
+
+        <div class='pull-right'>
+            <span>Choose a Stack: </span>
+            <select ng-model='selectedStack'>
+                <option ng-repeat='stack in stacks' value='{{stack._id}}'>
+                {{stack.name}}
+                </option>
+            </select>
+        </div>
+
     </div>
+
 
     <div class="row">
 
