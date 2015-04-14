@@ -5,11 +5,29 @@ angular.module( 'theme.pages-controllers' ).controller( 'stackManagementControll
          * stack management controller
          */
         function($q, $location, $scope, $global, $rootScope, Auth, $http, applyIcon, $modal, $log) {
-            // TODO: 
+
+
+            $scope.itemPerPage = 3;
+
+            $scope.pageChanged = function() {
+                console.log( 'Page changed to: ' + $scope.currentPage );
+                var end = $scope.currentPage * $scope.itemPerPage;
+                if (end > $scope.totalItems) {
+                    end = $scope.totalItems;
+                }
+                $scope.stacks = $scope.allstacks.slice( ($scope.currentPage - 1) * $scope.itemPerPage, end );
+            };
+
             Auth.stacks()
                 .then( function(stacks) {
 
-                    $scope.stacks = stacks.data;
+                    $scope.allstacks = stacks.data;
+                    $scope.totalItems = $scope.allstacks.length;
+
+                    $scope.currentPage = 1;
+                    $scope.pageChanged();
+
+
                 } );
 
             Auth.instances()

@@ -1,11 +1,25 @@
 angular.module( 'theme.pages-controllers' ).controller( 'deployManagementController',
 
     ['$q', '$location', '$scope', '$global', '$rootScope', 'Auth', '$http', 'applyIcon', function($q, $location, $scope, $global, $rootScope, Auth, $http, applyIcon) {
-            // TODO: 
+            $scope.itemPerPage = 3;
+
+            $scope.pageChanged = function() {
+                console.log( 'Page changed to: ' + $scope.currentPage );
+                var end = $scope.currentPage * $scope.itemPerPage;
+                if (end > $scope.totalItems) {
+                    end = $scope.totalItems;
+                }
+                $scope.deploys = $scope.alldeploys.slice( ($scope.currentPage - 1) * $scope.itemPerPage, end );
+            };
+
             Auth.deploys()
                 .then( function(deploys) {
 
-                    $scope.deploys = deploys.data;
+                    $scope.alldeploys = deploys.data;
+                    $scope.totalItems = $scope.alldeploys.length;
+
+                    $scope.currentPage = 1;
+                    $scope.pageChanged();
                 } );
 
             Auth.users()
