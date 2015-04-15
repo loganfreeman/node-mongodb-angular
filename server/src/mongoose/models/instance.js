@@ -21,6 +21,10 @@ var InstanceSchema = new Schema( {
         type: String,
         default: ''
     },
+    serviceType: {
+        type: String,
+        required: true
+    },
     stacks: [{
         type: Schema.ObjectId,
         ref: 'Stack',

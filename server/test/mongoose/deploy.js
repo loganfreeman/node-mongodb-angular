@@ -58,7 +58,8 @@ describe( '#deploy schema#', function() {
             .then( function(model) {
                 deploy = model;
                 return Instance.create( {
-                    name: 'test'
+                    name: 'test',
+                    serviceType: 'PCP'
                 } );
             } )
             .then( function(model) {

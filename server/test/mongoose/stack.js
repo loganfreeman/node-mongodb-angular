@@ -31,10 +31,12 @@ describe( 'stack', function() {
         } );
 
         var instanceP1 = Instance.create( {
-            name: 'a'
+            name: 'a',
+            serviceType: 'PCP'
         } );
         var instanceP2 = Instance.create( {
-            name: 'b'
+            name: 'b',
+            serviceType: 'PCP'
         } );
 
         var envId, stack;
