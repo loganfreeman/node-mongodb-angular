@@ -32,7 +32,9 @@ angular.module( 'theme.pages-controllers' ).controller( 'instanceManagementContr
 
             $scope.applyIconClass = applyIcon;
 
-            $scope.instance = {};
+            $scope.instance = {
+                stacks: []
+            };
 
 
 
