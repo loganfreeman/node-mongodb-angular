@@ -15,7 +15,7 @@ function connect(database) {
 }
 
 
-describe( 'stack', function() {
+describe( '#instance#', function() {
     var db, Instance, Stack;
 
     before( function(done) {
@@ -59,8 +59,10 @@ describe( 'stack', function() {
     it( 'should create instance', function(done) {
         Instance.find( {
             name: 'a'
-        } ).exec().then( function(instance) {
+        } ).exec().then( function(instances) {
+            var instance = instances.shift();
             console.log( instance );
+            instance.serviceType.should.be.eq( 'PCP' );
             done();
         } );
     } );
