@@ -20,9 +20,6 @@ angular
         'theme.calendars',
         'theme.gallery',
         'theme.tasks',
-
-
-
         'theme.pages-controllers',
         'theme.dashboard',
         'theme.templates',
@@ -33,8 +30,7 @@ angular
         'ngRoute',
         'ngAnimate',
         'http-auth-interceptor',
-        'angularPassportService',
-        'notificationWidget'
+        'angularPassportService'
         ] )
     .controller( 'MainController', ['$scope', '$global', '$timeout', 'progressLoader', '$location', 'Auth',
 
