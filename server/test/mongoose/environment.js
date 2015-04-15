@@ -169,6 +169,14 @@ describe( 'user schema', function() {
                     } )
                     .then( function(stack) {
                         console.log( stack );
+                        return Instance.find( {
+                            name: {
+                                $in: ['instance_a', 'instance_b']
+                            }
+                        } ).exec();
+                    } )
+                    .then( function(instances) {
+                        instances.length.should.be.eq( 2 );
                         done();
                     } );
             } );
