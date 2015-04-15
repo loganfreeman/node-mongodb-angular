@@ -55,6 +55,7 @@
     <!-- build:css({.tmp,app}) assets/css/main.css -->
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/loading.css">
     <!-- endbuild -->
     <!-- prochtml:remove:dist -->
     <script type="text/javascript">less = {}; less.env = 'development';</script>
@@ -149,6 +150,8 @@
     ng-click="hideSearchBar();hideHeaderBar();"
     ng-cloak
     >
+
+        
     <div id="headerbar" ng-class="{topNegative1000: style_headerBarHidden, topZero: !style_headerBarHidden}">
       <div class="container-fluid">
         <div class="row">
@@ -305,6 +308,15 @@
       </div>
       <!-- END RIGHTBAR -->
       <div id="page-content" class="clearfix" fit-height>
+
+        <!-- loading spinner -->
+          <div class='loading-container' loading-widget>
+            <div class="loading">
+              <div class="dot"></div>
+              <div class="dot2"></div>
+            </div> 
+          </div><!-- loading spinner -->
+
         <div id="wrap" ng-view="" class="mainview-animation">
           </div> <!--wrap -->
           </div> <!-- page-content -->
@@ -321,6 +333,8 @@
           <script src="bower_components/es5-shim/es5-shim.js"></script>
           <script src="bower_components/json3/lib/json3.min.js"></script>
           <![endif]-->
+
+
           <script type='text/javascript' src='http://maps.google.com/maps/api/js?sensor=true'></script>
           <!-- build:js scripts/vendor.js -->
           <!-- bower:js -->
@@ -382,7 +396,6 @@
           <script src="../bower_components/pnotify/pnotify.nonblock.js"></script>
           <script src="../bower_components/chance/chance.js"></script>
           <script src="../bower_components/angular-http-auth/src/http-auth-interceptor.js"></script>
-          <script src="../bower_components/angular-promise-tracker/promise-tracker.js"></script>
           <!-- endbower -->
           <script type='text/javascript' src='assets/plugins/form-daterangepicker/daterangepicker.min.js'></script>
           <script type='text/javascript' src='assets/plugins/form-datepicker/js/bootstrap-datepicker.js'></script>
@@ -397,6 +410,7 @@
           <script type='text/javascript' src='assets/plugins/bootstro.js/bootstro.min.js'></script>
           <!-- endbuild -->
           <!-- build:js({.tmp,app}) scripts/scripts.js -->
+          <script src="scripts/shared/notificationWidget.js"></script>
           <script src="scripts/shared/Services.js"></script>
           <script src="scripts/shared/Directives.js"></script>
           <script src="scripts/maps/VectorMaps.js"></script>
@@ -426,5 +440,6 @@
           <script src="scripts/pages/stackManagementController.js"></script>
           <script src="scripts/pages/deployManagementController.js"></script>
           <!-- endbuild -->
+
         </body>
       </html>

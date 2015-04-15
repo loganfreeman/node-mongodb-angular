@@ -10,7 +10,6 @@ angular.module( 'theme.pages-controllers' )
              * 
              */
             function($q, $location, $scope, $global, $rootScope, Auth, $http, applyIcon, Constants) {
-                // TODO: 
 
                 $scope.itemPerPage = 3;
 

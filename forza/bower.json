@@ -45,7 +45,6 @@
     "pnotify": "sciactive/pnotify#~2.0.1",
     "chance": "~0.7.3",
     "angular-http-auth": "~1.2.2",
-    "angular-promise-tracker": "~2.1.0",
     "modernizr": "~2.8.3"
   },
   "resolutions": {

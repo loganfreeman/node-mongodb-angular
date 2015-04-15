@@ -1,0 +1,39 @@
+<body ng-app="myApp" ng-controller="MainCtrl">
+  <div class="my-super-awesome-loading-box" ng-show="loadingTracker.active()">
+    Loading...
+  </div>
+  <button ng-click="delaySomething()">Delay Something</button>
+  <button ng-click="fetchSomething()">Fetch Something</button>
+
+  <script src="js/vendor/angular.js"></script>
+  <script src="js/vendor/promise-tracker.js"></script>
+
+  <!-- optional for $http sugar -->
+  <script src="js/vendor/promise-tracker-http-interceptor.js"></script>
+  <script type="text/javascript">
+
+angular.module('myApp', ['ajoslin.promise-tracker'])
+.controller('MainCtrl', function($scope, $http, $timeout, promiseTracker) {
+  //Create a new tracker
+  $scope.loadingTracker = promiseTracker();
+
+  //use `addPromise` to add any old promise to our tracker
+  $scope.delaySomething = function() {
+    var promise = $timeout(function() {
+      alert('Delayed something!');
+    }, 1000);
+    $scope.loadingTracker.addPromise(promise);
+  };
+
+  //use `tracker:` shortcut in $http config to link our http promise to a tracker
+  //This shortcut is included in promise-tracker-http-interceptor.js
+  $scope.fetchSomething = function(id) {
+    return $http.get('/api-docs.json', {
+      tracker: $scope.loadingTracker
+    }).then(function(response) {
+      alert('Fetched something! ' + response.data);
+    });
+  };
+});
+  </script>
+</body>
