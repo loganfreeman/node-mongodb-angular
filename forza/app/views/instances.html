@@ -70,7 +70,9 @@
                         <label for="ip" class="control-label col-sm-4" style="text-align: left;">IP Address</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="ip" name="ip" 
-                            ng-model="instance.ip" placeholder="IP" mongoose-error>
+                            ng-model="instance.ip" placeholder="IP" mongoose-error ipaddress>
+                            <span ng-show="form.ip.$dirty && form.ip.$error.ipaddress">Invalid IP address.</span>
+
                         </div>
                     </div>
 

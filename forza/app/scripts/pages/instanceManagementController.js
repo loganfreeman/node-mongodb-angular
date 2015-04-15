@@ -53,7 +53,7 @@ angular.module( 'theme.pages-controllers' ).controller( 'instanceManagementContr
             };
 
             $scope.checkStandalone = function(instance) {
-                if (!instance.stack) {
+                if (!instance.stacks) {
                     return 'glyphicon-exclamation-sign';
                 }
             };
