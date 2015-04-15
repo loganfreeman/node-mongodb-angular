@@ -1,7 +1,7 @@
 angular.module( 'theme.pages-controllers' )
     .controller( 'instanceManagementController',
 
-        ['$q', '$location', '$scope', '$global', '$rootScope', 'Auth', '$http', 'applyIcon', 'Constants',
+        ['$q', '$location', '$scope', '$global', '$rootScope', 'Auth', '$http', 'applyIcon', 'Constants', '$modal', '$log',
 
             /**
              *
@@ -9,15 +9,54 @@ angular.module( 'theme.pages-controllers' )
              * 
              * 
              */
-            function($q, $location, $scope, $global, $rootScope, Auth, $http, applyIcon, Constants) {
+            function($q, $location, $scope, $global, $rootScope, Auth, $http, applyIcon, Constants, $modal, $log) {
 
                 $scope.itemPerPage = 3;
 
                 $scope.serviceTypes = Constants.ServiceType;
 
 
+
+
                 $scope.modify = function(instance) {
-                    console.log( instance );
+                    $scope.currentInstance = instance;
+
+                    var modalInstance = $modal.open( {
+                        templateUrl: 'instanceModification.html',
+                        controller: function($scope, $modalInstance, stacks, serviceTypes) {
+                            $scope.stacks = stacks;
+                            $scope.serviceTypes = serviceTypes;
+                            $scope.selected = {
+                                stacks: []
+                            };
+
+                            $scope.ok = function() {
+                                $modalInstance.close( $scope.selected );
+                            };
+
+                            $scope.cancel = function() {
+                                $modalInstance.dismiss( 'cancel' );
+                            };
+                        },
+                        resolve: {
+                            stacks: function() {
+                                return $scope.stacks;
+                            },
+                            serviceTypes: function() {
+                                return $scope.serviceTypes;
+                            }
+                        }
+                    } );
+
+                    modalInstance.result.then( function(selectedItem) {
+                        //$scope.selected = selectedItem;
+                        //$scope.activeUser.stacks.push( selectedItem.stack );
+                        // $scope.activeUser.instances.push( selectedItem.instance );
+                        console.log( selectedItem );
+
+                    }, function() {
+                            $log.info( 'Modal dismissed at: ' + new Date() );
+                        } );
                 };
 
 
