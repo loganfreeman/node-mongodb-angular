@@ -31,7 +31,10 @@
 
             <div class='pull-right'>
                 <span>Choose a Stack: </span>
-                <select ng-model='selectedStack'>
+                <select ng-model='selectedStack' ng-change='changeStack(selectedStack)'>
+                    <option value="">
+                        No Stack
+                    </option>
                     <option ng-repeat='stack in stacks' value='{{stack._id}}'>
                     {{stack.name}}
                     </option>

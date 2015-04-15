@@ -11,16 +11,23 @@ angular.module( 'theme.pages-controllers' ).controller( 'instanceManagementContr
                 if (end > $scope.totalItems) {
                     end = $scope.totalItems;
                 }
-                $scope.instances = $scope.allinstances.slice( ($scope.currentPage - 1) * $scope.itemPerPage, end );
+                $scope.instances = $scope.filteredallinstances.slice( ($scope.currentPage - 1) * $scope.itemPerPage, end );
+            };
+
+            $scope.instancesLoaded = function(instances) {
+                $scope.filteredallinstances = instances;
+                $scope.totalItems = $scope.filteredallinstances.length;
+                $scope.currentPage = 1;
             };
 
             Auth.instances()
                 .then( function(instances) {
 
                     $scope.allinstances = instances.data;
-                    $scope.totalItems = $scope.allinstances.length;
 
-                    $scope.currentPage = 1;
+                    $scope.instancesLoaded( $scope.allinstances );
+
+
                     $scope.pageChanged();
                 } );
 
@@ -34,6 +41,18 @@ angular.module( 'theme.pages-controllers' ).controller( 'instanceManagementContr
 
             $scope.instance = {
                 stacks: []
+            };
+
+            $scope.changeStack = function(stack) {
+                var instances = $scope.allinstances;
+                if (stack) {
+                    instances = _.filter( $scope.allinstances, function(instance) {
+                        return instance.stacks.indexOf( stack ) >= 0;
+                    } );
+                }
+
+                $scope.instancesLoaded( instances );
+                $scope.pageChanged();
             };
 
 
