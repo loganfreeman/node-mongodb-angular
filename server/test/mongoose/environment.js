@@ -2,17 +2,17 @@
  * Module dependencies.
  */
 
-var _ = require('lodash');
+var _ = require( 'lodash' );
 
-var expect = require('chai').expect,
-    should = require('chai').should();
+var expect = require( 'chai' ).expect,
+    should = require( 'chai' ).should();
 
-var mongoose = require('mongoose');
+var mongoose = require( 'mongoose' );
 
 
-require('../../src/mongoose/models');
+require( '../../src/mongoose/models' );
 
-var Promise = require('bluebird');
+var Promise = require( 'bluebird' );
 
 
 
@@ -21,146 +21,146 @@ var Promise = require('bluebird');
  */
 
 function connect(database) {
-    return mongoose.createConnection('mongodb://localhost/' + database);
+    return mongoose.createConnection( 'mongodb://localhost/' + database );
 }
 
 
-describe('user schema', function() {
+describe( 'user schema', function() {
 
-    this.timeout(5000);
+    this.timeout( 5000 );
     var db, Environment, Stack;
 
-    before(function(done) {
+    before( function(done) {
         // add dummy data
-        db = connect('test');
-        Environment = db.model('Environment');
-        Stack = db.model('Stack');
-        Instance = db.model('Instance');
+        db = connect( 'test' );
+        Environment = db.model( 'Environment' );
+        Stack = db.model( 'Stack' );
+        Instance = db.model( 'Instance' );
 
-        var environment = Environment.create({
+        var environment = Environment.create( {
             name: 'sample Environment'
-        });
+        } );
 
-        var stackPromise = Stack.create({
+        var stackPromise = Stack.create( {
             name: 'stack #1'
-        });
+        } );
 
-        var stackPromise1 = Stack.create({
+        var stackPromise1 = Stack.create( {
             name: 'stack #2'
-        });
+        } );
 
         var envId;
 
         environment
-            .then(function(env) {
+            .then( function(env) {
                 envId = env.id;
-                env.name.should.be.eq('sample Environment');
-                Promise.all([stackPromise, stackPromise1])
-                    .then(function(values) {
-                        Promise.resolve(values)
-                            .map(function(stack) {
+                env.name.should.be.eq( 'sample Environment' );
+                Promise.all( [stackPromise, stackPromise1] )
+                    .then( function(values) {
+                        Promise.resolve( values )
+                            .map( function(stack) {
                                 stack.environment = env._id;
                                 return stack.save();
-                            })
-                            .then(function(savePromises) {
-                                Promise.all(savePromises)
-                                    .then(function(stacks) {
-                                        _.each(stacks, function(stack) {
-                                            stack.environment.toString().should.be.eq(envId);
-                                        });
+                            } )
+                            .then( function(savePromises) {
+                                Promise.all( savePromises )
+                                    .then( function(stacks) {
+                                        _.each( stacks, function(stack) {
+                                            stack.environment.toString().should.be.eq( envId );
+                                        } );
                                         done();
-                                    })
-                            })
+                                    } );
+                            } );
 
-                    })
+                    } );
 
-            })
-    });
+            } );
+    } );
 
-    after(function(done) {
+    after( function(done) {
         // clean up the test db
-        db.db.dropDatabase(function() {
+        db.db.dropDatabase( function() {
             db.close();
             done();
-        });
-    });
+        } );
+    } );
 
 
 
-    it('should load by Id', function(done) {
-        Environment.findOne({
-                name: 'sample Environment'
-            }).exec()
-            .then(function(env) {
-                env.stacks.length.should.be.eq(2);
-                env.name.should.be.eq('sample Environment');
+    it( 'should load by Id', function(done) {
+        Environment.findOne( {
+            name: 'sample Environment'
+        } ).exec()
+            .then( function(env) {
+                env.stacks.length.should.be.eq( 2 );
+                env.name.should.be.eq( 'sample Environment' );
                 env.description = 'set by unit test';
-                env.save().should.be.instanceOf(mongoose.Promise);
-                env.save().then(function(env) {
+                env.save().should.be.instanceOf( mongoose.Promise );
+                env.save().then( function(env) {
                     // console.log(env);
-                    env.description.should.be.eq('set by unit test');
+                    env.description.should.be.eq( 'set by unit test' );
                     done();
-                })
+                } );
 
-            })
-    });
+            } );
+    } );
 
-    it('should add instances', function(done) {
+    it( 'should add instances', function(done) {
         var stack;
-        Environment.findOne({
-                name: 'sample Environment'
-            }).exec()
-            .then(function(env) {
-                env.stacks.length.should.be.eq(2);
+        Environment.findOne( {
+            name: 'sample Environment'
+        } ).exec()
+            .then( function(env) {
+                env.stacks.length.should.be.eq( 2 );
                 stack = env.stacks[0];
                 // console.log(stack);
                 var instances = [];
-                instances.push(Instance.create({
+                instances.push( Instance.create( {
                     name: 'first instance'
-                }));
-                instances.push(Instance.create({
+                } ) );
+                instances.push( Instance.create( {
                     name: 'second instance'
-                }));
-                Promise.all(instances)
-                    .map(function(instance) {
-                        instance.stack = stack;
+                } ) );
+                Promise.all( instances )
+                    .map( function(instance) {
+                        instance.stacks.push( stack );
                         return instance.save();
-                    })
-                    .then(function(instances) {
-                        _.each(instances, function(instance) {
-                            console.log(instance);
-                        })
-                        return Stack.findById(stack).exec();
-                    })
-                    .then(function(stack) {
+                    } )
+                    .then( function(instances) {
+                        _.each( instances, function(instance) {
+                            console.log( instance );
+                        } );
+                        return Stack.findById( stack ).exec();
+                    } )
+                    .then( function(stack) {
                         // console.log(stack);
-                        stack.instances.length.should.be.eq(2);
+                        stack.instances.length.should.be.eq( 2 );
                         done();
-                    })
-            })
-    });
+                    } );
+            } );
+    } );
 
-    it('should associate stacks with environment', function(done) {
-        Environment.findOne({
-                name: 'sample Environment'
-            }).exec()
-            .then(function(env) {
-                env.stacks.length.should.be.eq(2);
-                Promise.resolve(env.stacks)
-                    .map(function(stackId) {
-                        return Stack.findById(stackId).exec();
-                    })
-                    .then(function(stackPromises) {
-                        Promise.all(stackPromises)
-                            .then(function(stacks) {
-                                _.each(stacks, function(stack) {
-                                    stack.environment.toString().should.be.eq(env.id);
-                                })
+    it( 'should associate stacks with environment', function(done) {
+        Environment.findOne( {
+            name: 'sample Environment'
+        } ).exec()
+            .then( function(env) {
+                env.stacks.length.should.be.eq( 2 );
+                Promise.resolve( env.stacks )
+                    .map( function(stackId) {
+                        return Stack.findById( stackId ).exec();
+                    } )
+                    .then( function(stackPromises) {
+                        Promise.all( stackPromises )
+                            .then( function(stacks) {
+                                _.each( stacks, function(stack) {
+                                    stack.environment.toString().should.be.eq( env.id );
+                                } );
                                 done();
-                            });
-                    })
+                            } );
+                    } );
 
-            })
-    });
+            } );
+    } );
 
-});
+} );

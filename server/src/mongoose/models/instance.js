@@ -1,39 +1,41 @@
-var mongoose = require('mongoose'),
-	Promise = mongoose.Promise,
-	Schema = mongoose.Schema,
-	relationship = require("mongoose-relationship");
+var mongoose = require( 'mongoose' ),
+    Promise = mongoose.Promise,
+    Schema = mongoose.Schema,
+    relationship = require( 'mongoose-relationship' );
 
 
-var uniqueValidator = require('mongoose-unique-validator');
+var uniqueValidator = require( 'mongoose-unique-validator' );
 
-var InstanceSchema = new Schema({
-	name: {
-		type: String,
-		default: '',
-		required: true,
-		unique: true
-	},
-	description: {
-		type: String,
-		default: ''
-	},
-	ip: {
-		type: String,
-		default: ''
-	},
-	stack: {
-		type: Schema.ObjectId,
-		ref: "Stack",
-		childPath: "instances"
-	},
-	deploys: [{
-		type: Schema.ObjectId,
-		ref: "Deploy"
-	}]
-});
+var InstanceSchema = new Schema( {
+    name: {
+        type: String,
+        default: '',
+        required: true,
+        unique: true
+    },
+    description: {
+        type: String,
+        default: ''
+    },
+    ip: {
+        type: String,
+        default: ''
+    },
+    stacks: [{
+        type: Schema.ObjectId,
+        ref: 'Stack',
+        childPath: 'instances'
+    }],
+    deploys: [{
+        type: Schema.ObjectId,
+        ref: 'Deploy'
+    }]
+} );
 
-InstanceSchema.plugin(relationship, {
-	relationshipPathName: 'stack'
-});
+InstanceSchema.plugin( uniqueValidator );
 
-mongoose.model("Instance", InstanceSchema)
+InstanceSchema.plugin( relationship, {
+    relationshipPathName: 'stacks'
+} );
+
+mongoose.model( 'Instance', InstanceSchema );
