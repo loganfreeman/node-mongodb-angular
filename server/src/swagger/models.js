@@ -52,6 +52,21 @@ module.exports.models = {
                 'type': 'array'
             }
         }
+    },
+
+    'InstanceModification': {
+        'id': 'InstanceModification',
+        'properties': {
+            'name': {
+                'type': 'string'
+            },
+            'serviceType': {
+                'type': 'string'
+            },
+            'stacks': {
+                'type': 'array'
+            }
+        }
     }
 };
 

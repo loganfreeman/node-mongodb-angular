@@ -502,6 +502,68 @@ var updateStack = {
 };
 
 
+var updateInstance = {
+    spec: {
+        // description: 'The method allows to retrieve items according to the given parameters',
+        path: '/devops/instance/{instanceId}',
+        method: 'POST',
+        notes: 'This method allows to update or modify a stack',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'updateInstance',
+        consumes: ['application/json'],
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'instanceId',
+            'description': 'instance ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+            },
+        paramTypes.body( 'body', '(object) Modified Instance Properties', 'InstanceModification' )],
+    },
+    action: function(req, res) {
+        var promises = [];
+        var instance = Instance.findById( req.params.instanceId ).exec();
+        var stacks = Promise.resolve( [] );
+
+        if (req.body.stacks) {
+            stacks = Stack.find( {
+                '_id': {
+                    $in: req.body.stacks
+                }
+            } ).exec();
+        }
+
+
+        Promise.all( [instance, stacks] )
+            .then( function(values) {
+                var instance = values[0];
+                var stacks = values[1];
+
+                return Promise.all( stacks ).map( function(stack) {
+                    instance.stack = stack._id;
+                    return instance.save();
+                } )
+                    .then( function(instances) {
+                        return Stack.findById( req.params.stackId ).exec();
+                    } );
+
+
+            } )
+            .then( function(stack) {
+                // res.json( user );
+
+                return resolveStack( stack );
+                // 
+            } ).then( function(stack) {
+            res.json( stack );
+        } );
+
+    }
+};
+
+
 var resolveStack = function(stack) {
     return new Promise( function(resolve, reject) {
 

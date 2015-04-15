@@ -18,6 +18,8 @@ function connect(database) {
 describe( '#instance#', function() {
     var db, Instance, Stack;
 
+    var stacks = [];
+
     before( function(done) {
         // add dummy data
         db = connect( 'test' );
@@ -27,6 +29,10 @@ describe( '#instance#', function() {
 
         var stackPromise = Stack.create( {
             name: 'stack #1'
+        } );
+
+        var stackPromise1 = Stack.create( {
+            name: 'stack #2'
         } );
 
         var instanceP1 = Instance.create( {
@@ -40,9 +46,11 @@ describe( '#instance#', function() {
 
         var envId, stack;
 
-        Promise.all( [stackPromise, instanceP1, instanceP2] )
+        Promise.all( [stackPromise, stackPromise1, instanceP1, instanceP2] )
             .then( function(values) {
-                stack = values.shift();
+
+                stacks.push( values.shift()._id );
+                stacks.push( values.shift()._id );
                 done();
             } );
 
@@ -61,10 +69,41 @@ describe( '#instance#', function() {
             name: 'a'
         } ).exec().then( function(instances) {
             var instance = instances.shift();
-            console.log( instance );
+            //console.log( instance );
             instance.serviceType.should.be.eq( 'PCP' );
-            done();
-        } );
+            _.each( stacks, function(stack) {
+                instance.stacks.push( stack );
+            } );
+            return instance.save();
+        } )
+            .then( function(instance) {
+                console.log( instance );
+                done();
+            } );
+    } );
+
+    it( 'should not insert duplicate instance', function(done) {
+        Instance.find( {
+            name: 'a'
+        } ).exec().then( function(instances) {
+            var instance = instances.shift();
+            //console.log( instance );
+            instance.serviceType.should.be.eq( 'PCP' );
+            instance.stacks = _.uniq( instance.stacks.concat( stacks ), function(s) {
+                return s.toString();
+            } );
+            return instance.save();
+        } )
+            .then( function(instance) {
+                console.log( instance );
+                return Stack.find( {
+                    name: 'stack #1'
+                } ).exec();
+            } )
+            .then( function(stack) {
+                console.log( stack );
+                done();
+            } );
     } );
 
 } );
