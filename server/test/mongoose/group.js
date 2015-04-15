@@ -27,7 +27,7 @@ function connect(database) {
 }
 
 
-describe( 'groups schema', function() {
+describe( '#groups schema#', function() {
 
     this.timeout( 5000 );
     var db, User, Group, Stack, Instance;
@@ -74,6 +74,10 @@ describe( 'groups schema', function() {
                 user1.email.should.be.eq( 'barray1@cctv.com' );
                 group.name.should.be.eq( 'sample group' );
 
+
+                /**
+                 * add two users to sample group
+                 */
                 group.users.push( user1 );
                 group.users.push( user );
                 // done();
@@ -182,6 +186,9 @@ describe( 'groups schema', function() {
                 .then( function(userPromises) {
                     Promise.all( userPromises )
                         .then( function(users) {
+                            /**
+                             * all users's groups should be populated
+                             */
                             _.each( users, function(user) {
                                 user.groups[0].toString().should.be.eq( groupId );
                             } );

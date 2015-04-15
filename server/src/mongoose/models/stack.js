@@ -32,10 +32,6 @@ var StackSchema = new Schema( {
 StackSchema.plugin( uniqueValidator );
 
 StackSchema.plugin( relationship, {
-    relationshipPathName: 'environment'
-} );
-
-StackSchema.plugin( relationship, {
     relationshipPathName: 'instances'
 } );
 
