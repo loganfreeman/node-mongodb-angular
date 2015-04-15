@@ -9,9 +9,26 @@
                             <tab ng-repeat="instance in instances" active="instance.active" disabled="instance.disabled">
                                 <tab-heading>
                                 <i class="glyphicon tab-heading-icon" ng-class="applyIconClass(instance)"></i>
-                                   {{instance.name}}
+                                   {{instance.name + '(' + instance.serviceType + ')'}}
                                 <i class="glyphicon" ng-class='checkStandalone(instance)'></i>
                                 </tab-heading>
+
+                                <div class='row'>
+                                        <div class='col-md-4'>
+                                            <h3>Actions</h3>
+                                             <button class="btn btn-default" ng-click='modify(instance)'>
+                                            Modify Instance
+                                            </button>
+                                            <br class='clearfix'/>
+                                            <button class="btn btn-default" ng-click='deploy(instance)'>
+                                            Deploy Instance
+                                            </button>
+                                            <br class='clearfix'/>
+                                            <button  class='btn btn-default'>
+                                            Del Instance
+                                            </button>
+                                        </div>
+                                </div>
                                     
                             </tab>
                         </tabset>
@@ -86,6 +103,17 @@
                                     multiple ng-multiple="true">
                                     <option ng-repeat='stack in stacks' value='{{stack._id}}'>
                                     {{stack.name}}
+                                    </option>
+                                </select>
+                            </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stack" class="control-label col-sm-4" style="text-align: left;">Service Type</label>
+                            <div class='col-sm-8'>
+                                <select ng-model='instance.serviceType' name='serviceType' id='serviceType'>
+                                    <option ng-repeat='type in serviceTypes'>
+                                    {{type}}
                                     </option>
                                 </select>
                             </div>

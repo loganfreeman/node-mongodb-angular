@@ -2,6 +2,9 @@
 
 angular
     .module( 'theme.pages-controllers', ['angularPassportService'] )
+    .constant( 'Constants', {
+        ServiceType: ['PCP', 'API', 'APP', 'ETC']
+    } )
     .controller( 'SignupPageController', ['$location', '$scope', '$global', '$rootScope', 'Auth', function($location, $scope, $global, $rootScope, Auth) {
 
             $scope.user = {};
