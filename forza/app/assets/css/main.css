@@ -73,3 +73,10 @@ padding:12px;
     border-color: red;
 }
 
+
+
+
+.form-container > form {
+    width: 50%;
+    margin: 0 auto;
+}
