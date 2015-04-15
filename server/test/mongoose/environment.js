@@ -116,10 +116,10 @@ describe( 'user schema', function() {
                 // console.log(stack);
                 var instances = [];
                 instances.push( Instance.create( {
-                    name: 'first instance'
+                    name: '1st instance'
                 } ) );
                 instances.push( Instance.create( {
-                    name: 'second instance'
+                    name: '2rd instance'
                 } ) );
                 Promise.all( instances )
                     .map( function(instance) {
@@ -139,6 +139,42 @@ describe( 'user schema', function() {
                     } );
             } );
     } );
+
+
+    it( 'should add stacks', function(done) {
+        var stack;
+        Environment.findOne( {
+            name: 'sample Environment'
+        } ).exec()
+            .then( function(env) {
+                env.stacks.length.should.be.eq( 2 );
+                stack = env.stacks[0];
+
+                var promises = [];
+                promises.push( Stack.findById( stack ).exec() );
+                promises.push( Instance.create( {
+                    name: 'instance_a'
+                } ) );
+                promises.push( Instance.create( {
+                    name: 'instance_b'
+                } ) );
+                Promise.all( promises )
+                    .then( function(instances) {
+                        var stack = instances.shift();
+                        _.each( instances, function(instance) {
+                            //console.log( instance );
+                            stack.instances.push( instance );
+                        } );
+                        return stack.save();
+                    } )
+                    .then( function(stack) {
+                        console.log( stack );
+                        done();
+                    } );
+            } );
+    } );
+
+
 
     it( 'should associate stacks with environment', function(done) {
         Environment.findOne( {
