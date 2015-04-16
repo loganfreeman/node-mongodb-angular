@@ -61,6 +61,10 @@ describe( 'user schema', function() {
             name: 'group #2'
         } );
 
+        var group3 = Group.create( {
+            name: 'group #3'
+        } );
+
         var instance1 = Instance.create( {
             name: 'a',
             serviceType: 'PCP'
@@ -71,18 +75,34 @@ describe( 'user schema', function() {
             serviceType: 'ETC'
         } );
 
-        var stackPromise1 = Stack.create( {
+        var instance3 = Instance.create( {
+            name: 'c',
+            serviceType: 'ETC'
+        } );
+
+        var stack1 = Stack.create( {
+            name: 'stack #1'
+        } );
+
+        var stack2 = Stack.create( {
             name: 'stack #2'
         } );
 
-        var stackPromise2 = Stack.create( {
+        var stack3 = Stack.create( {
             name: 'stack #3'
         } );
 
+        var extraGroup, extraStack, extraInstance;
 
-        Promise.all( [userPromise, group1, group2, instance1, instance2, stackPromise1, stackPromise2] )
+
+        Promise.all( [userPromise, group1, group2, instance1, instance2, stack1, stack2, group3, stack3, instance3] )
             .then( function(values) {
                 var user = values.shift();
+
+                extraInstance = values.pop();
+                extraStack = values.pop();
+                extraGroup = values.pop();
+
                 return user.update( {
                     $addToSet: {
                         groups: {
@@ -152,6 +172,17 @@ describe( 'user schema', function() {
             } )
             .then( function(groups) {
                 groups.length.should.be.eq( 2 );
+                done();
+            } );
+    } );
+
+
+    it( 'should update user', function(done) {
+        var model; // user model
+        Promise.resolve( User.findOne( {
+            email: 'barray@cctv.com'
+        } ).exec() )
+            .then( function() {
                 done();
             } );
     } );
