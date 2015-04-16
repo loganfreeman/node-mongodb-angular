@@ -38,4 +38,9 @@ var InstanceSchema = new Schema({
 
 InstanceSchema.plugin(uniqueValidator);
 
+
+InstanceSchema.plugin(relationship, {
+    relationshipPathName: "stacks"
+});
+
 mongoose.model('Instance', InstanceSchema);

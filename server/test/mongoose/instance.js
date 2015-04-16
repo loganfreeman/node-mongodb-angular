@@ -101,12 +101,6 @@ describe('#instance#', function() {
                 //console.log( instance );
                 instance.serviceType.should.be.eq('PCP');
 
-                console.log(instance.stacks[0] == instance.stacks[0].toString());
-
-                console.log(typeof stacks[0]._id);
-
-                console.log(stacks[0] == stacks[0]._id);
-
                 instance.stacks.push(stacks[0]._id.toString());
 
                 //utils.insertIfNotExists(instance.stacks, stacks[0]);

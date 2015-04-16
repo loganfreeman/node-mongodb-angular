@@ -31,4 +31,9 @@ var StackSchema = new Schema({
 
 StackSchema.plugin(uniqueValidator);
 
+
+StackSchema.plugin(relationship, {
+    relationshipPathName: "instances"
+});
+
 mongoose.model('Stack', StackSchema);
