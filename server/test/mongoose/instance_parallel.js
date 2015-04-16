@@ -189,7 +189,7 @@ describe( '#instance#', function() {
             name: 'addToSet'
         } ) );
 
-        var stackId;
+        var saved;
 
         Promise.all( promises )
             .then( function(values) {
@@ -198,17 +198,12 @@ describe( '#instance#', function() {
                 var stack = values.shift();
                 instance.stacks.length.should.be.eq( 4 );
 
-                stackId = stack._id;
-                console.log( stackId );
+                saved = stack;
 
-                return instance.update( {
-                    $addToSet: {
-                        stacks: [stack._id]
-                    }
-                } );
+                instance.stacks.push( stack._id );
+                return instance.save();
             } )
             .then( function(result) {
-                result.nModified.should.be.eq( 1 );
                 return Instance.findOne( {
                     name: 'b'
                 } ).exec();
@@ -220,14 +215,10 @@ describe( '#instance#', function() {
                 } ).exec();
             } )
             .then( function(instance) {
-                return instance.update( {
-                    $addToSet: {
-                        stacks: [stackId.toString()]
-                    }
-                } );
+                instance.stacks.push( saved._id );
+                return instance.save();
             } )
             .then( function(result) {
-                result.nModified.should.be.eq( 1 );
                 return Instance.findOne( {
                     name: 'c'
                 } ).exec();
@@ -239,42 +230,16 @@ describe( '#instance#', function() {
                 } ).exec();
             } )
             .then( function(stack) {
-                return Instance.find().exec();
+                return Instance.find( {
+                    stacks: stack._id
+                } ).exec();
             } )
-            .then( function(values) {
-                console.log( values.length );
-                var instances = _.filter( values, function(value) {
-                    var filtered = _.filter( value.stacks, function(stack) {
-                        return stack == stackId.toString();
-                    } );
-                    return filtered.length > 0;
-                } );
+            .then( function(instances) {
                 instances.length.should.be.eq( 2 );
                 done();
             } )
             .catch( function(err) {
                 done( err );
-            } );
-    } );
-
-    it( 'should find instances by stack', function(done) {
-        var stackId;
-        Promise.resolve( Stack.findOne( {
-            name: 'addToSet'
-        } ).exec() )
-            .then( function(stack) {
-                stackId = stack._id;
-                return Instance.find().exec();
-            } )
-            .then( function(values) {
-                var instances = _.filter( values, function(value) {
-                    var filtered = _.filter( value.stacks, function(stack) {
-                        return stack == stackId.toString();
-                    } );
-                    return filtered.length > 0;
-                } );
-                instances.length.should.be.eq( 2 );
-                done();
             } );
     } );
 
@@ -289,9 +254,14 @@ describe( '#instance#', function() {
                 } ).exec();
             } )
             .then( function(values) {
+                console.log( values );
                 done();
             } );
     } );
+
+
+
+
 
 
 
