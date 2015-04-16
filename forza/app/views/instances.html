@@ -111,12 +111,13 @@
                     <div class="form-group">
                         <label for="stack" class="control-label col-sm-4" style="text-align: left;">Service Type</label>
                             <div class='col-sm-8'>
-                                <select ng-model='instance.serviceType' name='serviceType' id='serviceType'>
+                                <select ng-model='instance.serviceType' name='serviceType' id='serviceType' required>
                                     <option ng-repeat='type in serviceTypes' value='{{type}}'>
                                     {{type}}
                                     </option>
                                 </select>
                             </div>
+                            <span ng-show="errors.serviceType">{{errors.serviceType.message}}</span>
                     </div>
 
                     <div class="isa_error" ng-show='error'>
@@ -152,16 +153,33 @@
                                     </option>
                                 </select>
                     </div>
-                    <div class='col-md-6'>
-                    <h3>Pick an stack from the list</h3>
 
-                               <select ng-model='selected.stacks' name='stacks' id='stacks'
-                                    multiple ng-multiple="true">
-                                    <option ng-repeat='stack in stacks' value='{{stack._id}}'>
-                                    {{stack.name}}
-                                    </option>
+                </div>
+                <div class='row'>
+                    <div class='col-md-4'>
+                        <h3>Pick an instance from the list</h3>
+
+                                <select ng-model='selected.left_stacks' multiple ng-multiple="true" 
+                                    ng-options="stack.name for stack in stacks">
+                                   
                                 </select>
                     </div>
+
+                    <div class='col-md-4'>
+                        <h3>Actions</h3>
+                         <button class="btn btn-default" ng-click='add()'>
+                        <i class="fa fa-arrow-right"></i>
+                        </button>
+                        <br class='clearfix'/>
+                        <button  class='btn btn-default' ng-click='remove()'><i class="fa fa-arrow-left"></i></button>
+                    </div>
+
+                    <div class='col-md-4'>
+                                <select  multiple ng-multiple="true" ng-model='selected.right_stacks' 
+                                    ng-options="stack.name for stack in selected.stacks">
+                                    
+                                </select>
+                    </div>                
                 </div>
             </div>
             <div class="modal-footer">
