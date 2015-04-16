@@ -257,6 +257,42 @@ describe( '#instance#', function() {
             } );
     } );
 
+    it( 'should find instances by stack', function(done) {
+        var stackId;
+        Promise.resolve( Stack.findOne( {
+            name: 'addToSet'
+        } ).exec() )
+            .then( function(stack) {
+                stackId = stack._id;
+                return Instance.find().exec();
+            } )
+            .then( function(values) {
+                var instances = _.filter( values, function(value) {
+                    var filtered = _.filter( value.stacks, function(stack) {
+                        return stack == stackId.toString();
+                    } );
+                    return filtered.length > 0;
+                } );
+                instances.length.should.be.eq( 2 );
+                done();
+            } );
+    } );
+
+    it( 'should find instances by stack', function(done) {
+        Promise.resolve( Stack.findOne( {
+            name: 'addToSet'
+        } ).exec() )
+            .then( function(stack) {
+                stack.name.should.be.eq( 'addToSet' );
+                return Instance.find( {
+                    stacks: stack._id
+                } ).exec();
+            } )
+            .then( function(values) {
+                done();
+            } );
+    } );
+
 
 
 
