@@ -45,26 +45,51 @@ describe( '#instance#', function() {
             name: 'stack #4'
         } );
 
-        var instanceP1 = Instance.create( {
+        var instanceA = Instance.create( {
             name: 'a',
             serviceType: 'PCP'
         } );
-        var instanceP2 = Instance.create( {
+
+        var instanceB = Instance.create( {
             name: 'b',
             serviceType: 'PCP'
         } );
 
-        var envId, stack;
+        var instanceC = Instance.create( {
+            name: 'c',
+            serviceType: 'PCP'
+        } );
 
-        Promise.all( [stackPromise, stackPromise1, stackPromise2, stackPromise3, instanceP1, instanceP2] )
+        var instanceD = Instance.create( {
+            name: 'd',
+            serviceType: 'PCP'
+        } );
+
+
+        var instance1, instance2, stack;
+
+        Promise.all( [stackPromise, stackPromise1, stackPromise2, stackPromise3, instanceA, instanceB, instanceC, instanceD] )
             .then( function(values) {
 
-                stacks.push( values.shift() );
-                stacks.push( values.shift() );
-                stacks.push( values.shift() );
-                stacks.push( values.shift() );
+
+                var promises = [];
+
+                var stacks = values.slice( 0, 4 );
+
+                var instances = values.slice( 4 );
+
+                _.each( instances, function(instance) {
+                    _.each( stacks, function(stack) {
+                        instance.stacks.push( stack._id );
+                    } );
+                    promises.push( instance.save() );
+                } );
+                return Promise.all( promises );
+            } )
+            .then( function(values) {
                 done();
             } );
+
 
     } );
 
@@ -77,93 +102,80 @@ describe( '#instance#', function() {
     } );
 
 
-    it( 'should create instance', function(done) {
-        var instance;
-        var thenable = Instance.find( {
-            name: 'a'
-        } ).exec().then( function(instances) {
-            instance = instances.shift();
-            //console.log( instance );
-            instance.serviceType.should.be.eq( 'PCP' );
-
-            instance.stacks.push( stacks[2]._id );
-
-            instance.stacks.push( stacks[3]._id );
-
-
-            return instance.save();
-        } )
-            .then( function(instance) {
-                console.log( instance );
-                return Stack.find( {
-                    _id: {
-                        $in: instance.stacks
-                    }
-                } ).exec();
-            } )
-            .then( function(models) {
-                console.log( models );
-
-                _.each( models, function(stack) {
-                    utils.exists( stack.instances, instance._id ).should.be.eq( true );
+    it( 'should get stacks of instance', function(done) {
+        Instance.find().exec()
+            .then( function(instances) {
+                _.each( instances, function(instance) {
+                    instance.stacks.length.should.be.eq( 4 );
                 } );
-
-
-
-                return instance.save();
-            } );
-
-
-        Promise.resolve( thenable ).then( function() {
-            done();
-        } )
-            .catch( function(err) {
-                done( err );
+                done();
             } );
     } );
 
-    it( 'should create instance', function(done) {
-        var instance;
-        var thenable = Instance.find( {
-            name: 'a'
-        } ).exec().then( function(instances) {
-            instance = instances.shift();
-            //console.log( instance );
-            instance.serviceType.should.be.eq( 'PCP' );
-
-            instance.stacks.push( stacks[0]._id );
-
-            instance.stacks.push( stacks[1]._id );
-
-
-            return instance.save();
-        } )
-            .then( function(instance) {
-                console.log( instance );
-                return Stack.find( {
-                    _id: {
-                        $in: instance.stacks
-                    }
+    it( 'should get instances of stack', function(done) {
+        Stack.findOne( {
+            name: 'stack #1'
+        } ).exec()
+            .then( function(stack) {
+                stack.name.should.be.eq( 'stack #1' );
+                return Instance.find( {
+                    stacks: stack._id
                 } ).exec();
             } )
-            .then( function(models) {
-                console.log( models );
-
-                _.each( models, function(stack) {
-                    utils.exists( stack.instances, instance._id ).should.be.eq( true );
+            .then( function(instances) {
+                instances.length.should.be.eq( 4 );
+                _.each( instances, function(instance) {
+                    instance.stacks.length.should.be.eq( 4 );
                 } );
-
-
-
-                return instance.save();
+                done();
             } );
+    } );
 
+    it( 'should delete stack from stacks array', function(done) {
+        var promises = [];
+        promises.push( Instance.findOne( {
+            name: 'a'
+        } ).exec() );
 
-        Promise.resolve( thenable ).then( function() {
-            done();
-        } )
-            .catch( function(err) {
-                done( err );
+        var stackId;
+
+        promises.push( Stack.findOne( {
+            name: 'stack #4'
+        } ).exec() );
+
+        Promise.all( promises )
+            .then( function(values) {
+                var instance = values.shift();
+                var stack = values.shift();
+                // save stack ID 
+                stackId = stack._id;
+                instance.name.should.be.eq( 'a' );
+                stack.name.should.be.eq( 'stack #4' );
+
+                // done();
+                return instance.update( {
+                    $pullAll: {
+                        stacks: [stack._id]
+                    }
+                } );
+            } )
+            .then( function(result) {
+                result.nModified.should.be.eq( 1 );
+                //done();
+                return Instance.findOne( {
+                    name: 'a'
+                } ).exec();
+            } )
+            .then( function(instance) {
+                instance.stacks.length.should.be.eq( 3 );
+                //console.log( instance );
+                return Instance.find( {
+                    stacks: stackId
+                } ).exec();
+            } )
+            .then( function(instances) {
+                instances.length.should.be.eq( 3 );
+                done();
             } );
     } );
 
