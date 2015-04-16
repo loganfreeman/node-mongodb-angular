@@ -75,19 +75,30 @@ describe( '#groups schema#', function() {
                 group.name.should.be.eq( 'sample group' );
 
 
-                /**
-                 * add two users to sample group
-                 */
-                group.users.push( user1 );
-                group.users.push( user );
-                // done();
-                group.save( function(err, model) {
-                    if (err)
-                        throw err;
-                    // console.log(model);
-                    model.users.length.should.be.eq( 2 );
-                    done();
-                } );
+                var promises = [];
+                promises.push( user.update( {
+                    $addToSet: {
+                        groups: group
+                    }
+                } ) );
+
+                promises.push( user1.update( {
+                    $addToSet: {
+                        groups: group
+                    }
+                } ) );
+
+                promises.push( group.update( {
+                    $addToSet: {
+                        users: {
+                            $each: [user, user1]
+                        }
+                    }
+                } ) );
+                return Promise.all( promises );
+            } )
+            .then( function(result) {
+                done();
             } )
             .catch( function(err) {
                 done( err );
@@ -173,9 +184,9 @@ describe( '#groups schema#', function() {
 
 
     it( 'should load by Id', function(done) {
-        var groupPromise = Group.findOne( {
+        var groupPromise = Promise.resolve( Group.findOne( {
             name: 'sample group'
-        } ).exec();
+        } ).exec() );
         var groupId;
         groupPromise.then( function(group) {
             groupId = group.id;
@@ -195,7 +206,10 @@ describe( '#groups schema#', function() {
                             done();
                         } );
                 } );
-        } );
+        } )
+            .catch( function(err) {
+                done( err );
+            } );
     } );
 
 
