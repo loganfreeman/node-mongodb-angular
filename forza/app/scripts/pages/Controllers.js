@@ -28,11 +28,18 @@ angular
             });
         }
 
+        function getIds(arr) {
+            return _.map(arr, function(inst) {
+                return inst._id;
+            })
+        }
+
 
         return {
             matchById: matchById,
             uniq: uniq,
-            remove: remove
+            remove: remove,
+            getIds: getIds
         }
     })
     .controller('SignupPageController', ['$location', '$scope', '$global', '$rootScope', 'Auth', function($location, $scope, $global, $rootScope, Auth) {

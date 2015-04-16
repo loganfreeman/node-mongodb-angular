@@ -33,7 +33,9 @@ angular.module('theme.pages-controllers')
                             };
 
                             $scope.ok = function() {
-                                $modalInstance.close($scope.selected);
+                                $scope.instance.serviceType = $scope.selected.serviceType;
+                                $scope.instance.stacks = $scope.selected.stacks;
+                                $modalInstance.close($scope.instance);
                             };
 
                             $scope.cancel = function() {
@@ -60,11 +62,18 @@ angular.module('theme.pages-controllers')
                         }
                     });
 
-                    modalInstance.result.then(function(selectedItem) {
+                    modalInstance.result.then(function(instance) {
                         //$scope.selected = selectedItem;
                         //$scope.activeUser.stacks.push( selectedItem.stack );
                         // $scope.activeUser.instances.push( selectedItem.instance );
-                        console.log(selectedItem);
+                        console.log(instance);
+                        Auth.updateInstance(instance._id, {
+                                stacks: Util.getIds(instance.stacks),
+                                serviceType: instance.serviceType
+                            })
+                            .then(function(res) {
+                                console.log(res);
+                            });
 
                     }, function() {
                         $log.info('Modal dismissed at: ' + new Date());
