@@ -10,6 +10,8 @@ require('../../src/mongoose/models');
 
 var Promise = require('bluebird');
 
+var utils = require('../../src/resources/utils.js');
+
 function connect(database) {
     return mongoose.createConnection('mongodb://localhost/' + database);
 }
@@ -72,7 +74,7 @@ describe('#instance#', function() {
                 //console.log( instance );
                 instance.serviceType.should.be.eq('PCP');
 
-                instance.stacks.push(stacks[0]);
+                instance.stacks.push(stacks[1]._id);
 
 
                 return instance.save();
@@ -99,7 +101,15 @@ describe('#instance#', function() {
                 //console.log( instance );
                 instance.serviceType.should.be.eq('PCP');
 
-                instance.stacks.push(stacks[1]);
+                console.log(instance.stacks[0] == instance.stacks[0].toString());
+
+                console.log(typeof stacks[0]._id);
+
+                console.log(stacks[0] == stacks[0]._id);
+
+                instance.stacks.push(stacks[0]._id.toString());
+
+                //utils.insertIfNotExists(instance.stacks, stacks[0]);
 
 
                 return instance.save();
@@ -108,7 +118,9 @@ describe('#instance#', function() {
                 console.log(instance);
                 return Stack.find({
                     _id: {
-                        $in: instance.stacks
+                        $in: _.map(instance.stacks, function(stack) {
+                            return stack.toString();
+                        })
                     }
                 }).exec();
             })

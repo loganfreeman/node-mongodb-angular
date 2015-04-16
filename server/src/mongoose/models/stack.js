@@ -1,12 +1,12 @@
-var mongoose = require( 'mongoose' ),
+var mongoose = require('mongoose'),
     Promise = mongoose.Promise,
     Schema = mongoose.Schema,
-    relationship = require( 'mongoose-relationship' );
+    relationship = require('mongoose-relationship');
 
 
-var uniqueValidator = require( 'mongoose-unique-validator' );
+var uniqueValidator = require('mongoose-unique-validator');
 
-var StackSchema = new Schema( {
+var StackSchema = new Schema({
     name: {
         type: String,
         default: '',
@@ -27,12 +27,8 @@ var StackSchema = new Schema( {
         ref: 'Instance',
         childPath: 'stacks'
     }]
-} );
+});
 
-StackSchema.plugin( uniqueValidator );
+StackSchema.plugin(uniqueValidator);
 
-StackSchema.plugin( relationship, {
-    relationshipPathName: 'instances'
-} );
-
-mongoose.model( 'Stack', StackSchema );
+mongoose.model('Stack', StackSchema);

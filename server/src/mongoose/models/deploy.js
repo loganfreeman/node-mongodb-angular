@@ -1,12 +1,12 @@
-var mongoose = require( 'mongoose' ),
+var mongoose = require('mongoose'),
     Promise = mongoose.Promise,
     Schema = mongoose.Schema,
-    relationship = require( 'mongoose-relationship' );
+    relationship = require('mongoose-relationship');
 
 
-var uniqueValidator = require( 'mongoose-unique-validator' );
+var uniqueValidator = require('mongoose-unique-validator');
 
-var DeploySchema = new Schema( {
+var DeploySchema = new Schema({
     deployDate: {
         type: Date,
         default: '',
@@ -25,10 +25,6 @@ var DeploySchema = new Schema( {
         ref: 'Instance',
         childPath: 'deploys'
     },
-} );
+});
 
-DeploySchema.plugin( relationship, {
-    relationshipPathName: 'instance'
-} );
-
-mongoose.model( 'Deploy', DeploySchema );
+mongoose.model('Deploy', DeploySchema);

@@ -28,8 +28,4 @@ var GroupSchema = new Schema({
 
 GroupSchema.plugin(uniqueValidator);
 
-GroupSchema.plugin(relationship, {
-	relationshipPathName: 'users'
-});
-
 mongoose.model('Group', GroupSchema);

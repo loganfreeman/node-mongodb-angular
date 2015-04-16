@@ -472,18 +472,44 @@ var updateStack = {
         var promises = [];
         var stack = Stack.findById(req.params.stackId).exec();
 
+        var instances = Promise.resolve([]);
 
-        Promise.all([stack])
+        if (req.body.instances) {
+            instances = Instance.find({
+                _id: {
+                    $in: req.body.instances
+                }
+            }).exec();
+        }
+
+
+        Promise.all([stack, instances])
             .then(function(values) {
                 var stack = values.shift();
-                stack.instances = req.body.instances;
 
-                return stack.save();
+                var instances = values.shift();
+
+                utils.insertIfNotExists(stack.instances, req.body.instances);
+
+                var promises = [];
+
+                promises.push(stack.save());
+
+                //console.log(stacks);
+
+                _.map(instances, function(instance) {
+                    utils.insertIfNotExists(instance.stacks, [stack._id.toString()]);
+                    promises.push(instance.save());
+                })
+
+
+
+                return Promise.all(promises);
 
 
             })
-            .then(function(stack) {
-                // res.json( user );
+            .then(function(values) {
+                var stack = values.shift();
 
                 return resolveStack(stack);
                 // 
@@ -520,28 +546,47 @@ var updateInstance = {
         var promises = [];
         var instance = Instance.findById(req.params.instanceId).exec();
 
-        var stacks = [];
+        var stacks = Promise.resolve([]);
 
         if (req.body.stacks) {
-            stacks = _.map(req.body.stacks, function(stack) {
-                return ObjectId(stack);
-            })
+            stacks = Stack.find({
+                _id: {
+                    $in: req.body.stacks
+                }
+            }).exec();
         }
 
-        Promise.all([instance])
+        Promise.all([instance, stacks])
             .then(function(values) {
                 var instance = values.shift();
+
+                var stacks = values.shift();
 
                 if (req.body.serviceType) {
                     instance.serviceType = req.body.serviceType;
                 }
 
+                utils.insertIfNotExists(instance.stacks, req.body.stacks);
 
-                return instance.save();
+                var promises = [];
+
+                promises.push(instance.save());
+
+                //console.log(stacks);
+
+                _.map(stacks, function(stack) {
+                    utils.insertIfNotExists(stack.instances, [instance._id.toString()]);
+                    promises.push(stack.save());
+                })
+
+
+
+                return Promise.all(promises);
 
 
             })
-            .then(function(instance) {
+            .then(function(instances) {
+                var instance = instances.shift();
                 res.json(instance);
             });
 

@@ -2,23 +2,23 @@
  * Module dependencies.
  */
 
-var crypto = require( 'crypto' );
+var crypto = require('crypto');
 
-var mongoose = require( 'mongoose' ),
+var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    relationship = require( 'mongoose-relationship' );
+    relationship = require('mongoose-relationship');
 
 
-var uniqueValidator = require( 'mongoose-unique-validator' );
+var uniqueValidator = require('mongoose-unique-validator');
 
-var Promise = require( 'bluebird' );
+var Promise = require('bluebird');
 
 
 /**
  * User Schema
  */
 
-var UserSchema = new Schema( {
+var UserSchema = new Schema({
     firstname: {
         type: String,
         default: ''
@@ -69,32 +69,32 @@ var UserSchema = new Schema( {
         type: Schema.ObjectId,
         ref: 'Instance'
     }]
-} );
+});
 
 /**
  * Virtuals
  */
 
 UserSchema
-    .virtual( 'password' )
-    .set( function(password) {
+    .virtual('password')
+    .set(function(password) {
         this._password = password;
         this.salt = this.makeSalt();
-        this.hashed_password = this.encryptPassword( password );
-    } )
-    .get( function() {
+        this.hashed_password = this.encryptPassword(password);
+    })
+    .get(function() {
         return this._password;
-    } );
+    });
 
 UserSchema
-    .virtual( 'fullname' )
-    .get( function() {
+    .virtual('fullname')
+    .get(function() {
         return this.firstname + ' ' + this.lastname;
-    } );
+    });
 
 UserSchema
-    .virtual( 'user_info' )
-    .get( function() {
+    .virtual('user_info')
+    .get(function() {
         return {
             '_id': this._id,
             'username': this.username,
@@ -103,31 +103,31 @@ UserSchema
             'type': this.type,
             'groups': this.groups
         };
-    } );
+    });
 
 /**
  * Validations
  */
 
-var validatePresenceOf = require( '../../utils.js' ).validatePresenceOf;
+var validatePresenceOf = require('../../utils.js').validatePresenceOf;
 
 
-UserSchema.path( 'email' ).validate( function(email) {
+UserSchema.path('email').validate(function(email) {
     return email.length;
-}, 'Email cannot be blank' );
+}, 'Email cannot be blank');
 
-UserSchema.path( 'email' ).validate( function(email) {
+UserSchema.path('email').validate(function(email) {
     var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-    return emailRegex.test( email );
-}, 'The specified email is invalid.' );
+    return emailRegex.test(email);
+}, 'The specified email is invalid.');
 
-UserSchema.path( 'username' ).validate( function(username) {
+UserSchema.path('username').validate(function(username) {
     return username.length;
-}, 'Username cannot be blank' );
+}, 'Username cannot be blank');
 
-UserSchema.path( 'hashed_password' ).validate( function(hashed_password) {
+UserSchema.path('hashed_password').validate(function(hashed_password) {
     return hashed_password.length;
-}, 'Password cannot be blank' );
+}, 'Password cannot be blank');
 
 
 /**
@@ -145,7 +145,7 @@ UserSchema.methods = {
      */
 
     authenticate: function(plainText) {
-        return this.encryptPassword( plainText ) === this.hashed_password;
+        return this.encryptPassword(plainText) === this.hashed_password;
     },
 
     /**
@@ -156,7 +156,7 @@ UserSchema.methods = {
      */
 
     makeSalt: function() {
-        return Math.round(( new Date().valueOf() * Math.random() )) + '';
+        return Math.round((new Date().valueOf() * Math.random())) + '';
     },
 
     /**
@@ -171,30 +171,26 @@ UserSchema.methods = {
         if (!password) return '';
         try {
             return crypto
-                .createHmac( 'sha1', this.salt )
-                .update( password )
-                .digest( 'hex' );
-        } catch ( err ) {
+                .createHmac('sha1', this.salt)
+                .update(password)
+                .digest('hex');
+        } catch (err) {
             return '';
         }
     }
 };
 
 UserSchema.statics.load = function(criteria) {
-    var findUser = this.findOne( criteria ).select( '-salt -hashed_password' ).exec();
+    var findUser = this.findOne(criteria).select('-salt -hashed_password').exec();
 
-    return new Promise( function(resolve, reject) {
-            findUser.then( function(user) {
-                resolve( user );
-            } );
-        } );
+    return new Promise(function(resolve, reject) {
+        findUser.then(function(user) {
+            resolve(user);
+        });
+    });
 
 };
 
-UserSchema.plugin( uniqueValidator );
+UserSchema.plugin(uniqueValidator);
 
-UserSchema.plugin( relationship, {
-    relationshipPathName: 'groups'
-} );
-
-mongoose.model( 'User', UserSchema );
+mongoose.model('User', UserSchema);
