@@ -29,6 +29,12 @@ var readFile = Promise.promisify(require('fs').readFile);
 
 var config = require('../config/config.js');
 
+var utils = require('./utils.js');
+
+var mongoose = require('mongoose');
+
+var ObjectId = mongoose.Schema.Types.ObjectId;
+
 
 /*var getLog = {
     spec: {
@@ -514,6 +520,14 @@ var updateInstance = {
         var promises = [];
         var instance = Instance.findById(req.params.instanceId).exec();
 
+        var stacks = [];
+
+        if (req.body.stacks) {
+            stacks = _.map(req.body.stacks, function(stack) {
+                return ObjectId(stack);
+            })
+        }
+
         Promise.all([instance])
             .then(function(values) {
                 var instance = values.shift();
@@ -521,9 +535,7 @@ var updateInstance = {
                 if (req.body.serviceType) {
                     instance.serviceType = req.body.serviceType;
                 }
-                if (req.body.stacks) {
-                    instance.stacks = req.body.stacks;
-                }
+
 
                 return instance.save();
 

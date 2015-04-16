@@ -25,8 +25,8 @@ describe('association', function() {
 	it('should associate stack with instance', function(done) {
 
 		var data = {
-			"stacks": ["5528c7fe837aed7412528edc", "552f00d07ff6c2700a02b708", "552f00d87ff6c2700a02b709"],
-			"serviceType": "API"
+			"stacks": ["5528c7fe837aed7412528edc", "552f00d07ff6c2700a02b708", "552f00d87ff6c2700a02b709", "552f00d07ff6c2700a02b708"],
+			"serviceType": "PCP"
 		};
 
 
@@ -44,7 +44,7 @@ describe('association', function() {
 						var stacks = JSON.parse(body);
 						var stack = _.find(stacks, function(stack) {
 							//console.log(stack);
-							return stack._id == '5528c7fe837aed7412528edc';
+							return stack._id == '552f00d07ff6c2700a02b708';
 						})
 						console.log(stack);
 						done();
