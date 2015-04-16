@@ -179,10 +179,57 @@ describe( 'user schema', function() {
 
     it( 'should update user', function(done) {
         var model; // user model
+
+        var data = {
+            groups: ['group #3'],
+            instances: ['c'],
+            stacks: ['stack #3']
+        };
         Promise.resolve( User.findOne( {
             email: 'barray@cctv.com'
         } ).exec() )
-            .then( function() {
+            .then( function(user) {
+
+                var updates = [];
+                var instances = _.filter( user.instances, function(model) {
+                    return !_.contains( data.instances, model.name );
+                } );
+                console.log( instances );
+                updates.push( user.update( {
+                    $pullAll: {
+                        instances: instances
+                    }
+                } ) );
+                var groups = _.filter( user.groups, function(model) {
+                    return !_.contains( data.groups, model.name );
+                } );
+                console.log( groups );
+                updates.push( user.update( {
+                    $pullAll: {
+                        groups: groups
+                    }
+                } ) );
+                var stacks = _.filter( user.stacks, function(model) {
+                    return !_.contains( data.stacks, model.name );
+                } );
+                console.log( stacks );
+                updates.push( user.update( {
+                    $pullAll: {
+                        stacks: stacks
+                    }
+                } ) );
+                return Promise.all( updates );
+            } )
+            .then( function(results) {
+                console.log( results );
+                return Promise.resolve( User.findOne( {
+                    email: 'barray@cctv.com'
+                } ).exec() );
+            } )
+            .then( function(user) {
+                user.instances.length.should.be.eq( 0 );
+                user.groups.length.should.be.eq( 0 );
+                user.stacks.length.should.be.eq( 0 );
                 done();
             } );
     } );

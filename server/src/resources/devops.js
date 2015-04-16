@@ -481,13 +481,6 @@ var updateStack = {
 
                 promises.push( stack.save() );
 
-                //console.log(stacks);
-
-                _.map( instances, function(instance) {
-                    utils.insertIfNotExists( instance.stacks, [stack._id.toString()] );
-                    promises.push( instance.save() );
-                } );
-
 
 
                 return Promise.all( promises );
