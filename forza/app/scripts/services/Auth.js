@@ -88,14 +88,9 @@ angular.module('angularPassportService')
                 return $http.post(url, data);
             },
 
-            updateInstance: function(instance, data) {
-                var deferred = $q.defer();
-                var promise = deferred.promise;
-                deferred.resolve({
-                    instance: instance,
-                    data: data
-                })
-                return promise;
+            updateInstance: function(instanceId, data) {
+                var url = '/devops/instance/{instanceId}'.replace('{instanceId}', instanceId);
+                return $http.post(url, data);
             },
 
             changePassword: function(email, oldPassword, newPassword, callback) {

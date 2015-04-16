@@ -29,7 +29,8 @@ angular.module('theme.pages-controllers')
                             $scope.selected = {
                                 left_stacks: [],
                                 right_stacks: [],
-                                stacks: Util.matchById($scope.instance.stacks, $scope.stacks)
+                                stacks: Util.matchById($scope.instance.stacks, $scope.stacks),
+                                serviceType: $scope.instance.serviceType
                             };
 
                             $scope.ok = function() {
