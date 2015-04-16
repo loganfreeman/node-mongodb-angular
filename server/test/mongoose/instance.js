@@ -71,9 +71,8 @@ describe('#instance#', function() {
                 var instance = instances.shift();
                 //console.log( instance );
                 instance.serviceType.should.be.eq('PCP');
-                _.each(stacks, function(stack) {
-                    instance.stacks.push(stack);
-                });
+
+                instance.stacks.push(stacks[0]);
 
 
                 return instance.save();
@@ -92,28 +91,32 @@ describe('#instance#', function() {
             })
     });
 
-    it('should not insert duplicate instance', function(done) {
+    it('should create instance', function(done) {
         Instance.find({
                 name: 'a'
             }).exec().then(function(instances) {
                 var instance = instances.shift();
                 //console.log( instance );
                 instance.serviceType.should.be.eq('PCP');
-                instance.stacks = _.uniq(instance.stacks.concat(stacks), function(s) {
-                    return s.toString();
-                });
+
+                instance.stacks.push(stacks[1]);
+
+
                 return instance.save();
             })
             .then(function(instance) {
-                //console.log(instance);
+                console.log(instance);
                 return Stack.find({
-                    name: 'stack #1'
+                    _id: {
+                        $in: instance.stacks
+                    }
                 }).exec();
             })
-            .then(function(stack) {
-                //console.log(stack);
+            .then(function(stacks) {
+                console.log(stacks);
                 done();
-            });
+            })
     });
+
 
 });
