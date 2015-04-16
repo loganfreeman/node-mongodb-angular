@@ -78,60 +78,36 @@ describe( '#instance#', function() {
 
     it( 'should create instance', function(done) {
         var instance;
-        var thenable = Promise.resolve( Instance.find( {
+        var thenable = Promise.resolve( Instance.findOne( {
             name: 'a'
         } ).exec() )
-            .then( function(instances) {
-                instance = instances.shift();
+            .then( function(instance) {
                 //console.log( instance );
                 instance.serviceType.should.be.eq( 'PCP' );
-
-                instance.stacks.push( stacks[0]._id );
-
-                instance.stacks.push( stacks[1]._id );
-
-
-                return instance.save();
-            } )
-            .then( function(instance) {
-                console.log( instance );
-                return Stack.find( {
-                    _id: {
-                        $in: instance.stacks
-                    }
-                } ).exec();
-            } )
-            .then( function(models) {
-                console.log( models );
-
 
                 var promises = [];
 
                 promises.push( instance.update( {
                     $addToSet: {
                         stacks: {
-                            $each: [stacks[2], stacks[3]]
+                            $each: stacks
                         }
                     }
                 } ) );
 
-                promises.push( stacks[2].update( {
-                    $addToSet: {
-                        instances: instance
-                    }
-                } ) );
-
-                promises.push( stacks[3].update( {
-                    $addToSet: {
-                        instances: instance
-                    }
-                } ) );
+                _.map( stacks, function(stack) {
+                    promises.push( stack.update( {
+                        $addToSet: {
+                            instances: instance
+                        }
+                    } ) );
+                } );
 
 
                 return Promise.all( promises );
             } )
             .then( function(results) {
-                return Instance.find( {
+                return Instance.findOne( {
                     name: 'a'
                 } ).exec();
             } )
@@ -147,7 +123,7 @@ describe( '#instance#', function() {
                 console.log( stacks );
 
                 _.each( stacks, function(stack) {
-                    utils.exists( stack.instances, instance._id ).should.be.eq( true );
+                    stack.instances.length.should.be.eq( 1 );
                 } );
             } );
 
