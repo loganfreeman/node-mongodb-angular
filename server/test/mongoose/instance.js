@@ -89,8 +89,10 @@ describe('#instance#', function() {
                 }).exec();
             })
             .then(function(stacks) {
+                console.log(stacks);
+
                 _.each(stacks, function(stack) {
-                    utils.exists(stack.instances, instance._id);
+                    utils.exists(stack.instances, instance._id).should.be.eq(true);
                 })
                 done();
             })
@@ -121,11 +123,14 @@ describe('#instance#', function() {
                 }).exec();
             })
             .then(function(stacks) {
+                console.log(stacks);
+
                 _.each(stacks, function(stack) {
-                    utils.exists(stack.instances, instance._id);
+                    utils.exists(stack.instances, instance._id).should.be.eq(true);
                 })
                 done();
             })
+
     });
 
 
