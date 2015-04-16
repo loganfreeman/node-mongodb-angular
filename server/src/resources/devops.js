@@ -475,11 +475,24 @@ var updateStack = {
 
                 var instances = values.shift();
 
-                utils.insertIfNotExists( stack.instances, req.body.instances );
 
                 var promises = [];
 
-                promises.push( stack.save() );
+
+                var instancesToDelete = [];
+
+                if (instances.length) {
+
+                } else {
+                    // set instances to []
+                    stack.update( {
+                        $set: {
+                            'instances': []
+                        }
+                    }, {
+                            multi: true
+                        } );
+                }
 
 
 

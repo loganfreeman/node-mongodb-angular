@@ -279,7 +279,8 @@ describe( 'user schema', function() {
                     $set: {
                         'groups': [],
                         'stacks': [],
-                        'instances': []
+                        'instances': [],
+                        'username': 'test'
                     }
                 }, {
                         multi: true
@@ -294,6 +295,7 @@ describe( 'user schema', function() {
                 user.instances.length.should.be.eq( 0 );
                 user.groups.length.should.be.eq( 0 );
                 user.stacks.length.should.be.eq( 0 );
+                user.username.should.be.eq( 'test' );
                 done();
             } );
     } );
