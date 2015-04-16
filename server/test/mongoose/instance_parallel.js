@@ -179,6 +179,43 @@ describe( '#instance#', function() {
             } );
     } );
 
+    it( 'should add to set', function(done) {
+        var promises = [];
+        promises.push( Instance.findOne( {
+            name: 'b'
+        } ).exec() );
+
+        promises.push( Stack.create( {
+            name: 'addToSet'
+        } ) );
+
+        Promise.all( promises )
+            .then( function(values) {
+                console.log( values );
+                var instance = values.shift();
+                var stack = values.shift();
+                instance.stacks.length.should.be.eq( 4 );
+                return instance.update( {
+                    $addToSet: {
+                        stacks: [stack._id]
+                    }
+                } );
+            } )
+            .then( function(result) {
+                result.nModified.should.be.eq( 1 );
+                return Instance.findOne( {
+                    name: 'b'
+                } ).exec();
+            } )
+            .then( function(instance) {
+                instance.stacks.length.should.be.eq( 5 );
+                done();
+            } )
+            .catch( function(err) {
+                done( err );
+            } );
+    } );
+
 
 
 } );

@@ -1,24 +1,28 @@
-var _ = require('lodash');
+var _ = require( 'lodash' );
+
+var Promise = require( 'bluebird' );
 
 module.exports = {
-	insertIfNotExists: function(sink, source) {
+    insertIfNotExists: function(sink, source) {
 
-		_.each(source, function(obj) {
-			var res = _.find(sink, function(ins) {
-				return ins == obj; // compare ObjectId to String, automatic type conversion
-			});
+        _.each( source, function(obj) {
+            var res = _.find( sink, function(ins) {
+                return ins == obj; // compare ObjectId to String, automatic type conversion
+            } );
 
-			if (typeof res == 'undefined') {
-				sink.push(obj);
-			}
-		})
-	},
+            if (typeof res == 'undefined') {
+                sink.push( obj );
+            }
+        } );
+    },
 
-	exists: function(arr, id) {
-		var res = _.find(arr, function(obj) {
-			return obj.toString() === id.toString();
-		})
+    exists: function(arr, id) {
+        var res = _.find( arr, function(obj) {
+            return obj.toString() === id.toString();
+        } );
 
-		return typeof res != 'undefined'
-	}
-}
+        return typeof res != 'undefined';
+    }
+
+
+};

@@ -20,7 +20,11 @@ var StackSchema = new Schema( {
     environment: {
         type: Schema.ObjectId,
         ref: 'Environment'
-    }
+    },
+    instances: [{
+        type: Schema.ObjectId,
+        ref: 'Instance'
+    }]
 } );
 
 StackSchema.plugin( uniqueValidator );
