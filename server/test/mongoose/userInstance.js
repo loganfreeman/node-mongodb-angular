@@ -249,6 +249,20 @@ describe( 'user schema', function() {
                     }
 
                 } ) );
+
+                updates.push( user.update( {
+                    $addToSet: {
+                        instances: {
+                            $each: instancesToAdd
+                        },
+                        stacks: {
+                            $each: stacksToAdd
+                        },
+                        groups: {
+                            $each: groupsToAdd
+                        }
+                    }
+                } ) );
                 return Promise.all( updates );
             } )
             .then( function(results) {
@@ -258,9 +272,9 @@ describe( 'user schema', function() {
                 } ).exec() );
             } )
             .then( function(user) {
-                user.instances.length.should.be.eq( 0 );
-                user.groups.length.should.be.eq( 0 );
-                user.stacks.length.should.be.eq( 0 );
+                user.instances.length.should.be.eq( 1 );
+                user.groups.length.should.be.eq( 1 );
+                user.stacks.length.should.be.eq( 1 );
                 done();
             } );
     } );
