@@ -40,6 +40,7 @@ describe( '#deploy schema#', function() {
         email: 'barray@cctv.com'
     };
 
+    var count = 0;
 
     before( function(done) {
         // add dummy data
@@ -48,7 +49,7 @@ describe( '#deploy schema#', function() {
         Stack = db.model( 'Stack' );
         Instance = db.model( 'Instance' );
         User = db.model( 'User' );
-        User.create( sample ).then( function(model) {
+        Promise.resolve( User.create( sample ) ).then( function(model) {
             user = model;
             return Deploy.create( {
                 deployDate: new Date(),
@@ -65,11 +66,58 @@ describe( '#deploy schema#', function() {
             .then( function(model) {
                 instance = model;
                 deploy.instance = instance._id;
+                count++;
                 return deploy.save();
             } )
-            .then( function(model) {
-                console.log( model );
+            .then( function(deploy) {
+                return Deploy.create( {
+                    deployDate: new Date(),
+                    user: user._id
+                } );
+            } )
+            .then( function(deploy) {
+                deploy.instance = instance._id;
+                count++;
+                return deploy.save();
+            } )
+            .then( function(deploy) {
+                return Deploy.create( {
+                    deployDate: new Date(),
+                    user: user._id
+                } );
+            } )
+            .then( function(deploy) {
+                deploy.instance = instance._id;
+                count++;
+                return deploy.save();
+            } )
+            .then( function(deploy) {
+                return Deploy.create( {
+                    deployDate: new Date(),
+                    user: user._id
+                } );
+            } )
+            .then( function(deploy) {
+                deploy.instance = instance._id;
+                count++;
+                return deploy.save();
+            } )
+            .then( function(deploy) {
+                return Deploy.create( {
+                    deployDate: new Date(),
+                    user: user._id
+                } );
+            } )
+            .then( function(deploy) {
+                deploy.instance = instance._id;
+                count++;
+                return deploy.save();
+            } )
+            .then( function() {
                 done();
+            } )
+            .catch( function(err) {
+                done( err );
             } );
 
 
@@ -96,7 +144,7 @@ describe( '#deploy schema#', function() {
         console.log( deploy );
         Promise.resolve( Instance.findById( deploy.instance ).exec() ).then( function(instance) {
             instance.name.should.be.eq( 'test' );
-            instance.deploys.length.should.be.eq( 1 );
+            instance.deploys.length.should.be.eq( count );
             console.log( instance );
             done();
         } )
