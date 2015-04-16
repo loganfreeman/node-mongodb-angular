@@ -185,9 +185,43 @@ describe( 'user schema', function() {
             instances: ['c'],
             stacks: ['stack #3']
         };
-        Promise.resolve( User.findOne( {
-            email: 'barray@cctv.com'
-        } ).exec() )
+
+        var groupsToAdd, instancesToAdd, stacksToAdd;
+        Promise.all(
+            [
+                Group.find( {
+                    name: {
+                        $in: data.groups
+                    }
+                } ).exec(),
+
+
+                Instance.find( {
+                    name: {
+                        $in: data.instances
+                    }
+                } ),
+
+                Stack.find( {
+                    name: {
+                        $in: data.stacks
+                    }
+                } )
+            ]
+            )
+            .then( function(values) {
+                groupsToAdd = values.shift();
+                instancesToAdd = values.shift();
+                stacksToAdd = values.shift();
+
+                groupsToAdd.length.should.be.eq( 1 );
+                instancesToAdd.length.should.be.eq( 1 );
+                stacksToAdd.length.should.be.eq( 1 );
+
+                return User.findOne( {
+                    email: 'barray@cctv.com'
+                } ).exec();
+            } )
             .then( function(user) {
 
                 var updates = [];
@@ -195,28 +229,25 @@ describe( 'user schema', function() {
                     return !_.contains( data.instances, model.name );
                 } );
                 console.log( instances );
-                updates.push( user.update( {
-                    $pullAll: {
-                        instances: instances
-                    }
-                } ) );
+
                 var groups = _.filter( user.groups, function(model) {
                     return !_.contains( data.groups, model.name );
                 } );
                 console.log( groups );
-                updates.push( user.update( {
-                    $pullAll: {
-                        groups: groups
-                    }
-                } ) );
+
                 var stacks = _.filter( user.stacks, function(model) {
                     return !_.contains( data.stacks, model.name );
                 } );
                 console.log( stacks );
+
+                // update all
                 updates.push( user.update( {
                     $pullAll: {
-                        stacks: stacks
+                        stacks: stacks,
+                        groups: groups,
+                        instances: instances
                     }
+
                 } ) );
                 return Promise.all( updates );
             } )
