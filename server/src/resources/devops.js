@@ -482,16 +482,30 @@ var updateStack = {
                 var instancesToDelete = [];
 
                 if (instances.length) {
-
+                    instancesToDelete = _.filter( stack.instances, function(model) {
+                        return !_.contains( instances, model );
+                    } );
+                    promises.push( stack.update( {
+                        $pullAll: {
+                            instances: instancesToDelete
+                        }
+                    } ) );
+                    promises.push( stack.update( {
+                        $addToSet: {
+                            instances: {
+                                $each: instances
+                            }
+                        }
+                    } ) );
                 } else {
                     // set instances to []
-                    stack.update( {
+                    promises.push( stack.update( {
                         $set: {
                             'instances': []
                         }
                     }, {
                             multi: true
-                        } );
+                        } ) );
                 }
 
 
@@ -500,14 +514,17 @@ var updateStack = {
 
 
             } )
-            .then( function(values) {
-                var stack = values.shift();
+            .then( function(result) {
+                return Stack.findById( req.params.stackId ).exec();
+            } )
+            .then( function(stack) {
 
                 return resolveStack( stack );
                 // 
-            } ).then( function(stack) {
-            res.json( stack );
-        } );
+            } )
+            .then( function(stack) {
+                res.json( stack );
+            } );
 
     }
 };
