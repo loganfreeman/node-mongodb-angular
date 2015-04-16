@@ -455,25 +455,10 @@ var updateStack = {
         ],
     },
     action: function(req, res) {
-        var promises = [];
-        var stack = Stack.findById( req.params.stackId ).exec();
 
-        var instances = Promise.resolve( [] );
+        Promise.resolve( Stack.findById( req.params.stackId ).exec() )
+            .then( function(stack) {
 
-        if (req.body.instances) {
-            instances = Instance.find( {
-                _id: {
-                    $in: req.body.instances
-                }
-            } ).exec();
-        }
-
-
-        Promise.all( [stack, instances] )
-            .then( function(values) {
-                var stack = values.shift();
-
-                var instances = values.shift();
 
 
                 var promises = [];
@@ -481,9 +466,9 @@ var updateStack = {
 
                 var instancesToDelete = [];
 
-                if (instances.length) {
+                if (req.body.instances && req.body.instances.length) {
                     instancesToDelete = _.filter( stack.instances, function(model) {
-                        return !_.contains( instances, model );
+                        return !_.contains( req.body.instances, model.toString() );
                     } );
                     promises.push( stack.update( {
                         $pullAll: {
@@ -493,7 +478,7 @@ var updateStack = {
                     promises.push( stack.update( {
                         $addToSet: {
                             instances: {
-                                $each: instances
+                                $each: req.body.instances
                             }
                         }
                     } ) );
@@ -552,50 +537,20 @@ var updateInstance = {
         ],
     },
     action: function(req, res) {
-        var promises = [];
-        var instance = Instance.findById( req.params.instanceId ).exec();
 
-        var stacks = Promise.resolve( [] );
+        Promise.resolve( Instance.findById( req.params.instanceId ).exec() )
+            .then( function(instance) {
 
-        if (req.body.stacks) {
-            stacks = Stack.find( {
-                _id: {
-                    $in: req.body.stacks
-                }
-            } ).exec();
-        }
-
-        Promise.all( [instance, stacks] )
-            .then( function(values) {
-                var instance = values.shift();
-
-                var stacks = values.shift();
 
                 if (req.body.serviceType) {
                     instance.serviceType = req.body.serviceType;
                 }
 
-                utils.insertIfNotExists( instance.stacks, req.body.stacks );
-
-                var promises = [];
-
-                promises.push( instance.save() );
-
-                //console.log(stacks);
-
-                _.map( stacks, function(stack) {
-                    utils.insertIfNotExists( stack.instances, [instance._id.toString()] );
-                    promises.push( stack.save() );
-                } );
-
-
-
-                return Promise.all( promises );
+                return instance.save();
 
 
             } )
-            .then( function(instances) {
-                var instance = instances.shift();
+            .then( function(instance) {
                 return resolveInstance( instance );
             } )
             .then( function(instance) {
@@ -758,11 +713,14 @@ var addInstanceToUser = {
             .then( function(values) {
                 var user = values[0],
                     instance = values[1];
-                user.instances.push( instance );
-                user.instances = _.uniq( user.instances, function(id) {
-                    return id.toString();
+                return user.update( {
+                    $addToSet: {
+                        instances: instance
+                    }
                 } );
-                return user.save();
+            } )
+            .then( function(result) {
+                return User.findById( req.params.userId ).exec();
             } )
             .then( function(user) {
                 res.json( user );
@@ -802,11 +760,15 @@ var addStackToUser = {
             .then( function(values) {
                 var user = values[0],
                     stack = values[1];
-                user.stacks.push( stack );
-                user.stacks = _.uniq( user.stacks, function(id) {
-                    return id.toString();
+
+                return user.update( {
+                    $addToSet: {
+                        stacks: stack
+                    }
                 } );
-                return user.save();
+            } )
+            .then( function(result) {
+                return User.findById( req.params.userId ).exec();
             } )
             .then( function(user) {
                 res.json( user );
@@ -1071,25 +1033,32 @@ var addUserToGroupByName = {
             .then( function(values) {
                 var group = values[0],
                     user = values[1];
-                group.users.push( user );
-                user.groups.push( group );
-                // make sure the groups and users array are unique
-                group.users = _.uniq( group.users, function(id) {
-                    return id.toString();
-                } );
-                user.groups = _.uniq( user.groups, function(id) {
-                    return id.toString();
-                } );
 
 
-                Promise.all( [group.save(), user.save()] )
-                    .then( function(values) {
-                        console.log( values );
-                        res.json( values[0] );
-                    } )
-                    .catch( function(err) {
-                        res.status( 500 ).send( err );
-                    } );
+                var promises = [];
+
+                promises.push( user.update( {
+                    $addToSet: {
+                        groups: group
+                    }
+                } ) );
+
+
+                promises.push( group.update( {
+                    $addToSet: {
+                        users: user
+                    }
+                } ) );
+
+
+                return Promise.all( promises );
+
+            } )
+            .then( function(values) {
+                res.json( values );
+            } )
+            .catch( function(err) {
+                res.status( 500 ).send( err );
             } );
     }
 };
@@ -1129,25 +1098,32 @@ var addUserToGroup = {
             .then( function(values) {
                 var group = values[0],
                     user = values[1];
-                group.users.push( user );
-                user.groups.push( group );
-                // make sure the groups and users array are unique
-                group.users = _.uniq( group.users, function(id) {
-                    return id.toString();
-                } );
-                user.groups = _.uniq( user.groups, function(id) {
-                    return id.toString();
-                } );
+                var promises = [];
+
+                promises.push( user.update( {
+                    $addToSet: {
+                        groups: group
+                    }
+                } ) );
 
 
-                Promise.all( [group.save(), user.save()] )
-                    .then( function(values) {
-                        console.log( values );
-                        res.json( values[0] );
-                    } )
-                    .catch( function(err) {
-                        res.status( 500 ).send( err );
-                    } );
+                promises.push( group.update( {
+                    $addToSet: {
+                        users: user
+                    }
+                } ) );
+
+
+                return Promise.all( promises );
+
+
+
+            } )
+            .then( function(values) {
+                res.json( values );
+            } )
+            .catch( function(err) {
+                res.status( 500 ).send( err );
             } );
     }
 };

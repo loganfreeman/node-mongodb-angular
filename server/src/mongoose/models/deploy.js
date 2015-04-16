@@ -22,8 +22,13 @@ var DeploySchema = new Schema( {
     },
     instance: {
         type: Schema.ObjectId,
-        ref: 'Instance'
+        ref: 'Instance',
+        childPath: 'deploys'
     },
+} );
+
+DeploySchema.plugin( relationship, {
+    relationshipPathName: 'instance'
 } );
 
 mongoose.model( 'Deploy', DeploySchema );
