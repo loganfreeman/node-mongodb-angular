@@ -37,6 +37,14 @@ describe('#instance#', function() {
             name: 'stack #2'
         });
 
+        var stackPromise2 = Stack.create({
+            name: 'stack #3'
+        });
+
+        var stackPromise3 = Stack.create({
+            name: 'stack #4'
+        });
+
         var instanceP1 = Instance.create({
             name: 'a',
             serviceType: 'PCP'
@@ -48,9 +56,11 @@ describe('#instance#', function() {
 
         var envId, stack;
 
-        Promise.all([stackPromise, stackPromise1, instanceP1, instanceP2])
+        Promise.all([stackPromise, stackPromise1, stackPromise2, stackPromise3, instanceP1, instanceP2])
             .then(function(values) {
 
+                stacks.push(values.shift());
+                stacks.push(values.shift());
                 stacks.push(values.shift());
                 stacks.push(values.shift());
                 done();
@@ -68,14 +78,37 @@ describe('#instance#', function() {
 
     it('should create instance', function(done) {
         var instance;
-        Instance.find({
+        var thenable = Instance.find({
                 name: 'a'
             }).exec().then(function(instances) {
                 instance = instances.shift();
                 //console.log( instance );
                 instance.serviceType.should.be.eq('PCP');
 
-                instance.stacks.push(stacks[0]);
+                instance.stacks.push(stacks[0]._id);
+
+                instance.stacks.push(stacks[1]._id);
+
+
+                return instance.save();
+            })
+            .then(function(instance) {
+                console.log(instance);
+                return Stack.find({
+                    _id: {
+                        $in: instance.stacks
+                    }
+                }).exec();
+            })
+            .then(function(models) {
+                console.log(models);
+
+                _.each(models, function(stack) {
+                    utils.exists(stack.instances, instance._id).should.be.eq(true);
+                })
+                instance.stacks.push(stacks[2]._id);
+
+                instance.stacks.push(stacks[3]._id);
 
 
                 return instance.save();
@@ -94,44 +127,16 @@ describe('#instance#', function() {
                 _.each(stacks, function(stack) {
                     utils.exists(stack.instances, instance._id).should.be.eq(true);
                 })
+            });
+
+        Promise.resolve(thenable).then(function() {
                 done();
+            })
+            .catch(function(err) {
+                done(err);
             })
     });
 
-    it('should create instance', function(done) {
-        var instance;
-        Instance.find({
-                name: 'a'
-            }).exec().then(function(instances) {
-                instance = instances.shift();
-                //console.log( instance );
-                instance.serviceType.should.be.eq('PCP');
-
-                instance.stacks.push(stacks[1]);
-
-                //utils.insertIfNotExists(instance.stacks, stacks[0]);
-
-
-                return instance.save();
-            })
-            .then(function(instance) {
-                console.log(instance);
-                return Stack.find({
-                    _id: {
-                        $in: instance.stacks
-                    }
-                }).exec();
-            })
-            .then(function(stacks) {
-                console.log(stacks);
-
-                _.each(stacks, function(stack) {
-                    utils.exists(stack.instances, instance._id).should.be.eq(true);
-                })
-                done();
-            })
-
-    });
 
 
 });
