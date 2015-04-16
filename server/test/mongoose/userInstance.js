@@ -275,6 +275,25 @@ describe( 'user schema', function() {
                 user.instances.length.should.be.eq( 1 );
                 user.groups.length.should.be.eq( 1 );
                 user.stacks.length.should.be.eq( 1 );
+                return user.update( {
+                    $set: {
+                        'groups': [],
+                        'stacks': [],
+                        'instances': []
+                    }
+                }, {
+                        multi: true
+                    } );
+            } )
+            .then( function() {
+                return Promise.resolve( User.findOne( {
+                    email: 'barray@cctv.com'
+                } ).exec() );
+            } )
+            .then( function(user) {
+                user.instances.length.should.be.eq( 0 );
+                user.groups.length.should.be.eq( 0 );
+                user.stacks.length.should.be.eq( 0 );
                 done();
             } );
     } );
