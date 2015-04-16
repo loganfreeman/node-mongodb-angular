@@ -587,8 +587,11 @@ var updateInstance = {
             })
             .then(function(instances) {
                 var instance = instances.shift();
+                return resolveInstance(instance);
+            })
+            .then(function(instance) {
                 res.json(instance);
-            });
+            })
 
     }
 };
@@ -620,6 +623,39 @@ var resolveStack = function(stack) {
             })
             .then(function(stack) {
                 resolve(stack);
+            });
+
+
+    });
+};
+
+
+var resolveInstance = function(instance) {
+    return new Promise(function(resolve, reject) {
+
+        var stacks = Promise.resolve([]);
+
+
+        if (instance.stacks) {
+            stacks = Stack.find({
+                '_id': {
+                    $in: instance.stacks
+                }
+            }).exec();
+        }
+
+        var instancePromise = Promise.resolve(instance);
+
+        Promise.all([stacks, instancePromise])
+            .then(function(values) {
+
+                var stacks = values[0];
+                var instance = values[1].toJSON();
+                instance.stacks = stacks;
+                return instance;
+            })
+            .then(function(instance) {
+                resolve(instance);
             });
 
 
@@ -834,22 +870,7 @@ var listInstances = {
             .then(function(instances) {
                 //res.json(instances);
                 Promise.all(instances).map(function(instance) {
-                        return new Promise(function(resolve, reject) {
-                            Deploy.find({
-                                '_id': {
-                                    $in: instance.deploys
-                                }
-                            }, function(err, deploys) {
-                                if (err) {
-                                    reject(err);
-                                } else {
-                                    instance = instance.toJSON();
-                                    instance.deploys = deploys;
-                                    resolve(instance);
-                                }
-
-                            });
-                        });
+                        return resolveInstance(instance);
                     })
                     .then(function(instances) {
                         res.json(instances);

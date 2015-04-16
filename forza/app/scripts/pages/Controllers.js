@@ -9,7 +9,12 @@ angular
         function matchById(ids, arr) {
             return _.map(ids, function(id) {
                 return _.find(arr, function(instance) {
-                    return instance._id === id;
+                    if (instance._id)
+                        return instance._id === id;
+
+                    else {
+                        return instance === id;
+                    }
                 })
             })
         }

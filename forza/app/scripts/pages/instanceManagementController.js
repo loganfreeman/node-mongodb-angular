@@ -17,8 +17,9 @@ angular.module('theme.pages-controllers')
 
 
 
-                $scope.modify = function(instance) {
+                $scope.modify = function(instance, $index) {
                     $scope.currentInstance = instance;
+                    $scope.currentIndex = $index;
 
                     var modalInstance = $modal.open({
                         templateUrl: 'instanceModification.html',
@@ -29,7 +30,7 @@ angular.module('theme.pages-controllers')
                             $scope.selected = {
                                 left_stacks: [],
                                 right_stacks: [],
-                                stacks: Util.matchById($scope.instance.stacks, $scope.stacks),
+                                stacks: $scope.instance.stacks,
                                 serviceType: $scope.instance.serviceType
                             };
 
@@ -73,7 +74,7 @@ angular.module('theme.pages-controllers')
                                 serviceType: instance.serviceType
                             })
                             .then(function(res) {
-                                console.log(res);
+                                var obj = res.data;
                             });
 
                     }, function() {
