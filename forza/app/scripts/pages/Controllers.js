@@ -14,8 +14,25 @@ angular
             })
         }
 
+        function uniq(left, right) {
+            return _.uniq(left.concat(right), function(inst) {
+                return inst._id;
+            });
+        }
+
+        function remove(left, right) {
+            return _.reject(left, function(ins) {
+                return _.some(right, function(exc) {
+                    return exc._id === ins._id;
+                });
+            });
+        }
+
+
         return {
-            matchById: matchById
+            matchById: matchById,
+            uniq: uniq,
+            remove: remove
         }
     })
     .controller('SignupPageController', ['$location', '$scope', '$global', '$rootScope', 'Auth', function($location, $scope, $global, $rootScope, Auth) {

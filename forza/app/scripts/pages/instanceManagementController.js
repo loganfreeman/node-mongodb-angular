@@ -41,10 +41,10 @@ angular.module('theme.pages-controllers')
                             };
 
                             $scope.add = function() {
-
+                                $scope.selected.stacks = Util.uniq($scope.selected.stacks, $scope.selected.left_stacks);
                             };
                             $scope.remove = function() {
-
+                                $scope.selected.stacks = Util.remove($scope.selected.stacks, $scope.selected.right_stacks);
                             };
                         },
                         resolve: {
