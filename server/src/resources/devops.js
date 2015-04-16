@@ -291,16 +291,16 @@ var addInstanceToStack = {
                 var stack = values[0],
                     instance = values[1];
 
-                // TODO: 
-                // Using addToSet with ObjectIds Results in Orphan Id
-                // http://stackoverflow.com/questions/17370663/mongoose-using-addtoset-with-objectids-results-in-orphan-id
-                stack.update( {
+
+                return stack.update( {
                     $addToSet: {
-                        instances: [instance._id]
+                        instances: instance._id
                     }
                 } );
 
-                return stack.save();
+            } )
+            .then( function(result) {
+                return Stack.findById( req.params.stackId ).exec();
             } )
             .then( function(stack) {
                 res.json( stack );
@@ -340,13 +340,14 @@ var addDeployToInstance = {
             .then( function(values) {
                 var instance = values[0],
                     deploy = values[1];
-                instance.deploys.push( deploy );
-                // make sure the groups and users array are unique
-                instance.deploys = _.uniq( instance.deploys, function(id) {
-                    return id.toString();
-                } );
 
-                return instance.save();
+
+
+                return instance.update( {
+                    $addToSet: {
+                        deploys: deploy._id
+                    }
+                } );
             } )
             .then( function(instance) {
                 res.json( instance );
@@ -402,19 +403,22 @@ var updateUser = {
                 var user = values[0];
                 var stacks = values[1];
                 var instances = values[2];
-                if (stacks) {
-                    user.stacks = _.uniq( user.stacks.concat( stacks ), function(id) {
-                        return id.toString();
-                    } );
-                }
 
-                if (instances) {
-                    user.instances = _.uniq( user.instances.concat( instances ), function(id) {
-                        return id.toString();
-                    } );
-                }
+                return user.update( {
+                    $addToSet: {
+                        stacks: {
+                            $each: stacks
+                        },
 
-                return user.save();
+                        instances: {
+                            $each: instances
+                        }
+                    }
+                } );
+
+            } )
+            .then( function(result) {
+                return User.findById( req.params.userId ).exec();
             } )
             .then( function(user) {
                 // res.json( user );
