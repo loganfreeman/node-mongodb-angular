@@ -189,12 +189,18 @@ describe( '#instance#', function() {
             name: 'addToSet'
         } ) );
 
+        var stackId;
+
         Promise.all( promises )
             .then( function(values) {
                 console.log( values );
                 var instance = values.shift();
                 var stack = values.shift();
                 instance.stacks.length.should.be.eq( 4 );
+
+                stackId = stack._id;
+                console.log( stackId );
+
                 return instance.update( {
                     $addToSet: {
                         stacks: [stack._id]
@@ -209,12 +215,48 @@ describe( '#instance#', function() {
             } )
             .then( function(instance) {
                 instance.stacks.length.should.be.eq( 5 );
+                return Instance.findOne( {
+                    name: 'c'
+                } ).exec();
+            } )
+            .then( function(instance) {
+                return instance.update( {
+                    $addToSet: {
+                        stacks: [stackId.toString()]
+                    }
+                } );
+            } )
+            .then( function(result) {
+                result.nModified.should.be.eq( 1 );
+                return Instance.findOne( {
+                    name: 'c'
+                } ).exec();
+            } )
+            .then( function(instance) {
+                instance.stacks.length.should.be.eq( 5 );
+                return Stack.findOne( {
+                    name: 'addToSet'
+                } ).exec();
+            } )
+            .then( function(stack) {
+                return Instance.find().exec();
+            } )
+            .then( function(values) {
+                console.log( values.length );
+                var instances = _.filter( values, function(value) {
+                    var filtered = _.filter( value.stacks, function(stack) {
+                        return stack == stackId.toString();
+                    } );
+                    return filtered.length > 0;
+                } );
+                instances.length.should.be.eq( 2 );
                 done();
             } )
             .catch( function(err) {
                 done( err );
             } );
     } );
+
 
 
 
