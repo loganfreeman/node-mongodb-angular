@@ -67,10 +67,11 @@ describe('#instance#', function() {
     });
 
     it('should create instance', function(done) {
+        var instance;
         Instance.find({
                 name: 'a'
             }).exec().then(function(instances) {
-                var instance = instances.shift();
+                instance = instances.shift();
                 //console.log( instance );
                 instance.serviceType.should.be.eq('PCP');
 
@@ -88,16 +89,19 @@ describe('#instance#', function() {
                 }).exec();
             })
             .then(function(stacks) {
-                console.log(stacks);
+                _.each(stacks, function(stack) {
+                    utils.exists(stack.instances, instance._id);
+                })
                 done();
             })
     });
 
     it('should create instance', function(done) {
+        var instance;
         Instance.find({
                 name: 'a'
             }).exec().then(function(instances) {
-                var instance = instances.shift();
+                instance = instances.shift();
                 //console.log( instance );
                 instance.serviceType.should.be.eq('PCP');
 
@@ -117,7 +121,9 @@ describe('#instance#', function() {
                 }).exec();
             })
             .then(function(stacks) {
-                console.log(stacks);
+                _.each(stacks, function(stack) {
+                    utils.exists(stack.instances, instance._id);
+                })
                 done();
             })
     });

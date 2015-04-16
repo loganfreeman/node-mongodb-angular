@@ -12,5 +12,13 @@ module.exports = {
 				sink.push(obj);
 			}
 		})
+	},
+
+	exists: function(arr, id) {
+		var res = _.find(arr, function(obj) {
+			return obj.toString() === id.toString();
+		})
+
+		return typeof res != 'undefined'
 	}
 }
