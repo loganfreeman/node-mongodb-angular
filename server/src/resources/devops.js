@@ -291,6 +291,9 @@ var addInstanceToStack = {
                 var stack = values[0],
                     instance = values[1];
 
+                // TODO: 
+                // Using addToSet with ObjectIds Results in Orphan Id
+                // http://stackoverflow.com/questions/17370663/mongoose-using-addtoset-with-objectids-results-in-orphan-id
                 stack.update( {
                     $addToSet: {
                         instances: [instance._id]

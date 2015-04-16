@@ -200,8 +200,12 @@ describe( '#instance#', function() {
 
                 saved = stack;
 
-                instance.stacks.push( stack._id );
-                return instance.save();
+                // instance.stacks.push( stack._id );
+                return instance.update( {
+                    $addToSet: {
+                        stacks: stack._id
+                    }
+                } );
             } )
             .then( function(result) {
                 return Instance.findOne( {
@@ -215,8 +219,12 @@ describe( '#instance#', function() {
                 } ).exec();
             } )
             .then( function(instance) {
-                instance.stacks.push( saved._id );
-                return instance.save();
+                //instance.stacks.push( saved._id );
+                return instance.update( {
+                    $addToSet: {
+                        stacks: saved._id
+                    }
+                } );
             } )
             .then( function(result) {
                 return Instance.findOne( {
@@ -243,21 +251,7 @@ describe( '#instance#', function() {
             } );
     } );
 
-    it( 'should find instances by stack', function(done) {
-        Promise.resolve( Stack.findOne( {
-            name: 'addToSet'
-        } ).exec() )
-            .then( function(stack) {
-                stack.name.should.be.eq( 'addToSet' );
-                return Instance.find( {
-                    stacks: stack._id
-                } ).exec();
-            } )
-            .then( function(values) {
-                console.log( values );
-                done();
-            } );
-    } );
+
 
 
 
