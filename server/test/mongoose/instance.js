@@ -74,7 +74,7 @@ describe('#instance#', function() {
                 //console.log( instance );
                 instance.serviceType.should.be.eq('PCP');
 
-                instance.stacks.push(stacks[1]._id);
+                instance.stacks.push(stacks[0]);
 
 
                 return instance.save();
@@ -101,7 +101,7 @@ describe('#instance#', function() {
                 //console.log( instance );
                 instance.serviceType.should.be.eq('PCP');
 
-                instance.stacks.push(stacks[0]._id.toString());
+                instance.stacks.push(stacks[1]);
 
                 //utils.insertIfNotExists(instance.stacks, stacks[0]);
 
@@ -112,9 +112,7 @@ describe('#instance#', function() {
                 console.log(instance);
                 return Stack.find({
                     _id: {
-                        $in: _.map(instance.stacks, function(stack) {
-                            return stack.toString();
-                        })
+                        $in: instance.stacks
                     }
                 }).exec();
             })
