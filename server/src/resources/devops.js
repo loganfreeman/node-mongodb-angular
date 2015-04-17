@@ -523,6 +523,9 @@ var createStack = {
                 return Stack.create( req.body );
             } )
             .then( function(stack) {
+                return resolveStack( stack );
+            } )
+            .then( function(stack) {
                 res.json( stack );
             } )
             .catch( function(err) {
@@ -571,12 +574,6 @@ var addInstanceToStack = {
                 }
 
                 var promises = [];
-
-                promises.push( stack.update( {
-                    $addToSet: {
-                        instances: instance._id
-                    }
-                } ) );
 
                 promises.push( instance.update( {
                     $addToSet: {
@@ -630,18 +627,11 @@ var addDeployToInstance = {
                 var instance = values[0],
                     deploy = values[1];
 
-                var promises = [];
-
-                promises.push( instance.update( {
-                    $addToSet: {
-                        deploys: deploy._id
-                    }
-                } ) );
-
-                return Promise.all( promises );
+                deploy.instance = instance;
+                return deploy.save();
             } )
-            .then( function(result) {
-                return Instance.findById( req.params.instanceId ).exec();
+            .then( function(instance) {
+                return resolveInstance( instance );
             } )
             .then( function(instance) {
                 res.json( instance );
@@ -785,49 +775,34 @@ var updateStack = {
     },
     action: function(req, res) {
 
-        Promise.resolve( Stack.findById( req.params.stackId ).exec() )
+
+        Promise
+            .resolve( Stack.findById( req.params.stackId ).exec() )
             .then( function(stack) {
-
-
-
-                var promises = [];
-
-
-                var instancesToDelete = [];
-
-                if (req.body.instances && req.body.instances.length) {
-                    instancesToDelete = _.filter( stack.instances, function(model) {
-                        return !_.contains( req.body.instances, model.toString() );
-                    } );
-                    promises.push( stack.update( {
-                        $pullAll: {
-                            instances: instancesToDelete
-                        }
-                    } ) );
-                    promises.push( stack.update( {
-                        $addToSet: {
-                            instances: {
-                                $each: req.body.instances
-                            }
-                        }
-                    } ) );
-                } else {
-                    // set instances to []
-                    promises.push( stack.update( {
-                        $set: {
-                            'instances': []
-                        }
-                    }, {
-                            multi: true
-                        } ) );
-                }
-
-
-
-                return Promise.all( promises );
-
-
+                return resolveStack( stack );
             } )
+            .then( function(stack) {
+                return stack.instances;
+            } )
+            .then( function(instances) {
+                var keepInstances = req.body.instances;
+                var deleteInstances = _.filter( instances, function(instance) {
+                    var exist = _.find( keepInstances, function(other) {
+                        return instance == other;
+                    } );
+                    return typeof exist == 'undefined';
+                } );
+
+                return Promise.all( deleteInstances )
+                    .map( function(instance) {
+                        return instance.update( {
+                            $pull: {
+                                stacks: req.params.stackId
+                            }
+                        } );
+                    } );
+            } )
+
             .then( function(result) {
                 return Stack.findById( req.params.stackId ).exec();
             } )
@@ -977,16 +952,9 @@ var updateInstance = {
 var resolveStack = function(stack) {
     return new Promise( function(resolve, reject) {
 
-            var instances = Promise.resolve( [] );
-
-
-            if (stack.instances) {
-                instances = Instance.find( {
-                    '_id': {
-                        $in: stack.instances
-                    }
-                } ).exec();
-            }
+            var instances = Promise.resolve( Instance.find( {
+                stacks: stack
+            } ).exec() );
 
             var stackPromise = Promise.resolve( stack );
 
@@ -1243,9 +1211,10 @@ var listInstances = {
         Instance.find().exec()
             .then( function(instances) {
                 //res.json(instances);
-                Promise.all( instances ).map( function(instance) {
-                    return resolveInstance( instance );
-                } )
+                Promise.all( instances )
+                    .map( function(instance) {
+                        return resolveInstance( instance );
+                    } )
                     .then( function(instances) {
                         res.json( instances );
                     } );
