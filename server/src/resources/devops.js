@@ -13,8 +13,10 @@ var swaggerMethods = require( '../swaggerMethodMap.js' );
 
 var mongoUtil = require( '../mongoose/utils.js' );
 
+var exceptions = require( '../exception' );
+var UserNotFoundError = exceptions.UserNotFoundError;
 
-var UserNotFoundError = require( '../exception' ).UserNotFoundError;
+var ObjectNotFoundError = exceptions.ObjectNotFoundError;
 
 var db = mongoUtil.connect();
 
@@ -134,6 +136,52 @@ var deleteEnvironment = {
             .then( function(models) {
                 res.json( models );
 
+            } );
+
+    }
+};
+
+
+var deleteGroup = {
+    spec: {
+        path: '/devops/group/{id}',
+        method: 'DELETE',
+        notes: 'The method allows to delete an group',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'deleteGroup',
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'id',
+            'in': 'path',
+            'description': 'group ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+        }]
+    },
+    action: function(req, res) {
+        Promise.resolve( Group.find( {
+            _id: req.params.id
+        } ).remove().exec() )
+            .then( function(result) {
+                return User.find().exec();
+
+            } )
+            .then( function(users) {
+                return Promise.all( users )
+                    .map( function(user) {
+                        return user.update( {
+                            $pull: {
+                                groups: req.params.id
+                            }
+                        } );
+                    } );
+            } )
+            .then( function(result) {
+                res.json( {
+                    message: 'OK'
+                } );
             } );
 
     }
@@ -1324,6 +1372,9 @@ var getUsersByGroupId = {
     action: function(req, res) {
         Promise.resolve( Group.findById( req.params.groupId ).exec() )
             .then( function(group) {
+                if (!group) {
+                    throw ObjectNotFoundError();
+                }
                 return User.find( {
                     '_id': {
                         $in: group.users
@@ -1339,6 +1390,18 @@ var getUsersByGroupId = {
             } )
             .then( function(users) {
                 res.json( users );
+            } )
+            .catch( ObjectNotFoundError, function(err) {
+                res.status( 500 ).
+                    json( {
+                        message: 'Group doesn\'t exist'
+                    } );
+            } )
+            .catch( mongoose.Error.CastError, function(err) {
+                res.status( 500 ).
+                    json( {
+                        message: err.message
+                    } );
             } );
 
     }
@@ -1584,7 +1647,7 @@ var listDeploys = {
     }
 };
 
-var methods = [deleteEnvironment,
+var methods = [deleteEnvironment, deleteGroup,
     listUsers, getUsersByGroupId, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
     getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId, getDeployByInstance, createDeploy,
     listStacks, listDeploys, addInstanceToUser, addStackToUser, addInstanceToStack, addDeployToInstance, updateUser, updateStack, updateInstance
