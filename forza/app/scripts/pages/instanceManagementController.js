@@ -135,7 +135,9 @@ angular.module( 'theme.pages-controllers' )
                     var instances = $scope.allinstances;
                     if (stack) {
                         instances = _.filter( $scope.allinstances, function(instance) {
-                            return instance.stacks.indexOf( stack ) >= 0;
+                            return _.find( instance.stacks, function(s) {
+                                return s._id == stack;
+                            } );
                         } );
                     }
 
