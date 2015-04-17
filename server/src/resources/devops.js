@@ -38,6 +38,19 @@ var mongoose = require( 'mongoose' );
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 
+var resolveDeploy = function(deploy) {
+    var instance = Instance.findById( deploy.instance ).exec();
+    var user = User.findById( deploy.user ).exec();
+
+    return Promise.all( [instance, user] ).then( function(values) {
+        deploy = deploy.toJSON();
+        deploy.instance = values[0];
+        deploy.user = values[1];
+        return deploy;
+    } );
+};
+
+
 var resolveUser = function(user) {
     return new Promise( function(resolve, reject) {
 
@@ -825,6 +838,50 @@ var updateStack = {
             } )
             .then( function(stack) {
                 res.json( stack );
+            } );
+
+    }
+};
+
+var updateDeploy = {
+    spec: {
+        // description: 'The method allows to retrieve items according to the given parameters',
+        path: '/devops/deploy/{deployId}',
+        method: 'POST',
+        notes: 'This method allows to update or modify a deploy',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'updateDeploy',
+        consumes: ['application/json'],
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'deployId',
+            'description': 'deploy ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+            },
+            paramTypes.body( 'body', '(object) Modified Instance Properties', 'DeployModification' )
+        ],
+    },
+    action: function(req, res) {
+
+        Promise.resolve( Deploy.findById( req.params.deployId ).exec() )
+            .then( function(deploy) {
+
+                deploy.instance = req.body.instance;
+
+
+
+                return deploy.save();
+
+
+            } )
+            .then( function(instance) {
+                return resolveDeploy( instance );
+            } )
+            .then( function(instance) {
+                res.json( instance );
             } );
 
     }
@@ -1842,15 +1899,7 @@ var listDeploys = {
                 //res.json(deploys);
                 Promise.all( deploys ).
                     map( function(deploy) {
-                        var instance = Instance.findById( deploy.instance ).exec();
-                        var user = User.findById( deploy.user ).exec();
-
-                        return Promise.all( [instance, user] ).then( function(values) {
-                            deploy = deploy.toJSON();
-                            deploy.instance = values[0];
-                            deploy.user = values[1];
-                            return deploy;
-                        } );
+                        return resolveDeploy( deploy );
                     } )
                     .then( function(deploys) {
                         res.json( deploys );
@@ -1864,7 +1913,8 @@ var listDeploys = {
 var methods = [deleteEnvironment, deleteGroup, deleteUser, deleteStack, deleteInstance, deleteDeploy,
     listUsers, getUsersByGroupId, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
     getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId, getDeployByInstance, createDeploy,
-    listStacks, listDeploys, addInstanceToUser, addStackToUser, addInstanceToStack, addDeployToInstance, updateUser, updateStack, updateInstance
+    listStacks, listDeploys, addInstanceToUser, addStackToUser, addInstanceToStack, addDeployToInstance,
+    updateUser, updateStack, updateInstance, updateDeploy
 ];
 
 module.exports = function(swagger) {

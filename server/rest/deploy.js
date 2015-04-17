@@ -46,6 +46,32 @@ describe( 'deploy routes', function() {
     } );
 
 
+    it( 'devops should update deploy', function(done) {
+
+        var comments = 'this is updated through route ' + +new Date();
+        var data = {
+            instance: '55241088c8f46e615fe96752'
+        };
+        var options = {
+            url: 'http://localhost:8081/devops/deploy/5524155b66a6df5f65d60e18?secret=secret',
+            json: data,
+            method: 'POST'
+        };
+        request( options )
+            .spread( function(res, body) {
+                console.log( body );
+                body.comments.should.be.eq( 'this is a test deploy' );
+                body.instance.name.should.be.eq( 'test' );
+                body.instance.deploys.should.contains( body._id );
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+
+    } );
+
+
     it( 'should get deploys', function(done) {
         request( 'http://localhost:8081/deploys' )
             .spread( function(res, deploys) {
