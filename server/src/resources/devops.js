@@ -1615,9 +1615,7 @@ var listGroup = {
 
 var resolveGroup = function(group) {
     return Promise.resolve( User.find( {
-        '_id': {
-            $in: group.users
-        }
+        groups: group
     } ).exec() )
         .then( function(users) {
             group = group.toJSON();
