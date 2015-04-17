@@ -34,6 +34,7 @@ describe( 'instance routes', function() {
             } );
     } );
 
+
     it( 'should update instance', function(done) {
 
         var description = 'this is updated through route ' + +new Date();
@@ -57,12 +58,57 @@ describe( 'instance routes', function() {
 
     } );
 
+
+    it( 'devops should create then delete', function(done) {
+        var instance = {
+            name: 'TODELETE',
+            description: 'this is inserted by test',
+            ip: '192.168.100.128/25',
+            serviceType: 'PCP'
+        };
+        var options = {
+            method: 'PUT',
+            url: 'http://localhost:8081/devops/instance?secret=secret',
+            json: instance
+        };
+        request( options )
+            .spread( function(res, body) {
+                if (res.statusCode != 200) {
+                    throw Error( JSON.stringify( body ) );
+                }
+                return body;
+            } )
+            .then( function(instance) {
+
+                instance.name.should.be.eq( 'TODELETE' );
+                instance.ip.should.be.eq( '192.168.100.128/25' );
+
+                // console.log('TO DELETE: ' + JSON.stringify(deploy));
+                var options = {
+                    method: 'DELETE',
+                    url: 'http://localhost:8081/devops/instance/' + instance._id + '?secret=secret'
+                };
+                request( options ).
+                    spread( function(res, body) {
+                        body = JSON.parse( body );
+                        body.message.should.be.eq( 'OK' );
+                        done();
+                    } )
+                    .catch( function(err) {
+                        done( err );
+                    } );
+            } )
+            .catch( function(err) {
+                done( err );
+            } );
+    } );
+
     it( 'should create then delete', function(done) {
         var instance = {
             name: 'test',
             description: 'this is inserted by test',
-            stack_id: 1,
-            ip: '192.168.100.128/25'
+            ip: '192.168.100.128/25',
+            stack_id: 1
         };
         var options = {
             method: 'PUT',

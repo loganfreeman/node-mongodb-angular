@@ -187,6 +187,187 @@ var deleteGroup = {
     }
 };
 
+
+var deleteUser = {
+    spec: {
+        path: '/devops/user/{id}',
+        method: 'DELETE',
+        notes: 'The method allows to delete an user',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'deleteUser',
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'id',
+            'in': 'path',
+            'description': 'user ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+        }]
+    },
+    action: function(req, res) {
+        Promise.resolve( User.find( {
+            _id: req.params.id
+        } ).remove().exec() )
+            .then( function(result) {
+                return Group.find().exec();
+
+            } )
+            .then( function(groups) {
+                return Promise.all( groups )
+                    .map( function(group) {
+                        return group.update( {
+                            $pull: {
+                                users: req.params.id
+                            }
+                        } );
+                    } );
+            } )
+            .then( function(result) {
+                res.json( {
+                    message: 'OK'
+                } );
+            } );
+
+    }
+};
+
+var deleteInstance = {
+    spec: {
+        path: '/devops/instance/{id}',
+        method: 'DELETE',
+        notes: 'The method allows to delete an instance',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'deleteInstance',
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'id',
+            'in': 'path',
+            'description': 'instance ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+        }]
+    },
+    action: function(req, res) {
+        Promise.resolve( Instance.find( {
+            _id: req.params.id
+        } ).remove().exec() )
+            .then( function(result) {
+                return Stack.find().exec();
+
+            } )
+            .then( function(stacks) {
+                return Promise.all( stacks )
+                    .map( function(stack) {
+                        return stack.update( {
+                            $pull: {
+                                instances: req.params.id
+                            }
+                        } );
+                    } );
+            } )
+            .then( function(result) {
+                res.json( {
+                    message: 'OK'
+                } );
+            } );
+
+    }
+};
+
+var deleteStack = {
+    spec: {
+        path: '/devops/stack/{id}',
+        method: 'DELETE',
+        notes: 'The method allows to delete an stack',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'deleteStack',
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'id',
+            'in': 'path',
+            'description': 'stack ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+        }]
+    },
+    action: function(req, res) {
+        Promise.resolve( Stack.find( {
+            _id: req.params.id
+        } ).remove().exec() )
+            .then( function(result) {
+                return Instance.find().exec();
+
+            } )
+            .then( function(instances) {
+                return Promise.all( instances )
+                    .map( function(instance) {
+                        return instance.update( {
+                            $pull: {
+                                stacks: req.params.id
+                            }
+                        } );
+                    } );
+            } )
+            .then( function(result) {
+                res.json( {
+                    message: 'OK'
+                } );
+            } );
+
+    }
+};
+
+var deleteDeploy = {
+    spec: {
+        path: '/devops/deploy/{id}',
+        method: 'DELETE',
+        notes: 'The method allows to delete an deploy',
+        //summary: 'return items for the given criteria',
+        //type: 'Category',
+        nickname: 'deleteDeploy',
+        produces: ['application/json'],
+        parameters: [{
+            'name': 'id',
+            'in': 'path',
+            'description': 'deploy ID',
+            'required': true,
+            'type': 'string',
+            'paramType': 'path'
+        }]
+    },
+    action: function(req, res) {
+        Promise.resolve( Deploy.find( {
+            _id: req.params.id
+        } ).remove().exec() )
+            .then( function(result) {
+                return Instance.find().exec();
+
+            } )
+            .then( function(instances) {
+                return Promise.all( instances )
+                    .map( function(instance) {
+                        return instance.update( {
+                            $pull: {
+                                deploys: req.params.id
+                            }
+                        } );
+                    } );
+            } )
+            .then( function(result) {
+                res.json( {
+                    message: 'OK'
+                } );
+            } );
+
+    }
+};
+
 var listUsers = {
     spec: {
         path: '/devops/users',
@@ -369,6 +550,10 @@ var addInstanceToStack = {
                 var stack = values[0],
                     instance = values[1];
 
+                if (!stack) {
+                    throw ObjectNotFoundError( 'Stack not found' );
+                }
+
                 var promises = [];
 
                 promises.push( stack.update( {
@@ -391,6 +576,7 @@ var addInstanceToStack = {
             .then( function(stack) {
                 res.json( stack );
             } );
+
     }
 };
 
@@ -1013,7 +1199,8 @@ var createInstance = {
         //type: 'Category',
         nickname: 'createInstance',
         consumes: [
-            'application/x-www-form-urlencoded'
+            'application/x-www-form-urlencoded',
+            'application/json'
         ],
         produces: ['application/json'],
         parameters: [{
@@ -1057,12 +1244,16 @@ var createInstance = {
     action: function(req, res) {
 
         var createdInstance;
+        console.log( req.body.serviceType );
         Promise.resolve()
             .then( function() {
                 return Instance.create( req.body );
             } )
             .then( function(instance) {
                 createdInstance = instance;
+                if (!(instance.stacks && instance.stacks.length)) {
+                    return Promise.resolve( [] );
+                }
                 return Stack.find( {
                     _id: {
                         $in: instance.stacks
@@ -1217,7 +1408,13 @@ var addUserToGroupByName = {
             .then( function(values) {
                 var group = values[0],
                     user = values[1];
+                if (!group) {
+                    throw ObjectNotFoundError( 'Group not found' );
+                }
 
+                if (!user) {
+                    throw ObjectNotFoundError( 'User not found' );
+                }
 
                 var promises = [];
 
@@ -1284,6 +1481,15 @@ var addUserToGroup = {
                     user = values[1];
                 var promises = [];
 
+
+                if (!group) {
+                    throw ObjectNotFoundError( 'Group not found' );
+                }
+
+                if (!user) {
+                    throw ObjectNotFoundError( 'User not found' );
+                }
+
                 promises.push( user.update( {
                     $addToSet: {
                         groups: group
@@ -1305,10 +1511,8 @@ var addUserToGroup = {
             } )
             .then( function(values) {
                 res.json( values );
-            } )
-            .catch( function(err) {
-                res.status( 500 ).send( err );
             } );
+
     }
 };
 
@@ -1373,7 +1577,7 @@ var getUsersByGroupId = {
         Promise.resolve( Group.findById( req.params.groupId ).exec() )
             .then( function(group) {
                 if (!group) {
-                    throw ObjectNotFoundError();
+                    throw ObjectNotFoundError( 'Group not found' );
                 }
                 return User.find( {
                     '_id': {
@@ -1394,7 +1598,7 @@ var getUsersByGroupId = {
             .catch( ObjectNotFoundError, function(err) {
                 res.status( 500 ).
                     json( {
-                        message: 'Group doesn\'t exist'
+                        message: err.message
                     } );
             } )
             .catch( mongoose.Error.CastError, function(err) {
@@ -1647,7 +1851,7 @@ var listDeploys = {
     }
 };
 
-var methods = [deleteEnvironment, deleteGroup,
+var methods = [deleteEnvironment, deleteGroup, deleteUser, deleteStack, deleteInstance, deleteDeploy,
     listUsers, getUsersByGroupId, listGroup, createGroup, addUserToGroup, addUserToGroupByName, listEnvironments, createEnvironment,
     getStackByEnvironmentId, createStack, createInstance, listInstances, getInstanceByStackId, getDeployByInstance, createDeploy,
     listStacks, listDeploys, addInstanceToUser, addStackToUser, addInstanceToStack, addDeployToInstance, updateUser, updateStack, updateInstance
