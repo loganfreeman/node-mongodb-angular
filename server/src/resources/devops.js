@@ -1,90 +1,90 @@
-var sw = require( 'swagger-node-express' );
+var sw = require('swagger-node-express');
 var paramTypes = sw.paramTypes;
-var url = require( 'url' );
+var url = require('url');
 var swe = sw.errors;
 
 // var models = require( '../mongoose/models' );
 
-var _ = require( 'lodash' );
+var _ = require('lodash');
 
-var Promise = require( 'bluebird' );
+var Promise = require('bluebird');
 
-var swaggerMethods = require( '../swaggerMethodMap.js' );
+var swaggerMethods = require('../swaggerMethodMap.js');
 
-var mongoUtil = require( '../mongoose/utils.js' );
+var mongoUtil = require('../mongoose/utils.js');
 
 
-var UserNotFoundError = require( '../exception' ).UserNotFoundError;
+var UserNotFoundError = require('../exception').UserNotFoundError;
 
 var db = mongoUtil.connect();
 
-var Group = db.model( 'Group' );
-var User = db.model( 'User' );
-var Environment = db.model( 'Environment' );
-var Stack = db.model( 'Stack' );
-var Instance = db.model( 'Instance' );
-var Deploy = db.model( 'Deploy' );
+var Group = db.model('Group');
+var User = db.model('User');
+var Environment = db.model('Environment');
+var Stack = db.model('Stack');
+var Instance = db.model('Instance');
+var Deploy = db.model('Deploy');
 
-var readFile = Promise.promisify( require( 'fs' ).readFile );
+var readFile = Promise.promisify(require('fs').readFile);
 
-var config = require( '../config/config.js' );
+var config = require('../config/config.js');
 
-var utils = require( './utils.js' );
+var utils = require('./utils.js');
 
-var mongoose = require( 'mongoose' );
+var mongoose = require('mongoose');
 
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 
 var resolveUser = function(user) {
-    return new Promise( function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-            var groups = Promise.resolve( [] ),
-                stacks = Promise.resolve( [] ),
-                instances = Promise.resolve( [] );
-            if (user.groups) {
-                groups = Group.find( {
-                    '_id': {
-                        $in: user.groups
-                    }
-                } ).exec();
-            }
+        var groups = Promise.resolve([]),
+            stacks = Promise.resolve([]),
+            instances = Promise.resolve([]);
+        if (user.groups) {
+            groups = Group.find({
+                '_id': {
+                    $in: user.groups
+                }
+            }).exec();
+        }
 
-            if (user.stacks) {
-                stacks = Stack.find( {
-                    '_id': {
-                        $in: user.stacks
-                    }
-                } ).exec();
-            }
+        if (user.stacks) {
+            stacks = Stack.find({
+                '_id': {
+                    $in: user.stacks
+                }
+            }).exec();
+        }
 
-            if (user.instances) {
-                instances = Instance.find( {
-                    '_id': {
-                        $in: user.instances
-                    }
-                } ).exec();
-            }
+        if (user.instances) {
+            instances = Instance.find({
+                '_id': {
+                    $in: user.instances
+                }
+            }).exec();
+        }
 
-            var userPromise = Promise.resolve( user );
+        var userPromise = Promise.resolve(user);
 
-            Promise.all( [groups, stacks, instances, userPromise] )
-                .then( function(values) {
-                    var groups = values[0];
-                    var stacks = values[1];
-                    var instances = values[2];
-                    var user = values[3].toJSON();
-                    user.groups = groups;
-                    user.stacks = stacks;
-                    user.instances = instances;
-                    return user;
-                } )
-                .then( function(user) {
-                    resolve( user );
-                } );
+        Promise.all([groups, stacks, instances, userPromise])
+            .then(function(values) {
+                var groups = values[0];
+                var stacks = values[1];
+                var instances = values[2];
+                var user = values[3].toJSON();
+                user.groups = groups;
+                user.stacks = stacks;
+                user.instances = instances;
+                return user;
+            })
+            .then(function(user) {
+                resolve(user);
+            });
 
 
-        } );
+    });
 };
 
 
@@ -101,10 +101,10 @@ var listEnvironments = {
     },
     action: function(req, res) {
         Environment.find().exec()
-            .then( function(models) {
-                res.json( models );
+            .then(function(models) {
+                res.json(models);
 
-            } );
+            });
 
     }
 };
@@ -121,15 +121,15 @@ var listUsers = {
     },
     action: function(req, res) {
         User.find().exec()
-            .then( function(users) {
+            .then(function(users) {
                 //res.json( users );
-                Promise.all( users ).map( function(user) {
-                    return resolveUser( user );
-                } ).then( function(users) {
-                    res.json( users );
-                } );
+                Promise.all(users).map(function(user) {
+                    return resolveUser(user);
+                }).then(function(users) {
+                    res.json(users);
+                });
 
-            } );
+            });
 
     }
 };
@@ -154,7 +154,7 @@ var createEnvironment = {
             'required': true,
             'type': 'string',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'description',
             'in': 'formData',
             'description': 'environment description',
@@ -165,15 +165,15 @@ var createEnvironment = {
     action: function(req, res) {
 
         Promise.resolve()
-            .then( function() {
-                return Environment.create( req.body );
-            } )
-            .then( function(environment) {
-                res.json( environment );
-            } )
-            .catch( function(err) {
-                res.status( 500 ).send( err );
-            } );
+            .then(function() {
+                return Environment.create(req.body);
+            })
+            .then(function(environment) {
+                res.json(environment);
+            })
+            .catch(function(err) {
+                res.status(500).send(err);
+            });
 
     }
 };
@@ -199,12 +199,12 @@ var getStackByEnvironmentId = {
         produces: ['application/json']
     },
     action: function(req, res) {
-        Stack.find( {
-            environment: req.params.environmentId
-        } ).exec()
-            .then( function(models) {
-                res.json( models );
-            } );
+        Stack.find({
+                environment: req.params.environmentId
+            }).exec()
+            .then(function(models) {
+                res.json(models);
+            });
 
     }
 };
@@ -228,13 +228,13 @@ var createStack = {
             'required': true,
             'type': 'string',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'description',
             'in': 'formData',
             'description': 'stack description',
             'type': 'string',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'environment',
             'in': 'formData',
             'description': 'environment ID',
@@ -245,15 +245,15 @@ var createStack = {
     action: function(req, res) {
 
         Promise.resolve()
-            .then( function() {
-                return Stack.create( req.body );
-            } )
-            .then( function(stack) {
-                res.json( stack );
-            } )
-            .catch( function(err) {
-                res.status( 500 ).send( err );
-            } );
+            .then(function() {
+                return Stack.create(req.body);
+            })
+            .then(function(stack) {
+                res.json(stack);
+            })
+            .catch(function(err) {
+                res.status(500).send(err);
+            });
 
     }
 };
@@ -274,7 +274,7 @@ var addInstanceToStack = {
             'required': true,
             'type': 'string',
             'paramType': 'path'
-            }, {
+        }, {
             'name': 'instance',
             'in': 'formData',
             'description': 'instance ID',
@@ -284,27 +284,35 @@ var addInstanceToStack = {
         }]
     },
     action: function(req, res) {
-        var stack = Stack.findById( req.params.stackId ).exec();
-        var instance = Instance.findById( req.body.instance ).exec();
-        Promise.all( [stack, instance] )
-            .then( function(values) {
+        var stack = Stack.findById(req.params.stackId).exec();
+        var instance = Instance.findById(req.body.instance).exec();
+        Promise.all([stack, instance])
+            .then(function(values) {
                 var stack = values[0],
                     instance = values[1];
 
+                var promises = [];
 
-                return stack.update( {
+                promises.push(stack.update({
                     $addToSet: {
                         instances: instance._id
                     }
-                } );
+                }));
 
-            } )
-            .then( function(result) {
-                return Stack.findById( req.params.stackId ).exec();
-            } )
-            .then( function(stack) {
-                res.json( stack );
-            } );
+                promises.push(instance.update({
+                    $addToSet: {
+                        stacks: stack._id
+                    }
+                }));
+                return Promise.all(promises);
+
+            })
+            .then(function(result) {
+                return Stack.findById(req.params.stackId).exec();
+            })
+            .then(function(stack) {
+                res.json(stack);
+            });
     }
 };
 
@@ -324,7 +332,7 @@ var addDeployToInstance = {
             'required': true,
             'type': 'string',
             'paramType': 'path'
-            }, {
+        }, {
             'name': 'deploy',
             'in': 'formData',
             'description': 'deploy ID',
@@ -334,24 +342,29 @@ var addDeployToInstance = {
         }]
     },
     action: function(req, res) {
-        var instance = Instance.findById( req.params.instanceId ).exec();
-        var deploy = Deploy.findById( req.body.deploy ).exec();
-        Promise.all( [instance, deploy] )
-            .then( function(values) {
+        var instance = Instance.findById(req.params.instanceId).exec();
+        var deploy = Deploy.findById(req.body.deploy).exec();
+        Promise.all([instance, deploy])
+            .then(function(values) {
                 var instance = values[0],
                     deploy = values[1];
 
+                var promises = [];
 
-
-                return instance.update( {
+                promises.push(instance.update({
                     $addToSet: {
                         deploys: deploy._id
                     }
-                } );
-            } )
-            .then( function(instance) {
-                res.json( instance );
-            } );
+                }));
+
+                return Promise.all(promises);
+            })
+            .then(function(result) {
+                return Instance.findById(req.params.instanceId).exec();
+            })
+            .then(function(instance) {
+                res.json(instance);
+            });
     }
 };
 
@@ -367,44 +380,46 @@ var updateUser = {
         consumes: ['application/json'],
         produces: ['application/json'],
         parameters: [{
-            'name': 'userId',
-            'description': 'user ID',
-            'required': true,
-            'type': 'string',
-            'paramType': 'path'
+                'name': 'userId',
+                'description': 'user ID',
+                'required': true,
+                'type': 'string',
+                'paramType': 'path'
             },
-            paramTypes.body( 'body', '(object) Modified User Properties', 'UserModification' )
+            paramTypes.body('body', '(object) Modified User Properties', 'UserModification')
         ],
     },
     action: function(req, res) {
         var promises = [];
-        var user = User.findById( req.params.userId ).exec();
-        var stacks = Promise.resolve( [] );
-        var instances = Promise.resolve( [] );
+        var user = User.findById(req.params.userId).exec();
+        var stacks = Promise.resolve([]);
+        var instances = Promise.resolve([]);
         if (req.body.stacks) {
-            stacks = Stack.find( {
+            stacks = Stack.find({
                 '_id': {
                     $in: req.body.stacks
                 }
-            } ).exec();
+            }).exec();
         }
 
         if (req.body.instances) {
-            instances = Instance.find( {
+            instances = Instance.find({
                 '_id': {
                     $in: req.body.instances
                 }
-            } ).exec();
+            }).exec();
         }
 
 
-        Promise.all( [user, stacks, instances] )
-            .then( function(values) {
+        Promise.all([user, stacks, instances])
+            .then(function(values) {
                 var user = values[0];
                 var stacks = values[1];
                 var instances = values[2];
 
-                return user.update( {
+                // TODO: implement delete logic
+
+                return user.update({
                     $addToSet: {
                         stacks: {
                             $each: stacks
@@ -414,20 +429,20 @@ var updateUser = {
                             $each: instances
                         }
                     }
-                } );
+                });
 
-            } )
-            .then( function(result) {
-                return User.findById( req.params.userId ).exec();
-            } )
-            .then( function(user) {
+            })
+            .then(function(result) {
+                return User.findById(req.params.userId).exec();
+            })
+            .then(function(user) {
                 // res.json( user );
 
-                return resolveUser( user );
+                return resolveUser(user);
                 // 
-            } ).then( function(user) {
-            res.json( user );
-        } );
+            }).then(function(user) {
+                res.json(user);
+            });
 
     }
 };
@@ -445,19 +460,19 @@ var updateStack = {
         consumes: ['application/json'],
         produces: ['application/json'],
         parameters: [{
-            'name': 'stackId',
-            'description': 'stack ID',
-            'required': true,
-            'type': 'string',
-            'paramType': 'path'
+                'name': 'stackId',
+                'description': 'stack ID',
+                'required': true,
+                'type': 'string',
+                'paramType': 'path'
             },
-            paramTypes.body( 'body', '(object) Modified Stack Properties', 'StackModification' )
+            paramTypes.body('body', '(object) Modified Stack Properties', 'StackModification')
         ],
     },
     action: function(req, res) {
 
-        Promise.resolve( Stack.findById( req.params.stackId ).exec() )
-            .then( function(stack) {
+        Promise.resolve(Stack.findById(req.params.stackId).exec())
+            .then(function(stack) {
 
 
 
@@ -467,49 +482,49 @@ var updateStack = {
                 var instancesToDelete = [];
 
                 if (req.body.instances && req.body.instances.length) {
-                    instancesToDelete = _.filter( stack.instances, function(model) {
-                        return !_.contains( req.body.instances, model.toString() );
-                    } );
-                    promises.push( stack.update( {
+                    instancesToDelete = _.filter(stack.instances, function(model) {
+                        return !_.contains(req.body.instances, model.toString());
+                    });
+                    promises.push(stack.update({
                         $pullAll: {
                             instances: instancesToDelete
                         }
-                    } ) );
-                    promises.push( stack.update( {
+                    }));
+                    promises.push(stack.update({
                         $addToSet: {
                             instances: {
                                 $each: req.body.instances
                             }
                         }
-                    } ) );
+                    }));
                 } else {
                     // set instances to []
-                    promises.push( stack.update( {
+                    promises.push(stack.update({
                         $set: {
                             'instances': []
                         }
                     }, {
-                            multi: true
-                        } ) );
+                        multi: true
+                    }));
                 }
 
 
 
-                return Promise.all( promises );
+                return Promise.all(promises);
 
 
-            } )
-            .then( function(result) {
-                return Stack.findById( req.params.stackId ).exec();
-            } )
-            .then( function(stack) {
+            })
+            .then(function(result) {
+                return Stack.findById(req.params.stackId).exec();
+            })
+            .then(function(stack) {
 
-                return resolveStack( stack );
+                return resolveStack(stack);
                 // 
-            } )
-            .then( function(stack) {
-                res.json( stack );
-            } );
+            })
+            .then(function(stack) {
+                res.json(stack);
+            });
 
     }
 };
@@ -527,103 +542,141 @@ var updateInstance = {
         consumes: ['application/json'],
         produces: ['application/json'],
         parameters: [{
-            'name': 'instanceId',
-            'description': 'instance ID',
-            'required': true,
-            'type': 'string',
-            'paramType': 'path'
+                'name': 'instanceId',
+                'description': 'instance ID',
+                'required': true,
+                'type': 'string',
+                'paramType': 'path'
             },
-            paramTypes.body( 'body', '(object) Modified Instance Properties', 'InstanceModification' )
+            paramTypes.body('body', '(object) Modified Instance Properties', 'InstanceModification')
         ],
     },
     action: function(req, res) {
 
-        Promise.resolve( Instance.findById( req.params.instanceId ).exec() )
-            .then( function(instance) {
+        Promise.resolve(Instance.findById(req.params.instanceId).exec())
+            .then(function(instance) {
 
 
                 if (req.body.serviceType) {
                     instance.serviceType = req.body.serviceType;
                 }
 
-                return instance.save();
+
+                var promises = [];
+
+                promises.push(instance.save());
 
 
-            } )
-            .then( function(instance) {
-                return resolveInstance( instance );
-            } )
-            .then( function(instance) {
-                res.json( instance );
-            } );
+                var stacksToDelete = [];
+
+                if (req.body.stacks && req.body.stacks.length) {
+                    stacksToDelete = _.filter(instance.stacks, function(model) {
+                        return !_.contains(req.body.stacks, model.toString());
+                    });
+                    promises.push(instance.update({
+                        $pullAll: {
+                            stacks: stacksToDelete
+                        }
+                    }));
+                    promises.push(instance.update({
+                        $addToSet: {
+                            stacks: {
+                                $each: req.body.stacks
+                            }
+                        }
+                    }));
+                } else {
+                    // set instances to []
+                    promises.push(instance.update({
+                        $set: {
+                            'stacks': []
+                        }
+                    }, {
+                        multi: true
+                    }));
+                }
+
+                return Promise.all(promises);
+
+
+            })
+            .then(function(result) {
+                return Instance.findById(req.params.instanceId).exec();
+            })
+            .then(function(instance) {
+                return resolveInstance(instance);
+            })
+            .then(function(instance) {
+                res.json(instance);
+            });
 
     }
 };
 
 
 var resolveStack = function(stack) {
-    return new Promise( function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-            var instances = Promise.resolve( [] );
-
-
-            if (stack.instances) {
-                instances = Instance.find( {
-                    '_id': {
-                        $in: stack.instances
-                    }
-                } ).exec();
-            }
-
-            var stackPromise = Promise.resolve( stack );
-
-            Promise.all( [instances, stackPromise] )
-                .then( function(values) {
-
-                    var instances = values[0];
-                    var stack = values[1].toJSON();
-                    stack.instances = instances;
-                    return stack;
-                } )
-                .then( function(stack) {
-                    resolve( stack );
-                } );
+        var instances = Promise.resolve([]);
 
 
-        } );
+        if (stack.instances) {
+            instances = Instance.find({
+                '_id': {
+                    $in: stack.instances
+                }
+            }).exec();
+        }
+
+        var stackPromise = Promise.resolve(stack);
+
+        Promise.all([instances, stackPromise])
+            .then(function(values) {
+
+                var instances = values[0];
+                var stack = values[1].toJSON();
+                stack.instances = instances;
+                return stack;
+            })
+            .then(function(stack) {
+                resolve(stack);
+            });
+
+
+    });
 };
 
 
 var resolveInstance = function(instance) {
-    return new Promise( function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-            var stacks = Promise.resolve( [] );
-
-
-            if (instance.stacks) {
-                stacks = Stack.find( {
-                    '_id': {
-                        $in: instance.stacks
-                    }
-                } ).exec();
-            }
-
-            var instancePromise = Promise.resolve( instance );
-
-            Promise.all( [stacks, instancePromise] )
-                .then( function(values) {
-
-                    var stacks = values[0];
-                    var instance = values[1].toJSON();
-                    instance.stacks = stacks;
-                    return instance;
-                } )
-                .then( function(instance) {
-                    resolve( instance );
-                } );
+        var stacks = Promise.resolve([]);
 
 
-        } );
+        if (instance.stacks) {
+            stacks = Stack.find({
+                '_id': {
+                    $in: instance.stacks
+                }
+            }).exec();
+        }
+
+        var instancePromise = Promise.resolve(instance);
+
+        Promise.all([stacks, instancePromise])
+            .then(function(values) {
+
+                var stacks = values[0];
+                var instance = values[1].toJSON();
+                instance.stacks = stacks;
+                return instance;
+            })
+            .then(function(instance) {
+                resolve(instance);
+            });
+
+
+    });
 };
 
 /**
@@ -631,54 +684,54 @@ var resolveInstance = function(instance) {
  *
  */
 var resolveUser = function(user) {
-    return new Promise( function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-            var groups = Promise.resolve( [] ),
-                stacks = Promise.resolve( [] ),
-                instances = Promise.resolve( [] );
-            if (user.groups) {
-                groups = Group.find( {
-                    '_id': {
-                        $in: user.groups
-                    }
-                } ).exec();
-            }
+        var groups = Promise.resolve([]),
+            stacks = Promise.resolve([]),
+            instances = Promise.resolve([]);
+        if (user.groups) {
+            groups = Group.find({
+                '_id': {
+                    $in: user.groups
+                }
+            }).exec();
+        }
 
-            if (user.stacks) {
-                stacks = Stack.find( {
-                    '_id': {
-                        $in: user.stacks
-                    }
-                } ).exec();
-            }
+        if (user.stacks) {
+            stacks = Stack.find({
+                '_id': {
+                    $in: user.stacks
+                }
+            }).exec();
+        }
 
-            if (user.instances) {
-                instances = Instance.find( {
-                    '_id': {
-                        $in: user.instances
-                    }
-                } ).exec();
-            }
+        if (user.instances) {
+            instances = Instance.find({
+                '_id': {
+                    $in: user.instances
+                }
+            }).exec();
+        }
 
-            var userPromise = Promise.resolve( user );
+        var userPromise = Promise.resolve(user);
 
-            Promise.all( [groups, stacks, instances, userPromise] )
-                .then( function(values) {
-                    var groups = values[0];
-                    var stacks = values[1];
-                    var instances = values[2];
-                    var user = values[3].toJSON();
-                    user.groups = groups;
-                    user.stacks = stacks;
-                    user.instances = instances;
-                    return user;
-                } )
-                .then( function(user) {
-                    resolve( user );
-                } );
+        Promise.all([groups, stacks, instances, userPromise])
+            .then(function(values) {
+                var groups = values[0];
+                var stacks = values[1];
+                var instances = values[2];
+                var user = values[3].toJSON();
+                user.groups = groups;
+                user.stacks = stacks;
+                user.instances = instances;
+                return user;
+            })
+            .then(function(user) {
+                resolve(user);
+            });
 
 
-        } );
+    });
 };
 
 var addInstanceToUser = {
@@ -697,7 +750,7 @@ var addInstanceToUser = {
             'required': true,
             'type': 'string',
             'paramType': 'path'
-            }, {
+        }, {
             'name': 'instance',
             'in': 'formData',
             'description': 'instance ID',
@@ -707,24 +760,24 @@ var addInstanceToUser = {
         }]
     },
     action: function(req, res) {
-        var user = User.findById( req.params.userId ).exec();
-        var instance = Instance.findById( req.body.instance ).exec();
-        Promise.all( [user, instance] )
-            .then( function(values) {
+        var user = User.findById(req.params.userId).exec();
+        var instance = Instance.findById(req.body.instance).exec();
+        Promise.all([user, instance])
+            .then(function(values) {
                 var user = values[0],
                     instance = values[1];
-                return user.update( {
+                return user.update({
                     $addToSet: {
                         instances: instance
                     }
-                } );
-            } )
-            .then( function(result) {
-                return User.findById( req.params.userId ).exec();
-            } )
-            .then( function(user) {
-                res.json( user );
-            } );
+                });
+            })
+            .then(function(result) {
+                return User.findById(req.params.userId).exec();
+            })
+            .then(function(user) {
+                res.json(user);
+            });
     }
 };
 
@@ -744,7 +797,7 @@ var addStackToUser = {
             'required': true,
             'type': 'string',
             'paramType': 'path'
-            }, {
+        }, {
             'name': 'stack',
             'in': 'formData',
             'description': 'stack ID',
@@ -754,25 +807,28 @@ var addStackToUser = {
         }]
     },
     action: function(req, res) {
-        var user = User.findById( req.params.userId ).exec();
-        var stack = Stack.findById( req.body.instance ).exec();
-        Promise.all( [user, stack] )
-            .then( function(values) {
+        var user = User.findById(req.params.userId).exec();
+        var stack = Stack.findById(req.body.stack).exec();
+        Promise.all([user, stack])
+            .then(function(values) {
                 var user = values[0],
                     stack = values[1];
 
-                return user.update( {
+                return user.update({
                     $addToSet: {
                         stacks: stack
                     }
-                } );
-            } )
-            .then( function(result) {
-                return User.findById( req.params.userId ).exec();
-            } )
-            .then( function(user) {
-                res.json( user );
-            } );
+                });
+            })
+            .then(function(result) {
+                return User.findById(req.params.userId).exec();
+            })
+            .then(function(user) {
+                return resolveUser(user);
+            })
+            .then(function(user) {
+                res.json(user);
+            });
     }
 };
 
@@ -794,34 +850,19 @@ var getInstanceByStackId = {
         }]
     },
     action: function(req, res) {
-        Instance.find( {
-            stack: req.params.stackId
-        } ).exec()
-            .then( function(instances) {
+        Instance.find({
+                stacks: req.params.stackId
+            }).exec()
+            .then(function(instances) {
                 //res.json(instances);
-                Promise.all( instances ).map( function(instance) {
-                    return new Promise( function(resolve, reject) {
-                            Deploy.find( {
-                                '_id': {
-                                    $in: instance.deploys
-                                }
-                            }, function(err, deploys) {
-                                    if (err) {
-                                        reject( err );
-                                    } else {
-                                        instance = instance.toJSON();
-                                        instance.deploys = deploys;
-                                        resolve( instance );
-                                    }
+                Promise.all(instances).map(function(instance) {
+                        return resolveInstance(instance);
+                    })
+                    .then(function(instances) {
+                        res.json(instances);
+                    });
 
-                                } );
-                        } );
-                } )
-                    .then( function(instances) {
-                        res.json( instances );
-                    } );
-
-            } );
+            });
 
     }
 };
@@ -838,16 +879,16 @@ var listInstances = {
     },
     action: function(req, res) {
         Instance.find().exec()
-            .then( function(instances) {
+            .then(function(instances) {
                 //res.json(instances);
-                Promise.all( instances ).map( function(instance) {
-                    return resolveInstance( instance );
-                } )
-                    .then( function(instances) {
-                        res.json( instances );
-                    } );
+                Promise.all(instances).map(function(instance) {
+                        return resolveInstance(instance);
+                    })
+                    .then(function(instances) {
+                        res.json(instances);
+                    });
 
-            } );
+            });
 
     }
 };
@@ -871,40 +912,72 @@ var createInstance = {
             'required': true,
             'type': 'string',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'ip',
             'in': 'formData',
             'description': 'ip address of the instance',
             'required': true,
             'type': 'string',
             'paramType': 'form'
-            }, {
-            'name': 'stack',
+        }, {
+            'name': 'stacks',
             'in': 'formData',
-            'description': 'stack ID',
+            'description': 'array of stack ID',
             'required': true,
-            'type': 'string',
+            'type': 'array',
+            "items": {
+                "type": "string"
+            },
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'description',
             'in': 'formData',
             'description': 'group description',
+            'type': 'string',
+            'paramType': 'form'
+        }, {
+            'name': 'serviceType',
+            'in': 'formData',
+            'description': 'service Type',
             'type': 'string',
             'paramType': 'form'
         }],
     },
     action: function(req, res) {
 
+        var createdInstance;
         Promise.resolve()
-            .then( function() {
-                return Instance.create( req.body );
-            } )
-            .then( function(group) {
-                res.json( group );
-            } )
-            .catch( function(err) {
-                res.status( 500 ).send( err );
-            } );
+            .then(function() {
+                return Instance.create(req.body);
+            })
+            .then(function(instance) {
+                createdInstance = instance;
+                return Stack.find({
+                    _id: {
+                        $in: instance.stacks
+                    }
+                }).exec();
+            })
+            .then(function(stacks) {
+                var promises = [];
+                _.map(stacks, function(stack) {
+                    promises.push(stack.update({
+                        $addToSet: {
+                            instances: createdInstance
+                        }
+                    }))
+                });
+                return Promise.all(promises);
+            })
+            .then(function(result) {
+                return resolveInstance(createdInstance);
+            })
+            .then(function(instance) {
+                res.json(instance);
+            })
+            .catch(function(err) {
+                res.status(500).send(err);
+            });
 
     }
 };
@@ -928,13 +1001,13 @@ var getDeployByInstance = {
         }]
     },
     action: function(req, res) {
-        Deploy.find( {
-            instance: req.params.instanceId
-        } ).exec()
-            .then( function(groups) {
-                res.json( groups );
+        Deploy.find({
+                instance: req.params.instanceId
+            }).exec()
+            .then(function(deploys) {
+                res.json(deploys);
 
-            } );
+            });
 
     }
 };
@@ -958,21 +1031,21 @@ var createDeploy = {
             'required': true,
             'type': 'date',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'user',
             'in': 'formData',
             'description': 'user ID',
             'required': true,
             'type': 'string',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'instance',
             'in': 'formData',
             'description': 'instance ID',
             'required': true,
             'type': 'string',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'comments',
             'in': 'formData',
             'description': 'deploy comments',
@@ -983,15 +1056,15 @@ var createDeploy = {
     action: function(req, res) {
 
         Promise.resolve()
-            .then( function() {
-                return Deploy.create( req.body );
-            } )
-            .then( function(group) {
-                res.json( group );
-            } )
-            .catch( function(err) {
-                res.status( 500 ).send( err );
-            } );
+            .then(function() {
+                return Deploy.create(req.body);
+            })
+            .then(function(deploy) {
+                res.json(deploy);
+            })
+            .catch(function(err) {
+                res.status(500).send(err);
+            });
 
     }
 };
@@ -1013,7 +1086,7 @@ var addUserToGroupByName = {
             'required': true,
             'type': 'string',
             'paramType': 'query'
-            }, {
+        }, {
             'name': 'userName',
             'description': 'User Name',
             'required': true,
@@ -1022,44 +1095,44 @@ var addUserToGroupByName = {
         }]
     },
     action: function(req, res) {
-        console.log( req.query );
-        var group = Group.findOne( {
+        console.log(req.query);
+        var group = Group.findOne({
             name: req.query.groupName
-        } ).exec();
-        var user = User.findOne( {
+        }).exec();
+        var user = User.findOne({
             username: req.query.userName
-        } ).exec();
-        Promise.all( [group, user] )
-            .then( function(values) {
+        }).exec();
+        Promise.all([group, user])
+            .then(function(values) {
                 var group = values[0],
                     user = values[1];
 
 
                 var promises = [];
 
-                promises.push( user.update( {
+                promises.push(user.update({
                     $addToSet: {
                         groups: group
                     }
-                } ) );
+                }));
 
 
-                promises.push( group.update( {
+                promises.push(group.update({
                     $addToSet: {
                         users: user
                     }
-                } ) );
+                }));
 
 
-                return Promise.all( promises );
+                return Promise.all(promises);
 
-            } )
-            .then( function(values) {
-                res.json( values );
-            } )
-            .catch( function(err) {
-                res.status( 500 ).send( err );
-            } );
+            })
+            .then(function(values) {
+                res.json(values);
+            })
+            .catch(function(err) {
+                res.status(500).send(err);
+            });
     }
 };
 
@@ -1080,7 +1153,7 @@ var addUserToGroup = {
             'required': true,
             'type': 'string',
             'paramType': 'path'
-            }, {
+        }, {
             'name': 'userId',
             'in': 'formData',
             'description': 'User ID',
@@ -1092,39 +1165,39 @@ var addUserToGroup = {
     action: function(req, res) {
         //console.log( req.params );
         //console.log( req.body );
-        var group = Group.findById( req.params.groupId ).exec();
-        var user = User.findById( req.body.userId ).exec();
-        Promise.all( [group, user] )
-            .then( function(values) {
+        var group = Group.findById(req.params.groupId).exec();
+        var user = User.findById(req.body.userId).exec();
+        Promise.all([group, user])
+            .then(function(values) {
                 var group = values[0],
                     user = values[1];
                 var promises = [];
 
-                promises.push( user.update( {
+                promises.push(user.update({
                     $addToSet: {
                         groups: group
                     }
-                } ) );
+                }));
 
 
-                promises.push( group.update( {
+                promises.push(group.update({
                     $addToSet: {
                         users: user
                     }
-                } ) );
+                }));
 
 
-                return Promise.all( promises );
+                return Promise.all(promises);
 
 
 
-            } )
-            .then( function(values) {
-                res.json( values );
-            } )
-            .catch( function(err) {
-                res.status( 500 ).send( err );
-            } );
+            })
+            .then(function(values) {
+                res.json(values);
+            })
+            .catch(function(err) {
+                res.status(500).send(err);
+            });
     }
 };
 
@@ -1140,36 +1213,32 @@ var listGroup = {
         produces: ['application/json']
     },
     action: function(req, res) {
-        Group.find().exec()
-            .then( function(groups) {
-
-                //res.json(groups);
-                Promise.all( groups ).map( function(group) {
-                    return new Promise( function(resolve, reject) {
-                            User.find( {
-                                '_id': {
-                                    $in: group.users
-                                }
-                            }, function(err, users) {
-                                    if (err) {
-                                        reject( err );
-                                    } else {
-                                        group = group.toJSON();
-                                        group.users = users;
-                                        resolve( group );
-                                    }
-
-                                } );
-                        } );
-                } )
-                    .then( function(groups) {
-                        res.json( groups );
-                    } );
-
-            } );
+        Promise.resolve(Group.find().exec())
+            .then(function(groups) {
+                return Promise.all(groups)
+                    .map(function(group) {
+                        return resolveGroup(group);
+                    })
+            })
+            .then(function(groups) {
+                res.json(groups);
+            })
 
     }
 };
+
+var resolveGroup = function(group) {
+    return Promise.resolve(User.find({
+            '_id': {
+                $in: group.users
+            }
+        }).exec())
+        .then(function(users) {
+            group = group.toJSON();
+            group.users = users;
+            return group;
+        })
+}
 
 var getUsersByGroupId = {
     spec: {
@@ -1190,38 +1259,24 @@ var getUsersByGroupId = {
         }]
     },
     action: function(req, res) {
-        Group.findById( req.params.groupId ).exec()
-            .then( function(group) {
-                return User.find( {
+        Promise.resolve(Group.findById(req.params.groupId).exec())
+            .then(function(group) {
+                return User.find({
                     '_id': {
                         $in: group.users
                     }
-                } ).exec();
-            } )
-            .then( function(users) {
+                }).exec();
+            })
+            .then(function(users) {
                 // res.json(users);
-                Promise.all( users ).map( function(user) {
-                    return new Promise( function(resolve, reject) {
-                            Group.find( {
-                                '_id': {
-                                    $in: user.groups
-                                }
-                            }, function(err, groups) {
-                                    if (err) {
-                                        reject( err );
-                                    } else {
-                                        user = user.toJSON();
-                                        user.groups = groups;
-                                        resolve( user );
-                                    }
+                return Promise.all(users).map(function(user) {
+                    return resolveUser(user);
+                })
 
-                                } );
-                        } );
-                } )
-                    .then( function(users) {
-                        res.json( users );
-                    } );
-            } );
+            })
+            .then(function(users) {
+                res.json(users);
+            });
 
     }
 };
@@ -1245,7 +1300,7 @@ var createGroup = {
             'required': true,
             'type': 'string',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'description',
             'in': 'formData',
             'description': 'group description',
@@ -1256,15 +1311,15 @@ var createGroup = {
     action: function(req, res) {
 
         Promise.resolve()
-            .then( function() {
-                return Group.create( req.body );
-            } )
-            .then( function(group) {
-                res.json( group );
-            } )
-            .catch( function(err) {
-                res.status( 500 ).send( err );
-            } );
+            .then(function() {
+                return Group.create(req.body);
+            })
+            .then(function(group) {
+                res.json(group);
+            })
+            .catch(function(err) {
+                res.status(500).send(err);
+            });
 
     }
 };
@@ -1292,7 +1347,7 @@ var login = {
             'required': true,
             'type': 'string',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'password',
             'in': 'formData',
             'description': 'password',
@@ -1302,18 +1357,18 @@ var login = {
         }],
     },
     action: function(req, res) {
-        var User = db.model( 'User' );
-        User.findOne( {
-            username: req.body.username
-        } ).exec()
-            .then( function(user) {
-                if (user && user.authenticate( req.body.password )) {
-                    res.json( user );
+        var User = db.model('User');
+        User.findOne({
+                username: req.body.username
+            }).exec()
+            .then(function(user) {
+                if (user && user.authenticate(req.body.password)) {
+                    res.json(user);
                 } else {
-                    res.status( 400 ).send( UserNotFoundError( 'User not found' ) );
+                    res.status(400).send(UserNotFoundError('User not found'));
                 }
 
-            } );
+            });
 
     }
 };
@@ -1341,26 +1396,26 @@ var register = {
             'required': true,
             'type': 'string',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'password',
             'in': 'formData',
             'description': 'password',
             'required': true,
             'type': 'string',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'firstname',
             'in': 'formData',
             'description': 'firstname',
             'type': 'string',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'lastname',
             'in': 'formData',
             'description': 'lastname',
             'type': 'string',
             'paramType': 'form'
-            }, {
+        }, {
             'name': 'email',
             'in': 'formData',
             'description': 'email',
@@ -1370,18 +1425,18 @@ var register = {
         }],
     },
     action: function(req, res) {
-        var User = db.model( 'User' );
+        var User = db.model('User');
 
         Promise.resolve()
-            .then( function() {
-                return User.create( req.body );
-            } )
-            .then( function(user) {
-                res.json( user );
-            } )
-            .catch( function(err) {
-                res.status( 500 ).send( err );
-            } );
+            .then(function() {
+                return User.create(req.body);
+            })
+            .then(function(user) {
+                res.json(user);
+            })
+            .catch(function(err) {
+                res.status(500).send(err);
+            });
 
     }
 };
@@ -1399,32 +1454,32 @@ var listStacks = {
     },
     action: function(req, res) {
         Stack.find().exec()
-            .then( function(stacks) {
+            .then(function(stacks) {
 
                 //res.json(stacks);
-                Promise.all( stacks ).map( function(stack) {
-                    return new Promise( function(resolve, reject) {
-                            Instance.find( {
+                Promise.all(stacks).map(function(stack) {
+                        return new Promise(function(resolve, reject) {
+                            Instance.find({
                                 '_id': {
                                     $in: stack.instances
                                 }
                             }, function(err, instances) {
-                                    if (err) {
-                                        reject( err );
-                                    } else {
-                                        stack = stack.toJSON();
-                                        stack.instances = instances;
-                                        resolve( stack );
-                                    }
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    stack = stack.toJSON();
+                                    stack.instances = instances;
+                                    resolve(stack);
+                                }
 
-                                } );
-                        } );
-                } )
-                    .then( function(stacks) {
-                        res.json( stacks );
-                    } );
+                            });
+                        });
+                    })
+                    .then(function(stacks) {
+                        res.json(stacks);
+                    });
 
-            } );
+            });
 
     }
 };
@@ -1442,26 +1497,26 @@ var listDeploys = {
     },
     action: function(req, res) {
         Deploy.find().exec()
-            .then( function(deploys) {
+            .then(function(deploys) {
 
                 //res.json(deploys);
-                Promise.all( deploys ).
-                    map( function(deploy) {
-                        var instance = Instance.findById( deploy.instance ).exec();
-                        var user = User.findById( deploy.user ).exec();
+                Promise.all(deploys).
+                map(function(deploy) {
+                        var instance = Instance.findById(deploy.instance).exec();
+                        var user = User.findById(deploy.user).exec();
 
-                        return Promise.all( [instance, user] ).then( function(values) {
+                        return Promise.all([instance, user]).then(function(values) {
                             deploy = deploy.toJSON();
                             deploy.instance = values[0];
                             deploy.user = values[1];
                             return deploy;
-                        } );
-                    } )
-                    .then( function(deploys) {
-                        res.json( deploys );
-                    } );
+                        });
+                    })
+                    .then(function(deploys) {
+                        res.json(deploys);
+                    });
 
-            } );
+            });
 
     }
 };
@@ -1472,8 +1527,8 @@ var methods = [listUsers, getUsersByGroupId, listGroup, createGroup, addUserToGr
 ];
 
 module.exports = function(swagger) {
-    _.each( methods, function(method) {
+    _.each(methods, function(method) {
         var operation = swaggerMethods[method.spec.method];
-        swagger[operation]( method );
-    } );
+        swagger[operation](method);
+    });
 };
