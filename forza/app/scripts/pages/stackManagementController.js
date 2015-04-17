@@ -1,13 +1,22 @@
 angular.module( 'theme.pages-controllers' ).controller( 'stackManagementController',
 
-    ['$q', '$location', '$scope', '$global', '$rootScope', 'Auth', '$http', 'applyIcon', '$modal', '$log',
+    ['$q', '$location', '$scope', '$global', '$rootScope', 'Auth', '$http', 'applyIcon', '$modal', '$log', 'Util',
         /**
          * stack management controller
          */
-        function($q, $location, $scope, $global, $rootScope, Auth, $http, applyIcon, $modal, $log) {
+        function($q, $location, $scope, $global, $rootScope, Auth, $http, applyIcon, $modal, $log, Util) {
 
 
             $scope.itemPerPage = 3;
+
+
+            $scope.onDeleteBtnClick = function(stack) {
+                Auth.deleteStack( stack._id )
+                    .then( function(result) {
+                        Util.removeItem( $scope.allstacks, stack );
+                        Util.removeItem( $scope.stacks, stack );
+                    } );
+            };
 
             $scope.pageChanged = function() {
                 console.log( 'Page changed to: ' + $scope.currentPage );

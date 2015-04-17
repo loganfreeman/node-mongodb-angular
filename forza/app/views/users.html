@@ -10,7 +10,7 @@
                                 <li ng-repeat="user in users" active="user.active" disabled="user.disabled" 
                                 ng-click='selectUser(user, $index)' class='user-item pointer' ng-class="{active: user._id === activeUser._id}">
                                 
-                                    {{user.username}}    
+                                    <a>{{user.username}}</a>    
                                 </li>
                             </ul>
 
@@ -44,7 +44,7 @@
             Modify User
             </button>
             <br class='clearfix'/>
-            <button  class='btn btn-default'>Del User</button>
+            <button  class='btn btn-default' ng-click='onDeleteBtnClick()'>Del User</button>
         </div>
     </div>
 

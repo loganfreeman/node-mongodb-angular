@@ -1,12 +1,23 @@
 angular.module( 'theme.pages-controllers' ).controller( 'userManagementController',
 
-    ['$q', '$location', '$scope', '$global', '$rootScope', 'Auth', '$http', '$modal', '$log',
+    ['$q', '$location', '$scope', '$global', '$rootScope', 'Auth', '$http', '$modal', '$log', 'Util',
 
         /** controller function */
-        function($q, $location, $scope, $global, $rootScope, Auth, $http, $modal, $log) {
+        function($q, $location, $scope, $global, $rootScope, Auth, $http, $modal, $log, Util) {
             // TODO: 
             //console.log( 'In User Management Controller' );
             $scope.group = {};
+
+            $scope.onDeleteBtnClick = function() {
+                if (!$scope.activeUser) {
+                    alert( 'No user selected' );
+                    return;
+                }
+                Auth.deleteUser( $scope.activeUser._id )
+                    .then( function(result) {
+                        Util.removeItem( $scope.users, $scope.activeUser );
+                    } );
+            };
 
             Auth.groups()
                 .then( function(groups) {

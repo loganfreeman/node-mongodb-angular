@@ -1,7 +1,16 @@
 angular.module( 'theme.pages-controllers' ).controller( 'deployManagementController',
 
-    ['$q', '$location', '$scope', '$global', '$rootScope', 'Auth', '$http', 'applyIcon', function($q, $location, $scope, $global, $rootScope, Auth, $http, applyIcon) {
+    ['$q', '$location', '$scope', '$global', '$rootScope', 'Auth', '$http', 'applyIcon', 'Util', function($q, $location, $scope, $global, $rootScope, Auth, $http, applyIcon, Util) {
             $scope.itemPerPage = 3;
+
+            $scope.onDeleteBtnClick = function(deploy) {
+                Auth.deleteDeploy( deploy._id )
+                    .then( function(result) {
+                        Util.removeItem( $scope.deploys, deploy );
+                        Util.removeItem( $scope.alldeploys, deploy );
+                    } );
+            };
+
 
             $scope.pageChanged = function() {
                 console.log( 'Page changed to: ' + $scope.currentPage );

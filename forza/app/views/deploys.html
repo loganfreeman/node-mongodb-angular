@@ -8,12 +8,14 @@
 
                             <tab ng-repeat="deploy in deploys" active="deploy.active" disabled="deploy.disabled">
                                 <tab-heading><i class="glyphicon tab-heading-icon" ng-class="applyIconClass(deploy)"></i>{{deploy.comments}}</tab-heading>
-                                   <div>
-                                    <strong>{{deploy.user.username}}</strong>
-                                   </div>
-                                   <div>
-                                    <strong>{{deploy.instance.name}}</strong>
-                                   </div>
+                                   <div class='col-md-4'>
+                                        <h3>Actions</h3>
+                                         <button class="btn btn-default" ng-click='modify(deploy)'>
+                                        Modify Deploy
+                                        </button>
+                                        <br class='clearfix'/>
+                                        <button  class='btn btn-default' ng-click='onDeleteBtnClick(deploy)'>Del Deploy</button>
+                                    </div>
                             </tab>
                         </tabset>
 
