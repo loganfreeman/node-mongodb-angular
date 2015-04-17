@@ -58,6 +58,31 @@ describe( 'instance routes', function() {
 
     } );
 
+    it( 'devops should update instance', function(done) {
+
+        var data = {
+            stacks: ['55240b57bee167e458d8fd17'],
+            serviceType: 'ETC'
+        };
+        var options = {
+            url: 'http://localhost:8081/devops/instance/55241088c8f46e615fe96752?secret=secret',
+            json: data,
+            method: 'POST'
+        };
+        request( options )
+            .spread( function(res, body) {
+                body.description.should.be.eq( 'test instance' );
+                body.serviceType.should.be.eq( 'ETC' );
+                body.stacks.length.should.be.eq( 1 );
+                body.stacks[0]._id.should.be.eq( '55240b57bee167e458d8fd17' );
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+
+    } );
+
 
     it( 'devops should create then delete', function(done) {
         var instance = {

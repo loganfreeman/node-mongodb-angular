@@ -403,7 +403,8 @@ var createEnvironment = {
         //type: 'Category',
         nickname: 'createEnvironment',
         consumes: [
-            'application/x-www-form-urlencoded'
+            'application/x-www-form-urlencoded',
+            'application/json'
         ],
         produces: ['application/json'],
         parameters: [{
@@ -477,7 +478,8 @@ var createStack = {
         //type: 'Category',
         nickname: 'createStack',
         consumes: [
-            'application/x-www-form-urlencoded'
+            'application/x-www-form-urlencoded',
+            'application/json'
         ],
         produces: ['application/json'],
         parameters: [{
@@ -524,7 +526,8 @@ var addInstanceToStack = {
         notes: 'The method allows to add a instance to a stack',
         nickname: 'addInstanceToStack',
         consumes: [
-            'application/x-www-form-urlencoded'
+            'application/x-www-form-urlencoded',
+            'application/json'
         ],
         produces: ['application/json'],
         parameters: [{
@@ -587,7 +590,8 @@ var addDeployToInstance = {
         notes: 'The method allows to add a instance to a stack',
         nickname: 'addDeployToInstance',
         consumes: [
-            'application/x-www-form-urlencoded'
+            'application/x-www-form-urlencoded',
+            'application/json'
         ],
         produces: ['application/json'],
         parameters: [{
@@ -1038,7 +1042,8 @@ var addInstanceToUser = {
         notes: 'The method allows to add a instance to a user',
         nickname: 'addInstanceToUser',
         consumes: [
-            'application/x-www-form-urlencoded'
+            'application/x-www-form-urlencoded',
+            'application/json'
         ],
         produces: ['application/json'],
         parameters: [{
@@ -1085,7 +1090,8 @@ var addStackToUser = {
         notes: 'The method allows to add a stack to a user',
         nickname: 'addStackToUser',
         consumes: [
-            'application/x-www-form-urlencoded'
+            'application/x-www-form-urlencoded',
+            'application/json'
         ],
         produces: ['application/json'],
         parameters: [{
@@ -1323,7 +1329,8 @@ var createDeploy = {
         //type: 'Category',
         nickname: 'createDeploy',
         consumes: [
-            'application/x-www-form-urlencoded'
+            'application/x-www-form-urlencoded',
+            'application/json'
         ],
         produces: ['application/json'],
         parameters: [{
@@ -1379,7 +1386,8 @@ var addUserToGroupByName = {
         notes: 'The method allows to add a user to a group',
         nickname: 'addUserToGroupByName',
         consumes: [
-            'application/x-www-form-urlencoded'
+            'application/x-www-form-urlencoded',
+            'application/json'
         ],
         produces: ['application/json'],
         parameters: [{
@@ -1452,7 +1460,8 @@ var addUserToGroup = {
         notes: 'The method allows to add a user to a group',
         nickname: 'addUserToGroup',
         consumes: [
-            'application/x-www-form-urlencoded'
+            'application/x-www-form-urlencoded',
+            'application/json'
         ],
         produces: ['application/json'],
         parameters: [{
@@ -1620,7 +1629,8 @@ var createGroup = {
         //type: 'Category',
         nickname: 'createGroup',
         consumes: [
-            'application/x-www-form-urlencoded'
+            'application/x-www-form-urlencoded',
+            'application/json'
         ],
         produces: ['application/json'],
         parameters: [{
