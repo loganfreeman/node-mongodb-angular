@@ -116,7 +116,7 @@ describe( 'user route', function() {
 
     it( 'should not login', function(done) {
         var postData = {
-            email: 'scheng@contactpointsolutions.com',
+            email: 'scheng@logmycalls.com',
             password: '@xxx'
         };
 
@@ -151,8 +151,8 @@ describe( 'user route', function() {
 
     it( 'should login', function(done) {
         var postData = {
-            email: 'scheng@contactpointsolutions.com',
-            password: '@33yyy'
+            email: 'scheng@logmycalls.com',
+            password: 'pass22'
         };
 
         var body = queryString.stringify( postData );
@@ -170,10 +170,7 @@ describe( 'user route', function() {
             .spread( function(res, body) {
                 console.log( body );
                 var user = JSON.parse( body );
-                user.username.should.be.eq( 'scheng' );
-                user.groups.length.should.be.gt( 0 );
-                user.groups[0].should.be.eq( '5522ee7d58292c77df437792' );
-                user.type.should.be.eq( 'User' );
+                user.email.should.be.eq( 'scheng@logmycalls.com' );
                 //var user = JSON.parse( body );
                 //expect( user.email ).to.be.eq( 'scheng@contactpointsolutions.com' );
                 done();
@@ -190,6 +187,31 @@ describe( 'user route', function() {
                 var users = JSON.parse( users );
                 users[0].should.have.property( 'email' );
                 users[0].should.have.property( 'groups' );
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+    } );
+
+
+
+    it( 'devops should update user', function(done) {
+        var user = {
+            stacks: ['552bfafa8b341e3f03ed9f5a'],
+            instances: ['55241088c8f46e615fe96752']
+        };
+        var options = {
+            url: 'http://localhost:8081/devops/user/55246784dddb11e7a89c17c7?secret=secret',
+            method: 'POST',
+            json: user
+        };
+        request( options )
+            .spread( function(res, body) {
+                body.stacks.length.should.be.eq( 1 );
+                body.instances.length.should.be.eq( 1 );
+                body.stacks[0]._id.should.be.eq( '552bfafa8b341e3f03ed9f5a' );
+                body.instances[0]._id.should.be.eq( '55241088c8f46e615fe96752' );
                 done();
             } )
             .catch( function(e) {

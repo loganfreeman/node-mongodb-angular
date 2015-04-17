@@ -116,6 +116,46 @@ describe( 'stack routes', function() {
     } );
 
 
+    it( 'devops should create then delete', function(done) {
+        var instance = {
+            name: 'test random',
+            description: 'this is inserted by test',
+        };
+        var options = {
+            method: 'PUT',
+            url: 'http://localhost:8081/devops/stack?secret=secret',
+            json: instance
+        };
+        request( options )
+            .spread( function(res, body) {
+                if (res.statusCode != 200) {
+                    throw Error( JSON.stringify( body ) );
+                }
+                return body;
+            } )
+            .then( function(stack) {
+
+                stack.name.should.be.eq( 'test random' );
+
+                // console.log('TO DELETE: ' + JSON.stringify(deploy));
+                var options = {
+                    method: 'DELETE',
+                    url: 'http://localhost:8081/devops/stack/' + stack._id + '?secret=secret'
+                };
+                request( options ).
+                    spread( function(res, body) {
+                        done();
+                    } )
+                    .catch( function(err) {
+                        done( err );
+                    } );
+            } )
+            .catch( function(err) {
+                done( err );
+            } );
+    } );
+
+
     it( 'should get stacks and associated instances', function(done) {
         request( 'http://localhost:8081/stacks' )
             .spread( function(res, body) {
