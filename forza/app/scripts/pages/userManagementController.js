@@ -19,6 +19,13 @@ angular.module( 'theme.pages-controllers' ).controller( 'userManagementControlle
                     } );
             };
 
+            $scope.deleteGroup = function(group) {
+                Auth.deleteGroup( group._id )
+                    .then( function(result) {
+                        Util.removeItem( $scope.groups, group );
+                    } );
+            };
+
             Auth.groups()
                 .then( function(groups) {
 
