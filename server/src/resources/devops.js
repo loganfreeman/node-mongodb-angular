@@ -391,45 +391,78 @@ var updateUser = {
     },
     action: function(req, res) {
         var promises = [];
-        var user = User.findById(req.params.userId).exec();
-        var stacks = Promise.resolve([]);
-        var instances = Promise.resolve([]);
-        if (req.body.stacks) {
-            stacks = Stack.find({
-                '_id': {
-                    $in: req.body.stacks
-                }
-            }).exec();
-        }
-
-        if (req.body.instances) {
-            instances = Instance.find({
-                '_id': {
-                    $in: req.body.instances
-                }
-            }).exec();
-        }
 
 
-        Promise.all([user, stacks, instances])
-            .then(function(values) {
-                var user = values[0];
-                var stacks = values[1];
-                var instances = values[2];
 
-                // TODO: implement delete logic
+        Promise.resolve(User.findById(req.params.userId).exec())
+            .then(function(user) {
 
-                return user.update({
-                    $addToSet: {
-                        stacks: {
-                            $each: stacks
-                        },
+                var promises = [];
 
-                        instances: {
-                            $each: instances
+
+                var instancesToDelete = [];
+
+                if (req.body.instances && req.body.instances.length) {
+                    instancesToDelete = _.filter(user.instances, function(model) {
+                        return !_.contains(req.body.instances, model.toString());
+                    });
+                    promises.push(user.update({
+                        $pullAll: {
+                            instances: instancesToDelete
                         }
-                    }
-                });
+                    }));
+                    promises.push(user.update({
+                        $addToSet: {
+                            instances: {
+                                $each: req.body.instances
+                            }
+                        }
+                    }));
+                } else {
+                    // set instances to []
+                    promises.push(user.update({
+                        $set: {
+                            'instances': []
+                        }
+                    }, {
+                        multi: true
+                    }));
+                }
+
+
+                var stacksToDelete = [];
+
+                if (req.body.stacks && req.body.stacks.length) {
+                    stacksToDelete = _.filter(user.stacks, function(model) {
+                        return !_.contains(req.body.stacks, model.toString());
+                    });
+                    promises.push(user.update({
+                        $pullAll: {
+                            stacks: stacksToDelete
+                        }
+                    }));
+                    promises.push(user.update({
+                        $addToSet: {
+                            stacks: {
+                                $each: req.body.stacks
+                            }
+                        }
+                    }));
+                } else {
+                    // set instances to []
+                    promises.push(user.update({
+                        $set: {
+                            'stacks': []
+                        }
+                    }, {
+                        multi: true
+                    }));
+                }
+
+
+
+                return Promise.all(promises);
+
 
             })
             .then(function(result) {
