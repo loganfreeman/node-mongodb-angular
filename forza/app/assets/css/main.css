@@ -33,7 +33,7 @@ ul.user-info-list
 { cursor: pointer; }
 
 ul li.active {
-	color: green;
+	background-color: azure;
 }
 
 
@@ -112,5 +112,5 @@ li.user-item a {
  
 li.user-item a:hover {
   font-size: 30px;
-  background: #f6f6f6;
+  background-color: azure;
 }
