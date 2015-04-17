@@ -1428,6 +1428,9 @@ var createDeploy = {
                 return Deploy.create( req.body );
             } )
             .then( function(deploy) {
+                return resolveDeploy( deploy );
+            } )
+            .then( function(deploy) {
                 res.json( deploy );
             } )
             .catch( function(err) {

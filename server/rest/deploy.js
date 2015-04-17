@@ -102,6 +102,51 @@ describe( 'deploy routes', function() {
     } );
 
 
+    it( 'devops should create then delete', function(done) {
+        var instance = {
+            deployDate: new Date,
+            user: '55246784dddb11e7a89c17c7',
+            instance: '55241088c8f46e615fe96752',
+            comments: 'this is inserted by test'
+        };
+        var options = {
+            method: 'PUT',
+            url: 'http://localhost:8081/devops/deploy?secret=secret',
+            json: instance
+        };
+        request(options)
+            .spread( function(res, body) {
+                if (res.statusCode != 200) {
+                    throw Error( JSON.stringify( body ) );
+                }
+                return body;
+            } )
+            .then( function(deploy) {
+
+                deploy.comments.should.be.eq( 'this is inserted by test' );
+                deploy.user._id.should.be.eq( '55246784dddb11e7a89c17c7' );
+                deploy.instance.name.should.be.eq( 'test' );
+                deploy.instance.deploys.should.contains( deploy._id );
+
+                // console.log('TO DELETE: ' + JSON.stringify(deploy));
+                var options = {
+                    method: 'DELETE',
+                    url: 'http://localhost:8081/devops/deploy/' + deploy._id + '?secret=secret'
+                };
+                request( options ).
+                    spread( function(res, body) {
+                        done();
+                    } )
+                    .catch( function(err) {
+                        done( err );
+                    } );
+            } )
+            .catch( function(err) {
+                done( err );
+            } );
+    } );
+
+
     it( 'should create then delete', function(done) {
         var instance = {
             deploy_date: new Date,
