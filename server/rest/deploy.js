@@ -50,7 +50,8 @@ describe( 'deploy routes', function() {
 
         var comments = 'this is updated through route ' + +new Date();
         var data = {
-            instance: '55241088c8f46e615fe96752'
+            instance: '55241088c8f46e615fe96752',
+            user: '55246784dddb11e7a89c17c7'
         };
         var options = {
             url: 'http://localhost:8081/devops/deploy/5524155b66a6df5f65d60e18?secret=secret',
@@ -59,10 +60,10 @@ describe( 'deploy routes', function() {
         };
         request( options )
             .spread( function(res, body) {
-                console.log( body );
                 body.comments.should.be.eq( 'this is a test deploy' );
                 body.instance.name.should.be.eq( 'test' );
                 body.instance.deploys.should.contains( body._id );
+                body.user._id.should.be.eq( '55246784dddb11e7a89c17c7' );
                 done();
             } )
             .catch( function(e) {

@@ -871,6 +871,8 @@ var updateDeploy = {
 
                 deploy.instance = req.body.instance;
 
+                deploy.user = req.body.user;
+
 
 
                 return deploy.save();
