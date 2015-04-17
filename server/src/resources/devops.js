@@ -1308,36 +1308,12 @@ var createInstance = {
     },
     action: function(req, res) {
 
-        var createdInstance;
-        console.log( req.body.serviceType );
         Promise.resolve()
             .then( function() {
                 return Instance.create( req.body );
             } )
             .then( function(instance) {
-                createdInstance = instance;
-                if (!(instance.stacks && instance.stacks.length)) {
-                    return Promise.resolve( [] );
-                }
-                return Stack.find( {
-                    _id: {
-                        $in: instance.stacks
-                    }
-                } ).exec();
-            } )
-            .then( function(stacks) {
-                var promises = [];
-                _.map( stacks, function(stack) {
-                    promises.push( stack.update( {
-                        $addToSet: {
-                            instances: createdInstance
-                        }
-                    } ) );
-                } );
-                return Promise.all( promises );
-            } )
-            .then( function(result) {
-                return resolveInstance( createdInstance );
+                return resolveInstance( instance );
             } )
             .then( function(instance) {
                 res.json( instance );
@@ -1372,8 +1348,14 @@ var getDeployByInstance = {
             instance: req.params.instanceId
         } ).exec()
             .then( function(deploys) {
-                res.json( deploys );
+                return Promise.all( deploys )
+                    .map( function(deploy) {
+                        return resolveDeploy( deploy );
+                    } );
 
+            } )
+            .then( function(deploys) {
+                res.json( deploys );
             } );
 
     }
@@ -1495,13 +1477,6 @@ var addUserToGroupByName = {
                 } ) );
 
 
-                promises.push( group.update( {
-                    $addToSet: {
-                        users: user
-                    }
-                } ) );
-
-
                 return Promise.all( promises );
 
             } )
@@ -1564,13 +1539,6 @@ var addUserToGroup = {
                 promises.push( user.update( {
                     $addToSet: {
                         groups: group
-                    }
-                } ) );
-
-
-                promises.push( group.update( {
-                    $addToSet: {
-                        users: user
                     }
                 } ) );
 
