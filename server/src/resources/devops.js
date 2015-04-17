@@ -1859,24 +1859,10 @@ var listStacks = {
             .then( function(stacks) {
 
                 //res.json(stacks);
-                Promise.all( stacks ).map( function(stack) {
-                    return new Promise( function(resolve, reject) {
-                            Instance.find( {
-                                '_id': {
-                                    $in: stack.instances
-                                }
-                            }, function(err, instances) {
-                                    if (err) {
-                                        reject( err );
-                                    } else {
-                                        stack = stack.toJSON();
-                                        stack.instances = instances;
-                                        resolve( stack );
-                                    }
-
-                                } );
-                        } );
-                } )
+                Promise.all( stacks )
+                    .map( function(stack) {
+                        return resolveStack( stack );
+                    } )
                     .then( function(stacks) {
                         res.json( stacks );
                     } );
