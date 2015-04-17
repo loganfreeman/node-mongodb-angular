@@ -22,6 +22,36 @@ var uuid = require( 'node-uuid' );
 
 describe( 'stack routes', function() {
 
+
+    it( 'devops should update stack', function(done) {
+
+        var description = 'this is updated through route ' + +new Date();
+        var data = {
+            instances: ['55241088c8f46e615fe96752']
+        };
+        var options = {
+            url: 'http://localhost:8081/devops/stack/552bfafa8b341e3f03ed9f5a?secret=secret',
+            json: data,
+            method: 'POST'
+        };
+        request( options )
+            .spread( function(res, body) {
+                body.name.should.be.eq( 'production' );
+
+
+                var instance = _.find( body.instances, function(instance) {
+                    return instance._id = '55241088c8f46e615fe96752';
+                } );
+
+                instance._id.should.be.eq( '55241088c8f46e615fe96752' );
+                done();
+            } )
+            .catch( function(e) {
+                done( e );
+            } );
+
+    } );
+
     it( 'should update stack', function(done) {
 
         var description = 'this is updated through route ' + +new Date();
