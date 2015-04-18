@@ -32,10 +32,6 @@ ul.user-info-list
 .pointer         
 { cursor: pointer; }
 
-ul li.active {
-	background-color: azure;
-}
-
 
 /**
  *
@@ -81,27 +77,29 @@ padding:12px;
     margin: 0 auto;
 }
 
-
-ul.user-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+.user-container {
+    overflow: auto;
+  max-height: 300px;
+  min-height: 50px;
+  background-color: hsla(210, 75%, 50%, 0.2);
+  padding: 10px;
+  border-style: solid;
 }
+
  
-li.user-item {
+.user-item {
   font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
   border-bottom: 1px solid #ccc;
 }
  
-li.user-item:last-child {
+.user-item:last-child {
   border: none;
 }
  
-li.user-item a {
+.user-item a {
   text-decoration: none;
   color: #000;
   display: block;
-  width: 200px;
  
   -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
   -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
@@ -110,7 +108,44 @@ li.user-item a {
   transition: font-size 0.3s ease, background-color 0.3s ease;
 }
  
-li.user-item a:hover {
+.user-item:active a {
+  background-color: azure;
+}
+.user-item a:hover {
   font-size: 30px;
   background-color: azure;
+}
+
+
+
+/* LIST #4 */
+.list4 { font-family:Georgia, Times, serif; font-size:15px; }
+.list4 ul { 
+  list-style: none; 
+  margin: 0;
+  padding: 0;
+}
+.list4 ul li { }
+.list4 ul li a { display:block; text-decoration:none; color:#000000; background-color:#FFFFFF; line-height:30px;
+  border-bottom-style:solid; border-bottom-width:1px; border-bottom-color:#CCCCCC; padding-left:10px; cursor:pointer; }
+.list4 ul li a:hover { color:#FFFFFF; background-image:url(../img/hover.png); background-repeat:repeat-x; }
+.list4 ul li a strong { margin-right:10px; }
+
+
+
+
+label, a, select, button, .btn, span {
+  font-size: 20px;
+  font-family: Cursive;
+}
+
+h3 {
+    font-size: 25px;
+    font-family: Cursive;
+    font-weight: bold;
+}
+
+.not-active {
+   pointer-events: none;
+   cursor: default;
 }

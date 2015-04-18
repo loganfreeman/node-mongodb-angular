@@ -1,50 +1,72 @@
 <div class="container-fluid" ng-controller='userManagementController'>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
 
             <h3>Users List</h3>
 
             
-                           <ul class='user-list'>
-                                <li ng-repeat="user in users" active="user.active" disabled="user.disabled" 
-                                ng-click='selectUser(user, $index)' class='user-item pointer' ng-class="{active: user._id === activeUser._id}">
+
+                            <div vs-repeat class='user-container'>
+                                <div ng-repeat="user in users" active="user.active" disabled="user.disabled" 
+                                    ng-click='selectUser(user, $index)' class='user-item pointer' ng-class="{active: user._id === activeUser._id}">
                                 
                                     <a>{{user.username}}</a>    
-                                </li>
-                            </ul>
+                                </div>
+                            </div>
 
         </div>
 
-        <div class="col-md-3">
-        <h3>Allowed on Stacks</h3>
-                            <ul>
-                                <li ng-repeat="stack in activeUser.stacks">
-                                
-                                    {{stack.name}}    
-                                    
-                                </li>
-                            </ul>
-        </div>
+        <div class='col-md-10 user-panel'>
+            <div class='row'>
+                        <div class="col-md-3 list4">
+                            <h3>Allowed on Stacks</h3>
+                                                <ul>
+                                                    <li ng-repeat="stack in activeUser.stacks">
+                                                    
+                                                       <a><strong> {{stack.name}}    </strong></a>
+                                                        
+                                                    </li>
+                                                </ul>
+                            </div>
 
-        <div class="col-md-3">
-        <h3>Allowed on Instances</h3>
-                                   <ul>
-                                <li ng-repeat="instance in activeUser.instances">
-                                
-                                    {{instance.name}}    
-                                  
-                                </li>
-                            </ul>
-        </div>
+                            <div class="col-md-3 list4">
+                            <h3>Allowed on Instances</h3>
+                                                <ul>
+                                                    <li ng-repeat="instance in activeUser.instances">
+                                                    
+                                                        <a><strong>{{instance.name}} </strong>  </a> 
+                                                      
+                                                    </li>
+                                                </ul>
+                            </div>
 
-        <div class="col-md-3">
-            <h3>Actions</h3>
-            <button class="btn btn-default" ng-click='modify()'>
-            Modify User
-            </button>
-            <br class='clearfix'/>
-            <button  class='btn btn-default' ng-click='onDeleteBtnClick()'>Del User</button>
+                            <div class="col-md-3 list4">
+                                <h3>Groups</h3>
+                                                <ul>
+                                                    <li ng-repeat="group in activeUser.groups">
+                                                    
+                                                       <a> <strong>{{group.name}}</strong>    </a>
+                                                      
+                                                    </li>
+                                                </ul>
+                            </div>
+
+                            <div class="col-md-3 list4">
+                                <h3>Actions</h3>
+
+
+                                <ul>
+                                    <li>
+                                        <a ng-click='modify()'><strong>Modify User</strong>  </a> 
+                                    </li>
+
+                                    <li>
+                                        <a ng-click='onDeleteBtnClick()' ng-class="{'not-active': activeUser.type=='Administrator'}"><strong>Del User </strong>  </a> 
+                                    </li>
+                                </ul>
+                            </div>
+            </div>
         </div>
     </div>
 
@@ -124,7 +146,7 @@
 
                         <div class="panel-footer">
                             <div class="pull-left">
-                                <a href="#/" class="btn btn-default">Cancel</a>
+                                <button href="#/" class="btn btn-default">Cancel</button>
                             </div>
                             <div class="pull-right">
                                 <button type='submit' class="btn btn-success">Create User</button>
@@ -142,8 +164,8 @@
             </div>
             <div class="modal-body">
                 <div class='row'>
-                    <div class='col-md-6'>
-                            <h3>Pick a stack from the list</h3>
+                    <div class='col-md-4'>
+                            <h3>Pick stack from the list</h3>
 
                                 <select ng-model='selected.stacks' multiple ng-multiple="true" >
                                     <option ng-repeat='stack in stacks' value='{{stack._id}}'>
@@ -151,8 +173,8 @@
                                     </option>
                                 </select>
                     </div>
-                    <div class='col-md-6'>
-                    <h3>Pick an instance from the list</h3>
+                    <div class='col-md-4'>
+                    <h3>Pick instance from the list</h3>
 
                                 <select ng-model='selected.instances' multiple ng-multiple="true" >
                                     <option ng-repeat='instance in instances' value='{{instance._id}}'>
@@ -160,6 +182,17 @@
                                     </option>
                                 </select>
                     </div>
+
+                                        <div class='col-md-4'>
+                    <h3>Pick groups from the list</h3>
+
+                                <select ng-model='selected.groups' multiple ng-multiple="true" >
+                                    <option ng-repeat='group in groups' value='{{group._id}}'>
+                                    {{group.name}}
+                                    </option>
+                                </select>
+                    </div>
+
                 </div>
             </div>
             <div class="modal-footer">

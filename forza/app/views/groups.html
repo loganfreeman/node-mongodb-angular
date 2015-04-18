@@ -8,24 +8,31 @@
 
                             <tab ng-repeat="group in groups" active="group.active" disabled="group.disabled">
                                 <tab-heading><i class="glyphicon tab-heading-icon" ng-class="applyIconClass(group)"></i>{{group.name}}</tab-heading>
-                                    <ul class='user-info-list' ng-repeat="user in group.users">
-                                    	<li class='user-info-item'>
-                                    		<div>
-                                        		<h1>{{user.firstname + ' ' + user.lastname}}</h1>
-                                        	</div>
+                                    
+                                    <div class='row'>
 
-	                                        
-                                    	</li>
+                                        <div class='col-md-4 list4'>
+                                            <ul class='user-info-list' ng-repeat="user in group.users">
+                                        <li class='user-info-item'>
+                                            <a>
+                                                <strong>{{user.firstname + ' ' + user.lastname}}</strong>
+                                            </a>
+
+                                            
+                                        </li>
                                     </ul>
-
-                                        <div class='col-md-4'>
-                                            <h3>Actions</h3>
-                                             <button class="btn btn-default" ng-click='modifyGroup(group)'>
-                                            Modify Group
-                                            </button>
-                                            <br class='clearfix'/>
-                                            <button  class='btn btn-default' ng-click='deleteGroup(group)'>Del Group</button>
                                         </div>
+                                        <div class='col-md-4 list4'>
+                                            <h3>Actions</h3>
+                                            <ul>
+                                             <li><a ng-click='modifyGroup(group)' class='not-active'>
+                                                <strong>Modify Group</strong>
+                                            </a></li>
+                                            <li><a  ng-click='deleteGroup(group)'><strong>Del Group</strong></a></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
                             </tab>
                         </tabset>
 

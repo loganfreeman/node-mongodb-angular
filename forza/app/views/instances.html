@@ -14,19 +14,21 @@
                                 </tab-heading>
 
                                 <div class='row'>
-                                        <div class='col-md-4'>
+                                        <div class='col-md-4 list4'>
                                             <h3>Actions</h3>
-                                             <button class="btn btn-default" ng-click='modify(instance, $index)'>
-                                            Modify Instance
-                                            </button>
-                                            <br class='clearfix'/>
-                                            <button class="btn btn-default" ng-click='deploy(instance)'>
-                                            Deploy Instance
-                                            </button>
-                                            <br class='clearfix'/>
-                                            <button  class='btn btn-default' ng-click='onDeleteBtnClick(instance)'>
-                                            Del Instance
-                                            </button>
+                                            <ul>
+                                                 <li>
+                                                    <a  ng-click='modify(instance, $index)'>
+                                                    <strong>Modify Instance</strong>
+                                                    </a>
+                                                </li>
+                                                <li><a  ng-click='deploy(instance)'>
+                                                <strong>Deploy Instance</strong
+                                                </a></li>
+                                                <li><a   ng-click='onDeleteBtnClick(instance)'>
+                                                <strong>Del Instance</strong>
+                                                </a></li>
+                                            </ul>
                                         </div>
                                 </div>
                                     
@@ -144,7 +146,7 @@
             </div>
             <div class="modal-body">
                 <div class='row'>
-                    <div class='col-md-6'>
+                    <div class='col-md-9'>
                             <h3>Pick a service type from the list</h3>
 
                                  <select ng-model='selected.serviceType' name='serviceType' id='serviceType'
@@ -173,6 +175,7 @@
                     </div>
 
                     <div class='col-md-4'>
+                    <h3>Stacks list</h3>
                                 <select  multiple ng-multiple="true" ng-model='selected.right_stacks' 
                                     ng-options="stack.name for stack in selected.stacks">
                                     

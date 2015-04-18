@@ -671,6 +671,36 @@ var updateUser = {
                 var promises = [];
 
 
+                var groupsToDelete = [];
+
+                if (req.body.groups && req.body.groups.length) {
+                    groupsToDelete = _.filter(user.groups, function(model) {
+                        return !_.contains(req.body.groups, utils.safeToString(model));
+                    });
+                    promises.push(user.update({
+                        $pullAll: {
+                            groups: groupsToDelete
+                        }
+                    }));
+                    promises.push(user.update({
+                        $addToSet: {
+                            groups: {
+                                $each: req.body.groups
+                            }
+                        }
+                    }));
+                } else {
+                    // set instances to []
+                    promises.push(user.update({
+                        $set: {
+                            'groups': []
+                        }
+                    }, {
+                        multi: true
+                    }));
+                }
+
+
                 var instancesToDelete = [];
 
                 if (req.body.instances && req.body.instances.length) {
@@ -793,14 +823,38 @@ var updateStack = {
                     return typeof exist == 'undefined';
                 });
 
-                return Promise.all(deleteInstances)
+                var promises = [];
+
+                promises.push(Promise.all(deleteInstances)
+                    .map(function(id) {
+                        return Instance.findOne({
+                            _id: id
+                        }).exec();
+                    })
                     .map(function(instance) {
                         return instance.update({
                             $pull: {
                                 stacks: req.params.stackId
                             }
                         });
-                    });
+                    })
+                );
+
+                promises.push(Promise.all(keepInstances)
+                    .map(function(id) {
+                        return Instance.findOne({
+                            _id: id
+                        }).exec();
+                    })
+                    .map(function(instance) {
+                        return instance.update({
+                            $addToSet: {
+                                stacks: req.params.stackId
+                            }
+                        })
+                    }))
+
+                return Promise.all(promises);
             })
 
         .then(function(result) {
