@@ -135,14 +135,14 @@ padding:12px;
 
 
 label, a, select, button, .btn, span {
-  font-size: 20px;
-  font-family: Cursive;
+  font-size: 20px !important;
+  font-family: Cursive !important;
 }
 
 h3 {
-    font-size: 25px;
-    font-family: Cursive;
-    font-weight: bold;
+    font-size: 25px !important;
+    font-family: Cursive !important;
+    font-weight: bold !important;
 }
 
 .not-active {
