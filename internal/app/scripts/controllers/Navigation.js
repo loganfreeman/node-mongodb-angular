@@ -10,6 +10,28 @@ angular
                     url: '#/'
                 },
                 {
+                    label: 'Charts',
+                    iconClasses: 'fa fa-bar-chart-o',
+                    children: [
+                        {
+                            label: 'Extensible',
+                            url: '#/charts-flot'
+                        },
+                        {
+                            label: 'Interactive',
+                            url: '#/charts-svg'
+                        },
+                        {
+                            label: 'Lightweight',
+                            url: '#/charts-canvas'
+                        },
+                        {
+                            label: 'Inline',
+                            url: '#/charts-inline'
+                        }
+                    ]
+                },
+                {
                     label: 'Group',
                     iconClasses: 'fa fa-user',
                     url: '#/groups',

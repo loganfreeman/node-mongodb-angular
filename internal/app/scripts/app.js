@@ -33,7 +33,9 @@ angular
         'angularPassportService',
         'vs-repeat',
         'theme.form-components',
-        'theme.charts-flot'
+        'theme.charts-flot',
+        'theme.charts-svg',
+        'theme.charts-canvas'
         ] )
     .controller( 'MainController', ['$scope', '$global', '$timeout', 'progressLoader', '$location', 'Auth',
 
