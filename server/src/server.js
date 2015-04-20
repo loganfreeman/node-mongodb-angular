@@ -8,7 +8,15 @@ var config = require( './config/config.js' );
 
 var express = require( 'express' );
 
+// real time server
+// 
+var http = require( 'http' );
+var Primus = require( 'primus' );
+
+// instead of creating the server using express
+// we create the server so we can run socket.io
 var app = express();
+var server = http.createServer( app );
 
 module.exports = app;
 
@@ -39,6 +47,8 @@ require( './config/pass.js' );
 
 var passport = require( 'passport' ),
     LocalStrategy = require( 'passport-local' ).Strategy;
+
+
 
 
 
@@ -212,11 +222,24 @@ app.use( expressWinston.errorLogger( {
     ]
 } ) );
 
+var primus = new Primus( server );
+
+//
+// Listen for connections and echo the events send.
+//
+primus.on( 'connection', function connection(spark) {
+    spark.on( 'data', function received(data) {
+        console.log( spark.id, 'received message: ', data );
+        spark.write( data );
+    } );
+} );
+
 
 function start() {
     // require( './waterline/waterline-init.js' )( app );
     var port = config.getPort();
-    app.listen( port );
+    //app.listen( port );
+    server.listen( port );
     console.log( 'Express started on port ' + port );
 }
 

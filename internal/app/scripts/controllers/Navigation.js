@@ -32,6 +32,11 @@ angular
                     ]
                 },
                 {
+                    label: 'Echo',
+                    iconClasses: 'fa fa-home',
+                    url: '#/echo'
+                },
+                {
                     label: 'Group',
                     iconClasses: 'fa fa-user',
                     url: '#/groups',

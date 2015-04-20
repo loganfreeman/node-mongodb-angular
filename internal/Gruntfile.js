@@ -94,15 +94,23 @@ module.exports = function(grunt) {
                         ];
                     }
                 },
-                proxies: [{
-                    context: '/auth',
-                    host: 'localhost',
-                    port: 8081
-                },{
-                    context: '/dev',
-                    host: 'localhost',
-                    port: 8081
-                }]
+                proxies: [
+                    {
+                        context: '/auth',
+                        host: 'localhost',
+                        port: 8081
+                    },
+                    {
+                        context: '/dev',
+                        host: 'localhost',
+                        port: 8081
+                    },
+                    {
+                        context: '/primus',
+                        host: 'localhost',
+                        port: 8081
+                    }
+                ]
             },
             test: {
                 options: {

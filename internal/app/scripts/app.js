@@ -36,7 +36,8 @@ angular
         'theme.charts-flot',
         'theme.charts-svg',
         'theme.charts-canvas',
-        'theme.charts-inline'
+        'theme.charts-inline',
+        'theme.echo-controllers'
         ] )
     .controller( 'MainController', ['$scope', '$global', '$timeout', 'progressLoader', '$location', 'Auth',
 
