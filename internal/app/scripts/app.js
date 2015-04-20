@@ -35,7 +35,8 @@ angular
         'theme.form-components',
         'theme.charts-flot',
         'theme.charts-svg',
-        'theme.charts-canvas'
+        'theme.charts-canvas',
+        'theme.charts-inline'
         ] )
     .controller( 'MainController', ['$scope', '$global', '$timeout', 'progressLoader', '$location', 'Auth',
 
