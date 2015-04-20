@@ -26,7 +26,7 @@ angular.module( 'angularPassportService' )
             },
 
             users: function() {
-                return $http.get( 'devops/users' );
+                return $http.get( '/devops/users' );
             },
 
             stacks: function() {
