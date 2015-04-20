@@ -3,11 +3,17 @@
 angular
     .module( 'theme.navigation-controller', [] )
     .controller( 'NavigationController', ['$scope', '$location', '$timeout', '$global', '$rootScope', function($scope, $location, $timeout, $global, $rootScope) {
-            $scope.menu = [{
-                label: 'Group',
-                iconClasses: 'fa fa-user',
-                url: '#/groups',
-                restricted: 'Administrator'
+            $scope.menu = [
+                {
+                    label: 'Dashboard',
+                    iconClasses: 'fa fa-home',
+                    url: '#/'
+                },
+                {
+                    label: 'Group',
+                    iconClasses: 'fa fa-user',
+                    url: '#/groups',
+                    restricted: 'Administrator'
                 },
                 {
                     label: 'User',
