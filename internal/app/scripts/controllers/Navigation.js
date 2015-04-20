@@ -4,16 +4,6 @@ angular
     .module( 'theme.navigation-controller', [] )
     .controller( 'NavigationController', ['$scope', '$location', '$timeout', '$global', '$rootScope', function($scope, $location, $timeout, $global, $rootScope) {
             $scope.menu = [{
-                label: 'Instances',
-                iconClasses: 'fa fa-laptop',
-                url: '#/instances',
-                restricted: 'User'
-                }, {
-                label: 'Stack',
-                iconClasses: 'fa fa-cloud',
-                url: '#/stacks',
-                restricted: 'Administrator'
-                }, {
                 label: 'Group',
                 iconClasses: 'fa fa-user',
                 url: '#/groups',
@@ -24,11 +14,6 @@ angular
                     iconClasses: 'fa fa-user',
                     url: '#/users',
                     restricted: 'Administrator'
-                }, {
-                label: 'Deploy',
-                iconClasses: 'fa fa-user',
-                url: '#/deploys',
-                restricted: 'Administrator'
             }];
 
             $scope.checkAccess = function(item) {
