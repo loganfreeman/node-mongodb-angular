@@ -1923,6 +1923,17 @@ var updateUserGroup = {
                 var promises = [];
 
 
+                var userProperties = ['firstname', 'lastname', 'email', 'username', 'password'];
+
+                _.each( userProperties, function(property) {
+                    if (req.params[property]) {
+                        user[property] = req.params[property];
+                    }
+                } );
+
+                promises.push( user.save() );
+
+
                 var groupsToDelete = [];
 
                 if (req.body.groups && req.body.groups.length) {

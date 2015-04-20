@@ -108,7 +108,7 @@ padding:12px;
   transition: font-size 0.3s ease, background-color 0.3s ease;
 }
  
-.user-item:active a {
+.user-item.active a {
   background-color: azure;
 }
 .user-item a:hover {
