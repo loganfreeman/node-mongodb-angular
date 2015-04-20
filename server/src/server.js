@@ -89,6 +89,8 @@ app.use( '/', express.static( __dirname + '/public' ) );
 
 app.use( '/dashboard', express.static( __dirname + '../../../internal/dist' ) );
 
+app.use( '/dashboard/bower_components', express.static( __dirname + '../../../internal/bower_components' ) );
+
 app.use( '/', express.static( __dirname + '../../../forza/dist' ) );
 
 app.use( '/docs', express.static( __dirname + '/../swagger-ui/' ) );
