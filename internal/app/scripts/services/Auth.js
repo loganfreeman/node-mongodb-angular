@@ -98,7 +98,7 @@ angular.module( 'angularPassportService' )
             },
 
             updateUser: function(userId, data) {
-                var url = '/devops/user/{userId}'.replace( '{userId}', userId );
+                var url = '/devops/user/{userId}/group'.replace( '{userId}', userId );
                 return $http.post( url, data );
 
             },

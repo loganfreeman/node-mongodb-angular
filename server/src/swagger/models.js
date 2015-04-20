@@ -35,6 +35,27 @@ module.exports.models = {
             },
             'instances': {
                 'type': 'array'
+            },
+            'groups': {
+                'type': 'array'
+            }
+        }
+    },
+
+    'UserGroupModification': {
+        'id': 'UserModification',
+        'properties': {
+            'firstname': {
+                'type': 'string'
+            },
+            'lastname': {
+                'type': 'string'
+            },
+            'password': {
+                'type': 'string'
+            },
+            'groups': {
+                'type': 'array'
             }
         }
     },
