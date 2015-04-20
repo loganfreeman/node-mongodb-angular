@@ -19,27 +19,9 @@
 
         <div class='col-md-10 user-panel'>
             <div class='row'>
-                        <div class="col-md-3 list4">
-                            <h3>Allowed on Stacks</h3>
-                                                <ul>
-                                                    <li ng-repeat="stack in activeUser.stacks">
-                                                    
-                                                       <a><strong> {{stack.name}}    </strong></a>
-                                                        
-                                                    </li>
-                                                </ul>
-                            </div>
 
-                            <div class="col-md-3 list4">
-                            <h3>Allowed on Instances</h3>
-                                                <ul>
-                                                    <li ng-repeat="instance in activeUser.instances">
-                                                    
-                                                        <a><strong>{{instance.name}} </strong>  </a> 
-                                                      
-                                                    </li>
-                                                </ul>
-                            </div>
+
+
 
                             <div class="col-md-3 list4">
                                 <h3>Groups</h3>
@@ -164,24 +146,7 @@
             </div>
             <div class="modal-body">
                 <div class='row'>
-                    <div class='col-md-4'>
-                            <h3>Pick stack from the list</h3>
 
-                                <select ng-model='selected.stacks' multiple ng-multiple="true" >
-                                    <option ng-repeat='stack in stacks' value='{{stack._id}}'>
-                                    {{stack.name}}
-                                    </option>
-                                </select>
-                    </div>
-                    <div class='col-md-4'>
-                    <h3>Pick instance from the list</h3>
-
-                                <select ng-model='selected.instances' multiple ng-multiple="true" >
-                                    <option ng-repeat='instance in instances' value='{{instance._id}}'>
-                                    {{instance.name}}
-                                    </option>
-                                </select>
-                    </div>
 
                                         <div class='col-md-4'>
                     <h3>Pick groups from the list</h3>
