@@ -47,7 +47,8 @@
     "angular-http-auth": "~1.2.2",
     "modernizr": "~2.8.3",
     "ramda": "~0.13.0",
-    "angular-vs-repeat": "~1.0.0-rc5"
+    "angular-vs-repeat": "~1.0.0-rc5",
+    "angular-elastic": "~2.4.2"
   },
   "resolutions": {
     "jquery": "~1.11.0"

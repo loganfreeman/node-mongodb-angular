@@ -2,6 +2,7 @@
 
 angular
     .module( 'themesApp', [
+        'monospaced.elastic',
         'easypiechart',
         'toggle-switch',
         'ui.bootstrap',

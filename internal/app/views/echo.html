@@ -7,7 +7,7 @@
 	      	</div>
 	      	<div class="panel-body">
 				<form id="write" class="form-horizontal" ng-submit='echo()'>
-			    <textarea class="form-control" id="output" readonly ng-model='reply'></textarea>
+			    <textarea msd-elastic="\n" class="form-control" id="output" readonly ng-model='reply'></textarea>
 			    <input class="form-control" placeholder="write message that should echo" id="echo" ng-model='message'/>
 			    <button type="submit" class="btn-primary btn">echo</button>
 			  </form>
