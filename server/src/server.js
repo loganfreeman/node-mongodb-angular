@@ -87,7 +87,7 @@ app.use( favicon( __dirname + '/public/images/favicon.ico' ) );
 
 app.use( '/', express.static( __dirname + '/public' ) );
 
-app.use( '/dashboard', express.static( __dirname + '../../../dashboard/build' ) );
+app.use( '/dashboard', express.static( __dirname + '../../../internal/dist' ) );
 
 app.use( '/', express.static( __dirname + '../../../forza/dist' ) );
 
