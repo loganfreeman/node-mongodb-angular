@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-	          <h4>Form Layout</h4>
+	          <h4>WebSocket Test</h4>
 	          
 	      	</div>
 	      	<div class="panel-body">
@@ -11,6 +11,21 @@
 			    <input class="form-control" placeholder="write message that should echo" id="echo" ng-model='message'/>
 			    <button type="submit" class="btn-primary btn">echo</button>
 			  </form>
+			</div>
+		</div>
+
+
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h4>Reactive Angular</h4>
+			</div>
+			<div class="panel-body">
+				    <input type="text" ng-model="search">
+					  <button ng-click="click()">Search</button>
+
+					  <ul>
+					    <li ng-repeat="result in results">{{result}}</li>
+					  </ul>
 			</div>
 		</div>
 
