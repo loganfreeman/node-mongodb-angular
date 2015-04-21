@@ -191,7 +191,9 @@ module.exports = function(grunt) {
                     'morris',
                     'jquery.inputmask',
                     'jquery.validate.js',
-                    'jquery.stepy.js'
+                    'jquery.stepy.js',
+                    'rxjs',
+                    'angular-rx'
                 ]
             }
         },
