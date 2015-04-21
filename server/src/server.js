@@ -45,6 +45,8 @@ require( './mongoose/models' );
 // set up passport local Strategy
 require( './config/pass.js' );
 
+var utils = require( './utils.js' );
+
 var passport = require( 'passport' ),
     LocalStrategy = require( 'passport-local' ).Strategy;
 
@@ -224,15 +226,10 @@ app.use( expressWinston.errorLogger( {
 
 var primus = new Primus( server );
 
-//
-// Listen for connections and echo the events send.
-//
-primus.on( 'connection', function connection(spark) {
-    spark.on( 'data', function received(data) {
-        console.log( spark.id, 'received message: ', data );
-        spark.write( data );
-    } );
-} );
+
+
+
+require( './dispatcher.js' ).init( primus );
 
 
 function start() {
