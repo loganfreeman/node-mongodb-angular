@@ -2,7 +2,7 @@ var utils = require( './utils.js' );
 
 var _ = require( 'lodash' );
 
-var sparks = [];
+var sparks = {};
 
 module.exports = {
     init: function(primus) {
@@ -11,7 +11,7 @@ module.exports = {
         //
         primus.on( 'connection', function(spark) {
             utils.log( 'Client connected: ' + spark.id, true );
-            sparks.push( spark );
+            sparks[spark.id] = spark;
             spark.on( 'data', function(data) {
                 console.log( spark.id, 'received message: ', data );
                 spark.write( data );
@@ -19,15 +19,15 @@ module.exports = {
         } );
 
         primus.on( 'disconnection', function(spark) {
-            sparks.splice( sparks.indexOf( spark ), 1 );
+            delete sparks[spark.id];
             utils.log( 'Client disconnected: ' + spark.id, true );
         } );
     },
 
     broadcast: function(data) {
         utils.log( 'Starting push to clients ...' );
-        _.each( sparks, function(spark) {
-            spark.write( data );
-        } );
+        for (var id in sparks) {
+            sparks[id].write( data );
+        }
     }
 };

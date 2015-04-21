@@ -134,15 +134,13 @@ padding:12px;
 
 
 
-label, a, select, button, .btn, span {
+label, a, select, button, .btn, span, h3, h4 {
   font-size: 20px !important;
-  font-family: Cursive !important;
+  font-family: 'Maven Pro' !important;
 }
 
 h3 {
     font-size: 25px !important;
-    font-family: Cursive !important;
-    font-weight: bold !important;
 }
 
 .not-active {
