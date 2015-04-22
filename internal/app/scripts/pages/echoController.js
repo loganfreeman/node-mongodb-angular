@@ -1,22 +1,25 @@
 'use strict';
 angular
-    .module( 'theme.echo-controllers', ['rx'] )
-    .controller( 'echoController', function($scope, rx, $http) {
+    .module('theme.echo-controllers', ['rx'])
+    .factory('primus', function() {
+        return new Primus();
+    })
+    .controller('echoController', function($scope, rx, $http, primus) {
         $scope.reply = '';
-        var primus = new Primus();
-        primus.on( 'data', function received(data) {
+        // var primus = new Primus();
+        primus.on('data', function received(data) {
             $scope.reply += data + '\n';
-        } );
+        });
 
         $scope.echo = function() {
-            primus.write( $scope.message );
+            primus.write($scope.message);
             $scope.message = '';
         };
 
         //Reactive Angular
         function searchWikipedia(term) {
             return rx.Observable
-                .fromPromise( $http( {
+                .fromPromise($http({
                     url: 'http://en.wikipedia.org/w/api.php?&callback=JSON_CALLBACK',
                     method: 'jsonp',
                     params: {
@@ -24,10 +27,10 @@ angular
                         search: term,
                         format: 'json'
                     }
-                } ) )
-                .map( function(response) {
+                }))
+                .map(function(response) {
                     return response.data[1];
-                } );
+                });
         }
 
         $scope.search = '';
@@ -36,12 +39,12 @@ angular
         /*
           Creates a "click" function which is an observable sequence instead of just a function.
         */
-        $scope.$createObservableFunction( 'click' )
-            .map( function() {
+        $scope.$createObservableFunction('click')
+            .map(function() {
                 return $scope.search;
-            } )
-            .flatMapLatest( searchWikipedia )
-            .subscribe( function(results) {
+            })
+            .flatMapLatest(searchWikipedia)
+            .subscribe(function(results) {
                 $scope.results = results;
-            } );
-    } );
+            });
+    });
