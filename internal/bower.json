@@ -56,7 +56,6 @@
     "angular-peity": "~0.0.2",
     "peity": "~3.2.0",
     "angular-tooltips": "~0.1.9",
-    "angular-masonry": "~0.11.0",
     "d3": "~3.5.5",
     "nvd3": "~1.7.1",
     "angularjs-nvd3-directives": "~0.0.7"
