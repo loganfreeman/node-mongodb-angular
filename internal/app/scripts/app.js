@@ -39,7 +39,8 @@ angular
         'theme.charts-canvas',
         'theme.charts-inline',
         'theme.echo-controllers',
-        'rx'
+        'rx',
+        'theme.zabbix-controllers'
         ] )
     .controller( 'MainController', ['$scope', '$global', '$timeout', 'progressLoader', '$location', 'Auth',
 

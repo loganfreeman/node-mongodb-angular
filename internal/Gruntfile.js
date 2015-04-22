@@ -109,6 +109,11 @@ module.exports = function(grunt) {
                         context: '/primus',
                         host: 'localhost',
                         port: 8081
+                    },
+                    {
+                        context: '/zabbix',
+                        host: 'localhost',
+                        port: 8081
                     }
                 ]
             },

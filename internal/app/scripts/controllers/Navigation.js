@@ -37,6 +37,11 @@ angular
                     url: '#/echo'
                 },
                 {
+                    label: 'Zabbix',
+                    iconClasses: 'fa fa-home',
+                    url: '#/zabbix'
+                },
+                {
                     label: 'Group',
                     iconClasses: 'fa fa-user',
                     url: '#/groups',
