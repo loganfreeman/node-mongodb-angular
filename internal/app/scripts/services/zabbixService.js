@@ -11,6 +11,13 @@ angular.module( 'angularPassportService' )
                 } );
             },
 
+            getItem: function(itemId) {
+                return $http.post( '/zabbix/item/get', {
+                    'output': 'extend',
+                    'itemids': itemId
+                } );
+            },
+
             getHostInterfaces: function(options) {
                 return $http.post( '/zabbix/hostinterface/get', options );
             },

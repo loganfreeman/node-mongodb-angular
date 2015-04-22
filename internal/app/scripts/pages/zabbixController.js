@@ -1,7 +1,24 @@
 'use strict';
 angular
     .module( 'theme.zabbix-controllers', ['rx', 'angularPassportService'] )
-    .controller( 'zabbixController', function($scope, zabbixService, $http) {
+    .constant( 'valueType', {
+        // Zabbix value_types:
+        // 0 - numeric float;
+        // 1 - character;
+        // 2 - log;
+        // 3 - numeric unsigned;
+        // 4 - text.
+        dataType: ['n', 'c', 'c', 'n', 'c'],
+        dataTypeDisplay: ['numeric float', 'character', 'log', 'numeric unsigned', 'text']
+    } )
+    .filter( 'dataTypeFilter', function(valueType) {
+        return function(input) {
+            return valueType.dataTypeDisplay[input];
+        };
+    } )
+    .controller( 'zabbixController', function($scope, zabbixService, $http, valueType) {
+
+        $scope.data_type = valueType.dataType;
 
         $scope.editableInPopup = '<button id="editBtn" type="button" class="btn btn-primary" ng-click="edit(row)" >Get Items</button> ';
 
@@ -15,8 +32,20 @@ angular
             zabbixService.getItems( hostid )
                 .success( function(items) {
                     $scope.items = items;
+                    _.each( items, function(item) {
+                        $scope.itemMap[item.itemid] = {
+                            'index': i,
+                            'name': item.name,
+                            'key': item.key_,
+                            'units': item.units,
+                            'value_type': item.value_type,
+                            'data_type': $scope.data_type[item.value_type]
+                        };
+                    } );
                 } );
         };
+
+        $scope.itemMap = {};
 
 
         $scope.filterOptions = {};
@@ -90,6 +119,7 @@ angular
                 {
                     field: 'value_type',
                     displayName: 'value_type',
+                    cellFilter: 'dataTypeFilter'
                 },
                 {
                     field: 'description',
