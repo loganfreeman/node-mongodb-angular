@@ -32,7 +32,7 @@ angular
                     ]
                 },
                 {
-                    label: 'Echo',
+                    label: 'WebSocket',
                     iconClasses: 'fa fa-home',
                     url: '#/echo'
                 },
@@ -40,6 +40,11 @@ angular
                     label: 'Zabbix',
                     iconClasses: 'fa fa-home',
                     url: '#/zabbix'
+                },
+                {
+                    label: 'D3',
+                    iconClasses: 'fa fa-home',
+                    url: '#/angular-d3'
                 },
                 {
                     label: 'Group',
@@ -52,7 +57,8 @@ angular
                     iconClasses: 'fa fa-user',
                     url: '#/users',
                     restricted: 'Administrator'
-            }];
+                }
+            ];
 
             $scope.checkAccess = function(item) {
                 if (item.restricted === 'Administrator') {
