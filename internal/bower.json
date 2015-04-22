@@ -52,7 +52,9 @@
     "angular-growl": "~0.4.0",
     "rxjs": "~2.5.2",
     "angular-rx": "~0.0.14",
-    "angular-poller": "~0.3.2"
+    "angular-poller": "~0.3.2",
+    "angular-peity": "~0.0.2",
+    "peity": "~3.2.0"
   },
   "resolutions": {
     "jquery": "~1.11.0"
