@@ -7,11 +7,16 @@ angular
 
         $scope.edit = function edit(row) {
             console.log( 'Here I need to know which button was selected ' + row.entity.dns );
-            $scope.getItems( row.entity );
+            $scope.getItems( row.entity.hostid );
         };
 
 
-        $scope.getItems = function(item) {};
+        $scope.getItems = function(hostid) {
+            zabbixService.getItems( hostid )
+                .success( function(items) {
+                    $scope.items = items;
+                } );
+        };
 
 
         $scope.filterOptions = {};
@@ -52,6 +57,49 @@ angular
             data: 'hostGroups',
             enablePaging: false,
             showFooter: true
+        };
+
+        $scope.itemOptions = {
+            data: 'items',
+            enablePaging: false,
+            showFooter: true,
+            columnDefs: [{
+                field: 'itemid',
+                displayName: 'itemid'
+                }, {
+                field: 'type',
+                displayName: 'type',
+                }, {
+                field: 'name',
+                displayName: 'name',
+                },
+                {
+                    field: 'key_',
+                    displayName: 'Key',
+                },
+                {
+                    field: 'lastvalue',
+                    displayName: 'lastvalue',
+                },
+                {
+                    field: 'lastclock',
+                    displayName: 'lastclock',
+                    type: 'date',
+                    cellFilter: 'date:\'yyyy-MM-dd\''
+                },
+                {
+                    field: 'value_type',
+                    displayName: 'value_type',
+                },
+                {
+                    field: 'description',
+                    displayName: 'description',
+                },
+                {
+                    field: 'error',
+                    displayName: 'error',
+                }
+            ]
         };
 
         $scope.filterOptions = {

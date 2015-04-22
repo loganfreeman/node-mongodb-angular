@@ -4,10 +4,10 @@ angular.module( 'angularPassportService' )
 
 
         return {
-            getItems: function(itemids) {
+            getItems: function(hostid) {
                 return $http.post( '/zabbix/item/get', {
-                    'output': ['name', 'value_type', 'units', 'key_'],
-                    'itemids': itemids
+                    'output': 'extend',
+                    'hostids': hostid
                 } );
             },
 
