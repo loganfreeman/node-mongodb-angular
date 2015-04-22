@@ -3,6 +3,17 @@ angular
     .module( 'theme.zabbix-controllers', ['rx', 'angularPassportService'] )
     .controller( 'zabbixController', function($scope, zabbixService, $http) {
 
+        $scope.editableInPopup = '<button id="editBtn" type="button" class="btn btn-primary" ng-click="edit(row)" >Get Items</button> ';
+
+        $scope.edit = function edit(row) {
+            console.log( 'Here I need to know which button was selected ' + row.entity.dns );
+            $scope.getItems( row.entity );
+        };
+
+
+        $scope.getItems = function(item) {};
+
+
         $scope.filterOptions = {};
 
 
@@ -12,7 +23,29 @@ angular
             showFooter: true,
             totalServerItems: 'totalServerItems',
             pagingOptions: $scope.pagingOptions,
-            filterOptions: $scope.filterOptions
+            filterOptions: $scope.filterOptions,
+            columnDefs: [{
+                field: 'interfaceid',
+                displayName: 'interfaceid'
+                }, {
+                field: 'hostid',
+                displayName: 'hostid',
+                }, {
+                field: 'ip',
+                displayName: 'ip',
+                },
+                {
+                    field: 'dns',
+                    displayName: 'dns',
+                },
+                {
+                    field: 'port',
+                    displayName: 'port',
+                },
+                {
+                    displayName: 'Get Items',
+                    cellTemplate: $scope.editableInPopup
+            }]
         };
 
         $scope.hostGroupOptions = {
@@ -40,6 +73,7 @@ angular
         };
 
         $scope.setHostGroups();
+
 
         $scope.setPagingData = function(data, page, pageSize) {
             var pagedData = data.slice( (page - 1) * pageSize, page * pageSize );
