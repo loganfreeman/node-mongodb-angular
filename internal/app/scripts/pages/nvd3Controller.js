@@ -1,5 +1,5 @@
 angular.module( 'themes.nvd3', ['nvd3ChartDirectives'] )
-    .controller( 'nvd3Controller', function($scope) {
+    .controller( 'nvd3Controller', function($scope, $q, $timeout) {
 
         $scope.xAxisTickFormat = function() {
             return function(d) {
@@ -39,6 +39,59 @@ angular.module( 'themes.nvd3', ['nvd3ChartDirectives'] )
                 return colorArray[i];
             };
         };
+        var pieChartData = [{
+            key: 'One',
+            y: 5
+            }, {
+            key: 'Two',
+            y: 2
+            }, {
+            key: 'Three',
+            y: 9
+            }, {
+            key: 'Four',
+            y: 7
+            }, {
+            key: 'Five',
+            y: 4
+            }, {
+            key: 'Six',
+            y: 3
+            }, {
+            key: 'Seven',
+            y: 9
+        }];
+
+        $scope.getPieChartData = function() {
+            var deferred = $q.defer();
+
+            $timeout( function() {
+                deferred.resolve( pieChartData );
+            }, 5000 );
+
+            return deferred.promise;
+        };
+
+        $scope.getPieChartData()
+            .then( function(data) {
+                $scope.pieChartData = data;
+            } );
+
+
+
+        $scope.xPieFunction = function() {
+            return function(d) {
+                return d.key;
+            };
+        };
+        $scope.yPieFunction = function() {
+            return function(d) {
+                return d.y;
+            };
+        };
+
+        $scope.pieWidth = 500;
+        $scope.pieHeight = 500;
 
 
         $scope.exampleData = [

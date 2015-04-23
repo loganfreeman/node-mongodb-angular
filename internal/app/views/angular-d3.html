@@ -34,14 +34,30 @@
 
 
                         <div class='row'>
+                            <div class="col-md-4">
                             <nvd3-bullet-chart
                                         data="bulletChartData"
-                                        id="exampleId"
                                         margin="{left:75,top:30,bottom:30,right:10}"
                                         width="550"
                                         height="160">
                                     <svg></svg>
                                 </nvd3-bullet-chart>
+                            </div>
+
+                            <div class="col-md-8">
+                             <nvd3-pie-chart
+                                  data="pieChartData"
+                                  x="xPieFunction()"
+                                  y="yPieFunction()"
+                                  showLabels="true"
+                                  width="{{pieWidth}}"
+                                  height= "{{pieHeight}}"
+                                  pieLabelsOutside="false"
+                                  showValues="true"
+                                  labelType="percent">
+                                  <svg></svg>
+                                </nvd3-pie-chart>
+                            </div>
                         </div>
 
 
