@@ -90,8 +90,7 @@ angular.module( 'themes.nvd3', ['nvd3ChartDirectives'] )
             };
         };
 
-        $scope.pieWidth = 500;
-        $scope.pieHeight = 500;
+        $scope.pieChartHeight = 400;
 
 
         $scope.exampleData = [
