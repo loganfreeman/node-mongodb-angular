@@ -40,7 +40,8 @@ angular
         'theme.charts-inline',
         'theme.echo-controllers',
         'rx',
-        'theme.zabbix-controllers'
+        'theme.zabbix-controllers',
+        'themes.nvd3'
         ] )
     .controller( 'MainController', ['$scope', '$global', '$timeout', 'progressLoader', '$location', 'Auth',
 
