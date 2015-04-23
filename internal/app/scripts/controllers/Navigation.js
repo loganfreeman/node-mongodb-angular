@@ -42,11 +42,6 @@ angular
                     url: '#/zabbix'
                 },
                 {
-                    label: 'D3',
-                    iconClasses: 'fa fa-home',
-                    url: '#/angular-d3'
-                },
-                {
                     label: 'Group',
                     iconClasses: 'fa fa-user',
                     url: '#/groups',

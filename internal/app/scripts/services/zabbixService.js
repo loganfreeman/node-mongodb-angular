@@ -24,6 +24,10 @@ angular.module( 'angularPassportService' )
 
             getHostGroups: function(options) {
                 return $http.post( '/zabbix/hostgroup/get', options );
+            },
+
+            getHosts: function(options) {
+                return $http.post( '/zabbix/host/get', options );
             }
         };
     } );
