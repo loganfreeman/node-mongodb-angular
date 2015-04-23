@@ -32,9 +32,10 @@ angular
             zabbixService.getItems( hostid )
                 .success( function(items) {
                     $scope.items = items;
-                    _.each( items, function(item) {
+
+                    angular.forEach( items, function(item, index) {
                         $scope.itemMap[item.itemid] = {
-                            'index': i,
+                            'index': index,
                             'name': item.name,
                             'key': item.key_,
                             'units': item.units,
