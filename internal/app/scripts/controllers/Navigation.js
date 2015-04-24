@@ -28,10 +28,6 @@ angular
                         {
                             label: 'Inline',
                             url: '#/charts-inline'
-                        },
-                        {
-                            label: 'D3',
-                            url: '#/angular-d3'
                         }
                     ]
                 },
