@@ -11,20 +11,50 @@ angular
         dataType: ['n', 'c', 'c', 'n', 'c'],
         dataTypeDisplay: ['numeric float', 'character', 'log', 'numeric unsigned', 'text']
     } )
+    .constant( 'searchKey', {
+        totalMemory: 'vm.memory.size[total]',
+        sharedMemory: 'vm.memory.size[shared]',
+        freeMemory: 'vm.memory.size[free]',
+        cachedMemory: 'vm.memory.size[cached]',
+        bufferMemory: 'vm.memory.size[buffers]',
+        totalDisk: 'vfs.fs.size[/usr,total]',
+        usedDisk: 'vfs.fs.size[/u,pused]',
+        usedConnected: 'system.users.num',
+        systemUptime: 'system.uptime',
+        processedRunning: 'proc.num[zabbix_agentd]',
+        incomingTraffic: 'net.if.in[eth0,bytes]',
+        outcomingTraffic: 'net.if.out[eth0,bytes]'
+    } )
     .filter( 'dataTypeFilter', function(valueType) {
         return function(input) {
             return valueType.dataTypeDisplay[input];
         };
     } )
-    .controller( 'zabbixController', function($scope, zabbixService, $http, valueType) {
+    .controller( 'zabbixController', function($scope, zabbixService, $http, valueType, searchKey) {
 
         $scope.data_type = valueType.dataType;
 
         $scope.editableInPopup = '<button id="editBtn" type="button" class="btn btn-primary" ng-click="edit(row)" >Get Items</button> ';
 
+        $scope.showItemPopup = '<button id="editBtn" type="button" class="btn btn-primary" ng-click="show(row)" >Show Item</button> ';
+
         $scope.edit = function edit(row) {
             console.log( 'Here I need to know which button was selected ' + row.entity.dns );
             $scope.getItems( row.entity.hostid );
+        };
+
+        $scope.show = function(row) {
+            zabbixService.getItem( row.entity.itemid )
+                .success( function(item) {
+                    console.log( item );
+                } );
+        };
+
+        $scope.showMemory = function(row) {
+            zabbixService.getItemByKey( row.entity.hostid )
+                .success( function(item) {
+                    console.log( item );
+                } );
         };
 
 
@@ -50,6 +80,18 @@ angular
 
 
         $scope.filterOptions = {};
+
+
+        $scope.filterOptions = {
+            groupids: '',
+            useExternalFilter: true
+        };
+        $scope.totalServerItems = 0;
+        $scope.pagingOptions = {
+            pageSizes: [25, 50, 100],
+            pageSize: 25,
+            currentPage: 1
+        };
 
 
         $scope.gridOptions = {
@@ -80,7 +122,8 @@ angular
                 {
                     displayName: 'Get Items',
                     cellTemplate: $scope.editableInPopup
-            }]
+                }
+            ]
         };
 
         $scope.hostGroupOptions = {
@@ -112,6 +155,10 @@ angular
                     displayName: 'lastvalue',
                 },
                 {
+                    field: 'units',
+                    displayName: 'units',
+                },
+                {
                     field: 'lastclock',
                     displayName: 'lastclock',
                     type: 'date',
@@ -129,20 +176,14 @@ angular
                 {
                     field: 'error',
                     displayName: 'error',
+                },
+                {
+                    displayName: 'Show',
+                    cellTemplate: $scope.showItemPopup
                 }
             ]
         };
 
-        $scope.filterOptions = {
-            groupids: '',
-            useExternalFilter: true
-        };
-        $scope.totalServerItems = 0;
-        $scope.pagingOptions = {
-            pageSizes: [25, 50, 100],
-            pageSize: 25,
-            currentPage: 1
-        };
 
         $scope.setHostGroups = function() {
             zabbixService.getHostGroups( {} )

@@ -18,6 +18,17 @@ angular.module( 'angularPassportService' )
                 } );
             },
 
+
+            getItemByKey: function(hostid, key) {
+                return $http.post( '/zabbix/item/get', {
+                    'output': 'extend',
+                    'hostids': hostid,
+                    'search': {
+                        'key_': key
+                    }
+                } );
+            },
+
             getHostInterfaces: function(options) {
                 return $http.post( '/zabbix/hostinterface/get', options );
             },
