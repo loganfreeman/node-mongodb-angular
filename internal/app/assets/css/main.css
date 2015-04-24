@@ -8,7 +8,9 @@
  *
  * center span inside a div
  */
-div.fixed-line-height > span {
+
+
+div.fixed-line-height > span, h3, h4 {
   display: inline-block;
   vertical-align: middle;
   line-height: normal;      
