@@ -30,7 +30,7 @@ angular
             return valueType.dataTypeDisplay[input];
         };
     } )
-    .controller( 'zabbixController', function($scope, zabbixService, $http, valueType, searchKey) {
+    .controller( 'zabbixController', function($scope, zabbixService, $http, $q, valueType, searchKey) {
 
         $scope.data_type = valueType.dataType;
 
@@ -38,9 +38,16 @@ angular
 
         $scope.showItemPopup = '<button id="editBtn" type="button" class="btn btn-primary" ng-click="show(row)" >Show Item</button> ';
 
+        $scope.showHostPopup = '<button id="editBtn" type="button" class="btn btn-primary" ng-click="showHost(row)" >Show</button> ';
+
         $scope.edit = function edit(row) {
             console.log( 'Here I need to know which button was selected ' + row.entity.dns );
             $scope.getItems( row.entity.hostid );
+        };
+
+        $scope.showHost = function(row) {
+            $scope.selectedHost = row.entity;
+            $scope.showMemory( $scope.selectedHost.hostid );
         };
 
         $scope.show = function(row) {
@@ -50,11 +57,51 @@ angular
                 } );
         };
 
-        $scope.showMemory = function(row) {
-            zabbixService.getItemByKey( row.entity.hostid )
-                .success( function(item) {
-                    console.log( item );
+        $scope.xFunction = function() {
+            return function(d) {
+                return d.label;
+            };
+        };
+        $scope.yFunction = function() {
+            return function(d) {
+                return d.value;
+            };
+        };
+
+        $scope.descriptionFunction = function() {
+            return function(d) {
+                return d.label;
+            };
+        };
+
+        $scope.memoryChartHeight = 500;
+        $scope.memoryChartWidth = 500;
+
+        $scope.showMemory = function(hostid) {
+            $q
+                .all( [
+                    zabbixService.getItemByKey( hostid, searchKey.totalMemory ),
+                    zabbixService.getItemByKey( hostid, searchKey.freeMemory )
+                    ] )
+                .then( function(values) {
+                    var totalMemory = values[0].data[0].lastvalue;
+                    var freeMemory = values[1].data[0].lastvalue;
+
+                    var data = [
+                        {
+                            label: 'used memory',
+                            value: totalMemory - freeMemory
+                        },
+                        {
+                            label: 'free memory',
+                            value: freeMemory
+                        }
+                    ];
+
+                    $scope.memoryChartData = data;
+                    console.log( data );
                 } );
+
         };
 
 
@@ -122,6 +169,10 @@ angular
                 {
                     displayName: 'Get Items',
                     cellTemplate: $scope.editableInPopup
+                },
+                {
+                    displayName: 'Show',
+                    cellTemplate: $scope.showHostPopup
                 }
             ]
         };
