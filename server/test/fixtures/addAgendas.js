@@ -69,7 +69,9 @@ module.exports = {
     },
     'now': function(agenda) {
         agenda.define( 'now run this job', function(job, done) {
-            client.publish( 'a nice channel', 'I am sending a message' );
+            client.publish( 'a nice channel', 'I am sending a message.' );
+            client.publish( 'a nice channel', 'I am sending a second message.' );
+            client.publish( 'a nice channel', 'I am sending my last message.' );
             done();
         } );
 

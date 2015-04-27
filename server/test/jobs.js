@@ -77,6 +77,22 @@ describe( 'In jobs --> ', function() {
     } );
 
 
+    it( 'should publish message', function(done) {
+        agenda.now( 'now run this job' );
+        var msg_count = 0;
+        client.subscribe( 'a nice channel' );
+        client.on( 'message', function(channel, message) {
+            console.log( 'client channel ' + channel + ': ' + message );
+            msg_count += 1;
+            if (msg_count === 3) {
+                client.unsubscribe();
+                client.end();
+                done();
+            }
+        } );
+    } );
+
+
 
 
 
