@@ -65,6 +65,18 @@ describe( 'In jobs --> ', function() {
     } );
 
 
+    it( 'should create jobs', function(done) {
+        _db.collection( 'agendaJobs', function(err, conn) {
+            conn.find(
+                {
+                }, function(err, records) {
+                    console.log( records );
+                    done();
+                } );
+        } );
+    } );
+
+
 
 
 
