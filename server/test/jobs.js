@@ -6,6 +6,15 @@ var expect = require( 'chai' ).expect,
 var MongoClient = require( 'mongodb' ).MongoClient;
 
 
+var redis = require( 'redis' ),
+    client = redis.createClient();
+
+
+
+
+var jobs = require( './fixtures/addAgendas.js' );
+
+
 
 
 
@@ -25,6 +34,7 @@ describe( 'In jobs --> ', function() {
 
 
         agenda = require( '../src/jobs.js' ).init( url );
+        jobs.now( agenda );
         MongoClient.connect( url, function(err, db) {
             if (!err) {
                 console.log( 'We are connected' );
@@ -47,7 +57,12 @@ describe( 'In jobs --> ', function() {
     } );
 
 
-    it( 'should create instance', function() {} );
+    it( 'should create collection', function(done) {
+        _db.collections( function(err, names) {
+            console.log( names );
+            done();
+        } );
+    } );
 
 
 
