@@ -7,6 +7,8 @@ var MongoClient = require( 'mongodb' ).MongoClient;
 
 
 
+
+
 var Promise = require( 'bluebird' );
 
 describe( 'In jobs --> ', function() {
@@ -14,8 +16,16 @@ describe( 'In jobs --> ', function() {
 
     var _db;
 
+    var agenda;
+
+    var url = 'mongodb://localhost:27017/test';
+
+
     before( function(done) {
-        MongoClient.connect( 'mongodb://localhost:27017/test', function(err, db) {
+
+
+        agenda = require( '../src/jobs.js' ).init( url );
+        MongoClient.connect( url, function(err, db) {
             if (!err) {
                 console.log( 'We are connected' );
                 _db = db;
@@ -32,6 +42,8 @@ describe( 'In jobs --> ', function() {
             _db.close();
             done();
         } );
+
+        agenda.stop();
     } );
 
 
