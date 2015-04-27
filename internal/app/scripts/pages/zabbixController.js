@@ -54,6 +54,7 @@ angular
             zabbixService.getItem( row.entity.itemid )
                 .success( function(item) {
                     console.log( item );
+                    $scope.item = item;
                 } );
         };
 
@@ -109,6 +110,7 @@ angular
             zabbixService.getItems( hostid )
                 .success( function(items) {
                     $scope.items = items;
+                    $scope.totalItems = items.length;
 
                     angular.forEach( items, function(item, index) {
                         $scope.itemMap[item.itemid] = {
@@ -186,6 +188,7 @@ angular
         $scope.itemOptions = {
             data: 'items',
             enablePaging: false,
+            totalServerItems: 'totalItems',
             showFooter: true,
             columnDefs: [{
                 field: 'itemid',
