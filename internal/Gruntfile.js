@@ -114,6 +114,11 @@ module.exports = function(grunt) {
                         context: '/zabbix',
                         host: 'localhost',
                         port: 8081
+                    },
+                    {
+                        context: '/data',
+                        host: 'localhost',
+                        port: 8081
                     }
                 ]
             },

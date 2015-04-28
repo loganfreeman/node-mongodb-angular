@@ -543,7 +543,234 @@ angular
                 };
             }
         };
-    } );
+    } )
+    .directive( 'realtimeLineChart', ['$window', function($window) {
+            return {
+                restrict: 'EA',
+                link: function(scope, element, attrs, controller) {
+                    var d3 = $window.d3;
+
+                    var plot = {
+                            margins: null,
+                            width: null,
+                            height: null,
+                            svg: null,
+                            isZoomed: false,
+                            isGraphCreationDone: false
+                        },
+                        zoomArea = {
+                            height: 50
+                        },
+                        parseDate = d3.time.format( '%d-%b-%y' ).parse;
+
+                    // Setup size and positions
+                    plot.margin = {
+                        top: 20,
+                        right: 20,
+                        bottom: 150,
+                        left: 50
+                    };
+                    plot.width = 960 - plot.margin.left - plot.margin.right;
+                    plot.height = 500 - plot.margin.top - plot.margin.bottom;
+
+                    plot.svg = d3.select( 'body' )
+                        .append( 'svg' )
+                        .attr( 'width', plot.width + plot.margin.left + plot.margin.right )
+                        .attr( 'height', plot.height + plot.margin.top + plot.margin.bottom )
+                        .append( 'g' )
+                        .attr( 'transform', 'translate(' + plot.margin.left + ',' + plot.margin.top + ')' );
+
+                    plot.xScale = d3
+                        .time.scale()
+                        .range( [0, plot.width] );
+
+                    plot.yScale = d3
+                        .scale.linear()
+                        .range( [plot.height, 0] );
+
+                    plot.xAxis = d3.svg.axis()
+                        .scale( plot.xScale )
+                        .orient( 'bottom' );
+
+                    plot.yAxis = d3.svg.axis()
+                        .scale( plot.yScale )
+                        .orient( 'left' );
+
+                    plot.line = d3.svg.line()
+                        .x( function(d) {
+                            return plot.xScale( d.date );
+                        } )
+                        .y( function(d) {
+                            return plot.yScale( d.close );
+                        } );
+
+                    scope.$watchCollection( 'plotData', function(newData, oldData) {
+                        if (newData.length > 0) {
+                            if (!plot.isGraphCreationDone) {
+                                createGraph( newData );
+                            } else {
+                                updateGraph( newData );
+                            }
+                        }
+                    } );
+
+
+                    function createGraph(data) {
+                        // Setting the domain of the scales
+                        plot.xScale.domain( d3.extent( data, function(d) {
+                            return d.date;
+                        } ) );
+                        plot.yScale.domain( d3.extent( data, function(d) {
+                            return d.close;
+                        } ) );
+
+                        plot.axis = plot.svg.append( 'g' )
+                            .attr( 'class', 'x axis' )
+                            .attr( 'transform', 'translate(0,' + plot.height + ')' )
+                            .call( plot.xAxis );
+
+                        plot.svg.append( 'g' )
+                            .attr( 'class', 'y axis' )
+                            .call( plot.yAxis );
+
+                        // Clip to contain the graph inside the plaot area
+                        plot.svg.append( 'defs' ).append( 'clipPath' )
+                            .attr( 'id', 'clip-plot' )
+                            .append( 'rect' )
+                            .attr( 'width', plot.width )
+                            .attr( 'height', plot.height );
+
+                        plot.path = plot.svg.append( 'path' )
+                            .datum( data )
+                            .attr( 'clip-path', 'url(#clip-plot)' )
+                            .attr( 'class', 'line' )
+                            .attr( 'd', plot.line );
+
+                        addZoomArea();
+                        plot.isGraphCreationDone = true;
+                    }
+
+                    function updateGraph(data) {
+                        // Don't update the graph when it's zoomed
+                        if (plot.isZoomed) {
+                            return;
+                        }
+
+                        plot.path
+                            .attr( 'd', plot.line )
+                            .datum( data )
+                            .transition()
+                            .duration( 500 )
+                            .ease( 'linear' );
+
+                        plot.xScale.domain( d3.extent( data, function(d) {
+                            return d.date;
+                        } ) );
+                        // Zoom's domain is set to the entire data range
+                        zoomArea.xScale.domain( d3.extent( scope.allData, function(d) {
+                            return d.date;
+                        } ) );
+
+                        plot.axis
+                            .call( plot.xAxis )
+                            .transition()
+                            .duration( 500 )
+                            .ease( 'linear' );
+                        zoomArea.axis
+                            .call( zoomArea.xAxis )
+                            .transition()
+                            .duration( 500 )
+                            .ease( 'linear' );
+                    }
+
+                    function addZoomArea() {
+                        zoomArea.xScale = d3.time.scale()
+                            .range( [0, plot.width] )
+                            .domain( plot.xScale.domain() );
+
+                        zoomArea.xAxis = d3.svg.axis()
+                            .scale( zoomArea.xScale )
+                            .tickSize( zoomArea.height )
+                            .tickPadding( -10 )
+                            .orient( 'bottom' );
+
+                        // Create zoom area
+                        zoomArea.svg = d3.svg.area()
+                            .x( function(d) {
+                                return zoomArea.xScale( d.date );
+                            } )
+                            .y0( zoomArea.height )
+                            .y1( 0 );
+
+                        d3.select( 'body' )
+                            .append( 'br' );
+
+                        d3.select( 'body' )
+                            .append( 'button' )
+                            .text( 'Clear zoom' )
+                            .on( 'click', function() {
+                                clearBrush();
+                            } );
+
+                        var brush = d3.svg.brush()
+                            .x( zoomArea.xScale )
+                            .on( 'brush', onBrush )
+                            .on( 'brushend', onBrushEnd );
+
+                        var context = plot.svg.append( 'g' )
+                            .attr( 'class', 'context' )
+                            .attr( 'transform', 'translate(0,' + (plot.height + plot.margin.top + zoomArea.height) + ')' );
+
+                        zoomArea.axis = context.append( 'g' )
+                            .attr( 'class', 'x axis top' )
+                            .attr( 'transform', 'translate(0,0)' )
+                            .call( zoomArea.xAxis );
+
+                        context.append( 'g' )
+                            .attr( 'class', 'x brush' )
+                            .call( brush )
+                            .selectAll( 'rect' )
+                            .attr( 'y', 0 )
+                            .attr( 'height', zoomArea.height );
+
+                        function onBrush() {
+                            var b;
+                            if (brush.empty()) {
+                                plot.isZoomed = false;
+                                b = zoomArea.xScale.domain();
+                            } else {
+                                plot.isZoomed = true;
+                                b = brush.extent();
+                            }
+                            plot.xScale.domain( b );
+
+                            plot.path
+                                .datum( scope.allData )
+                                .attr( 'd', plot.line );
+
+                            plot.axis.call( plot.xAxis );
+                        }
+
+                        function onBrushEnd() {
+                            if (brush.empty()) {
+                                clearBrush();
+                            }
+                            // Since it's actually a mouseup event
+                            event.stopPropagation();
+                        }
+
+                        function clearBrush() {
+                            d3.select( '.brush' ).call( brush.clear() );
+                            plot.isZoomed = false;
+                        }
+                    }
+                }
+
+
+
+            };
+        }
+        ] );
 
 
 
