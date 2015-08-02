@@ -203,12 +203,9 @@ app.use( expressWinston.errorLogger( {
     ]
 } ) );
 
-var primus = new Primus( server );
+//var primus = new Primus( server );
 
-
-
-
-require( './dispatcher.js' ).init( primus );
+//require( './dispatcher.js' ).init( primus );
 
 
 function start() {
