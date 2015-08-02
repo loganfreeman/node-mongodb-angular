@@ -211,9 +211,13 @@ app.use( expressWinston.errorLogger( {
 function start() {
     // require( './waterline/waterline-init.js' )( app );
     var port = config.getPort();
+    var ipAddress = config.getHost();
     //app.listen( port );
-    server.listen( port );
-    console.log( 'Express started on port ' + port );
+    server.listen( port, ipAddress, function(){
+         console.log('%s: Node server started on %s:%d ...',
+                        Date(Date.now() ), ipAddress, port);
+    } );
+    
 }
 
 /* istanbul ignore next */
