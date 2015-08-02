@@ -103,6 +103,7 @@ angular
         $scope.signUpBtnClicked = function() {
             $location.path('/extras-signupform');
         };
+
     }])
     .controller('RegistrationPageController', ['$scope', '$timeout', function($scope, $timeout) {
         $scope.checking = false;

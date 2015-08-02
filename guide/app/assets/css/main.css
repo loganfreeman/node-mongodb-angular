@@ -4,6 +4,16 @@
 *
 */
 
+.logo {
+    color: #d54d7b;
+    font-family: "Great Vibes", cursive;
+    font-weight: normal;
+    margin-bottom: 0px;
+    margin-top: 40px;
+    text-align: center;
+    text-shadow: 0 1px 1px #fff;  
+}
+
 /**
  *
  * center span inside a div
