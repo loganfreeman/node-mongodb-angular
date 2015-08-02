@@ -8,6 +8,8 @@ var auth = require( '../auth.js' );
 
 var mongoUtil = require( '../mongoose/utils.js' );
 
+var config = require( '../config/config.js' );
+
 var db = mongoUtil.connect();
 
 
@@ -16,9 +18,6 @@ var passport = require( 'passport' );
 var ObjectId = require( 'mongoose' ).Types.ObjectId;
 
 var path = require( 'path' );
-
-
-var adminSecret = require( 'fs' ).readFileSync( path.resolve( __dirname, '../../adminSecret' ), 'utf8' ).trim();
 
 /**
  * Session
@@ -91,10 +90,7 @@ session.createAdmin = function(req, res, next) {
 
     delete req.body.secret;
 
-    //console.log(secret);
-    //console.log(adminSecret);
-
-    if (adminSecret !== secret) {
+    if (config.adminSecret !== secret) {
         return res.status( 401 ).json( {
             message: 'Not Authorized'
         } );
