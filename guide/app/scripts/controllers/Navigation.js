@@ -8,6 +8,21 @@ angular
                     label: 'Dashboard',
                     iconClasses: 'fa fa-home',
                     url: '#/'
+                },
+                {
+                    label: '行程',
+                    iconClasses: 'fa fa-home',
+                    url: '#/itinerary'
+                },
+                {
+                    label: '任务',
+                    iconClasses: 'fa fa-home',
+                    url: '#/itinerary'
+                },
+                {
+                    label: '报价',
+                    iconClasses: 'fa fa-home',
+                    url: '#/itinerary'
                 }
                 
                
