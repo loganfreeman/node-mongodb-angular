@@ -1,7 +1,9 @@
-node_modules
-results.txt
-docs
-out
-.settings
-
 npm-debug.log
+node_modules/
+.tmp
+results.txt
+dump.rdb
+doc
+zuora.js
+.idea
+adminSecret

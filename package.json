@@ -1,35 +1,102 @@
 {
-  "name": "OpenShift-Sample-App",
+  "name": "server",
   "version": "1.0.0",
-  "description": "OpenShift Sample Application",
-  "keywords": [
-    "OpenShift",
-    "Node.js",
-    "application",
-    "openshift"
-  ],
-  "author": {
-    "name": "OpenShift",
-    "email": "ramr@example.org",
-    "url": "http://www.openshift.com/"
+  "description": "IT dashboard server",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive -c",
+    "start": "node src/server.js"
   },
-  "homepage": "http://www.openshift.com/",
+  "main": "src/server.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openshift/origin-server"
+    "url": "https://github.com/ContactPoint/internal_scripts/dashboard/server"
   },
-
-  "engines": {
-    "node": ">= 0.6.0",
-    "npm": ">= 1.0.0"
-  },
-
+  "keywords": [
+    "zabbix",
+    "node"
+  ],
+  "author": "scheng",
+  "license": "ISC",
   "dependencies": {
-    "express": "~3.4.4"
+    "agenda": "^0.6.28",
+    "async": "^0.9.0",
+    "bcrypt": "^0.8.1",
+    "bluebird": "^2.9.14",
+    "body-parser": "^1.12.0",
+    "bookshelf": "^0.7.9",
+    "chargify": "^0.3.0",
+    "colors": "^1.0.3",
+    "connect-redis": "^2.2.0",
+    "cors": "^2.5.3",
+    "cron": "^1.0.9",
+    "crypto": "0.0.3",
+    "ejs": "^2.3.1",
+    "es6-promise": "^2.0.1",
+    "expect.js": "^0.3.1",
+    "express": "^4.12.2",
+    "express-session": "^1.10.4",
+    "express-winston": "^0.2.12",
+    "extend-error": "0.0.2",
+    "hiredis": "^0.2.0",
+    "jugglingdb": "^0.3.0",
+    "jugglingdb-postgres": "^0.1.0",
+    "jugglingdb-redis": "0.0.2-2",
+    "knex": "^0.7.4",
+    "limiter": "^1.0.5",
+    "lodash": "^3.5.0",
+    "method-override": "^2.3.1",
+    "moment": "^2.9.0",
+    "mongodb": "^2.0.25",
+    "mongoose": "^4.0.1",
+    "mongoose-relationship": "^0.1.4",
+    "mongoose-unique-validator": "^0.4.1",
+    "morgan": "^1.5.1",
+    "nconf": "^0.7.1",
+    "neuron": "^0.4.6",
+    "nforce": "^1.1.1",
+    "node-uuid": "^1.4.3",
+    "nodemailer": "^1.3.1",
+    "nodemon": "^1.3.7",
+    "passport": "^0.2.1",
+    "passport-local": "^1.0.0",
+    "pg": "^4.3.0",
+    "pg-hstore": "^2.3.1",
+    "plates": "^0.4.11",
+    "primus": "^3.0.2",
+    "q": "^1.2.0",
+    "ramda": "^0.10.0",
+    "redis": "^0.12.1",
+    "request": "^2.53.0",
+    "rx": "^2.4.1",
+    "sails-disk": "^0.10.7",
+    "sails-mysql": "^0.10.11",
+    "sails-postgresql": "^0.10.14",
+    "sequelize": "^2.0.4",
+    "serve-favicon": "^2.2.0",
+    "should": "^5.2.0",
+    "static-favicon": "^2.0.0-alpha",
+    "step": "0.0.5",
+    "swagger-node-express": "^2.1.3",
+    "swagger-ui": "^2.1.0-M2",
+    "tracer": "^0.7.3",
+    "waterline": "^0.10.18",
+    "winston": "^0.9.0",
+    "ws": "^0.7.1",
+    "zabbix-api": "0.0.1",
+    "zuora": "^0.1.7"
   },
-  "devDependencies": {},
-  "bundleDependencies": [],
-
-  "private": true,
-  "main": "server.js"
+  "devDependencies": {
+    "chai": "^2.1.1",
+    "colors": "^1.0.3",
+    "grunt": "^0.4.5",
+    "grunt-jsdoc": "^0.5.8",
+    "grunt-mocha-test": "^0.12.7",
+    "grunt-nodemon": "^0.4.0",
+    "grunt-template": "^0.2.3",
+    "load-grunt-tasks": "^3.1.0",
+    "mocha": "^2.1.0",
+    "node-rest-client": "^1.4.4",
+    "request-promise": "^0.4.1"
+  }
 }
