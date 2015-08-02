@@ -9,6 +9,7 @@ var expect = require('chai').expect,
 
 var mongoose = require('mongoose');
 
+var util = require('util');
 
 require('../src/mongoose/models');
 
@@ -22,6 +23,13 @@ function connect(database) {
     return mongoose.createConnection('mongodb://localhost/' + database);
 }
 
+describe('mongodb connection', function(){
+    it('should create connection string', function(){
+        var template = "mongodb://%s:%s@%s:%s/%s";
+        var s = util.format(template, 'scheng', 'pass22', 'localhost', '27017', 'guide');
+        console.log(s);
+    })
+})
 
 
 describe('group schema', function() {

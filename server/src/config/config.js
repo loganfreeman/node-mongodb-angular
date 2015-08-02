@@ -1,15 +1,7 @@
 module.exports = {
+    upload_directory: 'upload',
     mongo: {
-        database: 'devops'
-    },
-    chargify: {
-        site: 'logmycalls',
-        key: 'CL4Kf0fefTuPB3MYz_NN'
-    },
-    zabbix: {
-        username: 'reports',
-        password: 'yI9SJmVkB5SdM',
-        api_url: 'http://zabbix.cpscloud.com/zabbix/api_jsonrpc.php'
+        database: 'guide'
     },
     debug: true,
     sessionStore: function() {
@@ -28,10 +20,7 @@ module.exports = {
         log: '/var/log/nginx/devops.log'
     },
     getPort: function() {
-        if (process.env.PORT) {
-            return process.env.PORT;
-        }
-        return 8081;
+        return process.env.OPENSHIFT_NODEJS_PORT  || 8081;
     },
 
     getProtocol: function() {
@@ -42,10 +31,7 @@ module.exports = {
     },
 
     getHost: function() {
-        if (process.env.HTTP_HOST) {
-            return process.env.HTTP_HOST;
-        }
-        return 'localhost';
+        return process.env.OPENSHIFT_NODEJS_IP || 'localhost';
     },
 
     getBaseUrl: function() {

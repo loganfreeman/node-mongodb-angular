@@ -1,9 +1,22 @@
 var mongoose = require( 'mongoose' );
 
 var config = require( '../config/config.js' );
+var util = require('util');
+
+
+var dbPort = process.env.OPENSHIFT_MONGODB_DB_PORT || "27017";
+var dbHost = process.env.OPENSHIFT_MONGODB_DB_HOST || "127.0.0.1";
+var dbName = config.mongo.database;
+var dbUser = process.env.OPENSHIFT_MONGODB_DB_USERNAME;
+var dbPass = process.env.OPENSHIFT_MONGODB_DB_PASSWORD;
+var template = "mongodb://%s:%s@%s:%s/%s";
+var mongoConnectionString = util.format(template, dbUser, dbPass, dbHost, dbPort, dbName);
 
 exports.connect = function connect() {
-    return mongoose.createConnection( 'mongodb://localhost/' + config.mongo.database );
+    if(!dbUser) return mongoose.createConnection( 'mongodb://localhost/' + dbName );
+    else{
+        return mongoose.createConnection(mongoConnectionString);
+    }
 };
 /**
  * Formats mongoose errors into proper array

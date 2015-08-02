@@ -1,3 +1,4 @@
+#!/bin/env node
 /**
  *
  * @author scheng
@@ -5,6 +6,8 @@
  */
 
 var config = require( './config/config.js' );
+
+var uploadDirectory = process.env.OPENSHIFT_DATA_DIR || __dirname + config.upload_directory;
 
 var express = require( 'express' );
 
@@ -99,11 +102,7 @@ app.use( favicon( __dirname + '/public/images/favicon.ico' ) );
 
 app.use( '/', express.static( __dirname + '/public' ) );
 
-app.use( '/dashboard', express.static( __dirname + '../../../internal/dist' ) );
-
-app.use( '/dashboard/bower_components', express.static( __dirname + '../../../internal/bower_components' ) );
-
-app.use( '/', express.static( __dirname + '../../../forza/dist' ) );
+app.use( '/', express.static( __dirname + '/../guide/dist' ) );
 
 app.use( '/docs', express.static( __dirname + '/../swagger-ui/' ) );
 
@@ -138,26 +137,6 @@ require( './routes' )( app );
 
 // swagger config
 var swagger = require( 'swagger-node-express' ).createNew( app );
-
-var zabbixModels = require( './swagger/models.js' );
-
-swagger.addModels( zabbixModels );
-
-require( './swagger/resources.js' )( swagger );
-
-
-var chargifyModels = require( './chargify/models.js' );
-
-swagger.addModels( chargifyModels );
-
-require( './chargify/resources.js' )( swagger );
-
-
-var zuoraModels = require( './zuora/models.js' );
-
-swagger.addModels( zuoraModels );
-
-require( './zuora/resources.js' )( swagger );
 
 app.use( '/devops', auth.ensureAuthenticated );
 

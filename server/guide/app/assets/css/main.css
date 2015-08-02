@@ -1,0 +1,148 @@
+/**
+* Forza 1.0.0 (c) 2014
+* Ndevr Studios Ltd.
+*
+*/
+
+/**
+ *
+ * center span inside a div
+ */
+
+
+div.fixed-line-height > span, h3, h4 {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;      
+}
+
+div.fixed-line-height {
+	line-height: 40px;
+    text-align: center;
+}
+
+
+span.clock {
+	margin-left: 10px
+}
+
+ul.user-info-list
+{
+    list-style-type: none;
+}
+
+.pointer         
+{ cursor: pointer; }
+
+
+/**
+ *
+ * message styles
+ */
+
+.isa_info, .isa_success, .isa_warning, .isa_error {
+margin: 10px 0px;
+padding:12px;
+}
+.isa_info {
+    color: #00529B;
+    background-color: #BDE5F8;
+}
+.isa_success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+}
+.isa_warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+}
+.isa_error {
+    color: #D8000C;
+    background-color: #FFBABA;
+}
+.isa_info i, .isa_success i, .isa_warning i, .isa_error i {
+    margin:10px 22px;
+    font-size:2em;
+    vertical-align:middle;
+}
+
+
+.ng-invalid-mongoose {
+    border-color: red;
+}
+
+
+
+
+.form-container > form {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.user-container {
+    overflow: auto;
+  max-height: 300px;
+  min-height: 50px;
+  background-color: hsla(210, 75%, 50%, 0.2);
+  padding: 10px;
+  border-style: solid;
+}
+
+ 
+.user-item {
+  font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+  border-bottom: 1px solid #ccc;
+}
+ 
+.user-item:last-child {
+  border: none;
+}
+ 
+.user-item a {
+  text-decoration: none;
+  color: #000;
+  display: block;
+ 
+  -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+  transition: font-size 0.3s ease, background-color 0.3s ease;
+}
+ 
+.user-item a.active {
+  background-color: azure;
+}
+.user-item a:hover {
+  font-size: 30px;
+  background-color: azure;
+}
+
+
+
+/* LIST #4 */
+.list4 { font-family:Georgia, Times, serif; font-size:15px; }
+.list4 ul { 
+  list-style: none; 
+  margin: 0;
+  padding: 0;
+}
+.list4 ul li { }
+.list4 ul li a { display:block; text-decoration:none; color:#000000; background-color:#FFFFFF; line-height:30px;
+  border-bottom-style:solid; border-bottom-width:1px; border-bottom-color:#CCCCCC; padding-left:10px; cursor:pointer; }
+.list4 ul li a:hover { color:#FFFFFF; background-image:url(../img/hover.png); background-repeat:repeat-x; }
+.list4 ul li a strong { margin-right:10px; }
+
+
+
+
+label, a, select, button, .btn, span, h3, h4 {
+  font-family: 'Maven Pro' !important;
+}
+
+
+
+.not-active {
+   pointer-events: none;
+   cursor: default;
+}
