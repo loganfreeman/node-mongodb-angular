@@ -17,12 +17,12 @@ angular
                 {
                     label: '任务',
                     iconClasses: 'fa fa-home',
-                    url: '#/itinerary'
+                    url: '#/task'
                 },
                 {
                     label: '报价',
                     iconClasses: 'fa fa-home',
-                    url: '#/itinerary'
+                    url: '#/quote'
                 }
                 
                
